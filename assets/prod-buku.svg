@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 260" width="100%" height="100%">
+  <defs>
+    <filter id="bookShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <linearGradient id="bookCoverRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b91c1c"/>
+      <stop offset="50%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#450a0a"/>
+    </linearGradient>
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fffdf8"/>
+      <stop offset="100%" stop-color="#f5efe0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Open Reading Guide Book (Left) -->
+  <g transform="translate(25, 45)" filter="url(#bookShadow)">
+    <path d="M 10 185 Q 45 180 85 188 L 85 18 Q 45 10 10 18 Z" fill="url(#pageGrad)" stroke="#dcd6c5" stroke-width="1"/>
+    <path d="M 85 188 Q 125 180 160 185 L 160 18 Q 125 10 85 18 Z" fill="url(#pageGrad)" stroke="#dcd6c5" stroke-width="1"/>
+    <rect x="83" y="14" width="4" height="174" fill="#000000" opacity="0.15"/>
+
+    <!-- Left Page Guide Text -->
+    <text x="48" y="32" font-family="sans-serif" font-size="6.5" fill="#b91c1c" font-weight="bold" text-anchor="middle">HUKUM TAJWID</text>
+    <line x1="18" y1="45" x2="78" y2="45" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="58" x2="78" y2="58" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="71" x2="78" y2="71" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="84" x2="78" y2="84" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="97" x2="78" y2="97" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="110" x2="78" y2="110" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="123" x2="78" y2="123" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="136" x2="78" y2="136" stroke="#334155" stroke-width="1.2"/>
+    <line x1="18" y1="149" x2="78" y2="149" stroke="#334155" stroke-width="1.2"/>
+
+    <!-- Right Page Illustrations of Makhraj -->
+    <text x="122" y="32" font-family="sans-serif" font-size="6.5" fill="#b91c1c" font-weight="bold" text-anchor="middle">MAKHORIJUL HURUF</text>
+    <rect x="94" y="42" width="56" height="40" fill="#fef2f2" rx="4" stroke="#fecaca" stroke-width="1"/>
+    <circle cx="122" cy="62" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+    <path d="M 112 62 Q 122 52 132 62" stroke="#b91c1c" stroke-width="2" fill="none"/>
+    <line x1="94" y1="95" x2="150" y2="95" stroke="#334155" stroke-width="1.2"/>
+    <line x1="94" y1="108" x2="150" y2="108" stroke="#334155" stroke-width="1.2"/>
+    <line x1="94" y1="121" x2="150" y2="121" stroke="#334155" stroke-width="1.2"/>
+    <line x1="94" y1="134" x2="150" y2="134" stroke="#334155" stroke-width="1.2"/>
+    <line x1="94" y1="147" x2="150" y2="147" stroke="#334155" stroke-width="1.2"/>
+  </g>
+
+  <!-- Standing Front Cover Book (Right) -->
+  <g transform="translate(195, 25)" filter="url(#bookShadow)">
+    <path d="M 0 10 L 18 0 L 18 200 L 0 210 Z" fill="#450a0a" stroke="#d4af37" stroke-width="1"/>
+    <path d="M 18 0 L 115 15 L 115 215 L 18 200 Z" fill="url(#bookCoverRed)" stroke="#d4af37" stroke-width="1.5"/>
+    <rect x="30" y="25" width="72" height="160" fill="none" stroke="#eac55f" stroke-width="1" rx="4"/>
+    <circle cx="66" cy="85" r="24" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+    <text x="66" y="93" font-family="'Amiri', serif" font-size="24" fill="#fce899" text-anchor="middle" font-weight="bold">ض</text>
+    <text x="66" y="135" font-family="sans-serif" font-size="8" fill="#ffffff" font-weight="bold" text-anchor="middle">PANDUAN</text>
+    <text x="66" y="148" font-family="sans-serif" font-size="8" fill="#fce899" font-weight="bold" text-anchor="middle">TAJWID LENGKAP</text>
+    <text x="66" y="162" font-family="sans-serif" font-size="5.5" fill="#e2e8f0" text-anchor="middle">METODE PRAKTIS</text>
+  </g>
+</svg>

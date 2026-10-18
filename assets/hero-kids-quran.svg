@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 500" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="goldArch" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f6d365" />
+      <stop offset="50%" stop-color="#fda085" />
+      <stop offset="100%" stop-color="#d4af37" />
+    </linearGradient>
+    <linearGradient id="bgAura" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff8ed" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="quranCover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b5e42"/>
+      <stop offset="100%" stop-color="#053323"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#093427" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background Soft Aura -->
+  <ellipse cx="270" cy="270" rx="220" ry="200" fill="url(#bgAura)"/>
+
+  <!-- Ornate Golden Islamic Archway Frame -->
+  <path d="M 130 460 L 130 220 C 130 180, 190 140, 270 90 C 350 140, 410 180, 410 220 L 410 460" 
+        fill="none" stroke="url(#goldArch)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Inner Decorative Arch -->
+  <path d="M 145 460 L 145 225 C 145 190, 200 155, 270 110 C 340 155, 395 190, 395 225 L 395 460" 
+        fill="none" stroke="#eac55f" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <!-- Arch Finial Crown -->
+  <path d="M 270 60 L 275 80 L 270 92 L 265 80 Z" fill="#d4af37"/>
+  <circle cx="270" cy="55" r="5" fill="#f6d365"/>
+
+  <!-- Sparkling Stars -->
+  <g fill="#eac55f">
+    <!-- Star Left -->
+    <path d="M 175 220 Q 185 220 185 210 Q 185 220 195 220 Q 185 220 185 230 Q 185 220 175 220 Z"/>
+    <!-- Star Right -->
+    <path d="M 365 200 Q 373 200 373 192 Q 373 200 381 200 Q 373 200 373 208 Q 373 200 365 200 Z"/>
+    <!-- Small sparkles -->
+    <circle cx="200" cy="160" r="3"/>
+    <circle cx="340" cy="150" r="3.5"/>
+  </g>
+
+  <!-- Boy (Right Side) -->
+  <g id="boyCharacter" filter="url(#softGlow)">
+    <!-- Boy Body / White Baju Koko -->
+    <path d="M 270 240 C 255 245, 240 280, 235 440 L 375 440 C 370 280, 355 245, 340 240 Z" fill="#ffffff" stroke="#e0e8e4" stroke-width="2"/>
+    <!-- Koko Neck Collar & Gold Buttons -->
+    <path d="M 290 235 L 305 260 L 320 235" fill="none" stroke="#d4af37" stroke-width="2"/>
+    <line x1="305" y1="260" x2="305" y2="350" stroke="#d4af37" stroke-width="2" stroke-dasharray="2,6"/>
+    <circle cx="305" cy="275" r="2.5" fill="#d4af37"/>
+    <circle cx="305" cy="295" r="2.5" fill="#d4af37"/>
+    <circle cx="305" cy="315" r="2.5" fill="#d4af37"/>
+
+    <!-- Boy Head & Neck -->
+    <rect x="295" y="210" width="20" height="28" rx="6" fill="#fcd7b9"/>
+    <!-- Ears -->
+    <circle cx="277" cy="188" r="9" fill="#fcd7b9"/>
+    <circle cx="333" cy="188" r="9" fill="#fcd7b9"/>
+    <!-- Face -->
+    <ellipse cx="305" cy="188" rx="28" ry="32" fill="#ffe2cb"/>
+    <!-- Hair tips -->
+    <path d="M 278 175 Q 305 162 332 175" fill="#302018"/>
+    <!-- White Islamic Peci Cap -->
+    <path d="M 280 172 Q 305 152 330 172 L 328 145 Q 305 140 282 145 Z" fill="#ffffff" stroke="#d9e2dc" stroke-width="1.5"/>
+    <path d="M 283 148 Q 305 143 327 148" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+
+    <!-- Eyes (Smiling and Happy) -->
+    <path d="M 292 186 Q 297 181 302 186" fill="none" stroke="#2c2420" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 310 186 Q 315 181 320 186" fill="none" stroke="#2c2420" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Rosy Cheeks -->
+    <ellipse cx="288" cy="196" rx="5" ry="3" fill="#ffb4a2" opacity="0.6"/>
+    <ellipse cx="322" cy="196" rx="5" ry="3" fill="#ffb4a2" opacity="0.6"/>
+    <!-- Cheerful Smile -->
+    <path d="M 298 198 Q 305 208 313 198" fill="#e76f51" stroke="#2c2420" stroke-width="1.5"/>
+
+    <!-- Boy Arms & Hands holding Holy Quran -->
+    <!-- Holy Quran Book in hands -->
+    <g transform="translate(265, 290) rotate(-6)">
+      <!-- Book Cover -->
+      <rect x="0" y="0" width="84" height="110" rx="6" fill="url(#quranCover)" stroke="#d4af37" stroke-width="2.5"/>
+      <!-- Inner Gold Frame -->
+      <rect x="7" y="7" width="70" height="96" rx="4" fill="none" stroke="#eac55f" stroke-width="1.5"/>
+      <!-- Gold Islamic Medallion -->
+      <polygon points="42,32 50,45 64,45 52,54 57,67 42,58 27,67 32,54 20,45 34,45" fill="#fce899"/>
+      <circle cx="42" cy="50" r="8" fill="#0b5e42" stroke="#d4af37" stroke-width="1"/>
+      <text x="42" y="53" font-family="'Amiri', serif" font-size="8" fill="#fce899" text-anchor="middle" font-weight="bold">القرآن</text>
+      <!-- Title on Book -->
+      <text x="42" y="80" font-family="sans-serif" font-size="6.5" fill="#ffffff" text-anchor="middle" font-weight="bold" letter-spacing="0.5">AL-MUTTAQIN</text>
+      <text x="42" y="90" font-family="sans-serif" font-size="5" fill="#eac55f" text-anchor="middle">AL-QOSBAH</text>
+      <!-- Gold Ribbon -->
+      <path d="M 42 105 L 42 120 L 46 115 L 50 120 L 50 105 Z" fill="#d4af37"/>
+    </g>
+    <!-- Hands holding the Quran -->
+    <ellipse cx="270" cy="350" rx="12" ry="9" fill="#fcd7b9"/>
+    <ellipse cx="342" cy="340" rx="12" ry="9" fill="#fcd7b9"/>
+  </g>
+
+  <!-- Girl (Left Side) -->
+  <g id="girlCharacter" filter="url(#softGlow)">
+    <!-- Girl Hijab and Body -->
+    <path d="M 180 250 C 170 270, 160 330, 155 440 L 260 440 C 255 330, 245 270, 235 250 Z" fill="#ffffff" stroke="#e0e8e4" stroke-width="2"/>
+
+    <!-- White Hijab Flowing -->
+    <path d="M 165 240 C 160 170, 250 170, 245 240 C 242 275, 230 330, 205 340 C 180 330, 168 275, 165 240 Z" fill="#fcfcfc" stroke="#d9e2dc" stroke-width="1.5"/>
+
+    <!-- Girl Face Opening in Hijab -->
+    <ellipse cx="205" cy="225" rx="20" ry="24" fill="#ffe2cb"/>
+
+    <!-- Eyes (Big, Bright & Happy) -->
+    <path d="M 195 222 Q 200 217 205 222" fill="none" stroke="#2c2420" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 210 222 Q 215 217 220 222" fill="none" stroke="#2c2420" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="200" cy="224" r="1.5" fill="#2c2420"/>
+    <circle cx="215" cy="224" r="1.5" fill="#2c2420"/>
+    <!-- Cute Smile & Cheeks -->
+    <ellipse cx="193" cy="231" rx="4.5" ry="2.5" fill="#ffb4a2" opacity="0.6"/>
+    <ellipse cx="221" cy="231" rx="4.5" ry="2.5" fill="#ffb4a2" opacity="0.6"/>
+    <path d="M 202 233 Q 208 240 213 233" fill="#e76f51" stroke="#2c2420" stroke-width="1.2"/>
+
+    <!-- Girl Hands holding "I ❤️ Al-Quran" Card -->
+    <g transform="translate(150, 290) rotate(8)">
+      <!-- The Card -->
+      <rect x="0" y="0" width="76" height="52" rx="6" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+      <rect x="3" y="3" width="70" height="46" rx="4" fill="#fffdfa" stroke="#f6d365" stroke-width="1"/>
+      <text x="38" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="800" fill="#e63946" text-anchor="middle">I ❤️</text>
+      <text x="38" y="39" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="800" fill="#093427" text-anchor="middle" letter-spacing="0.5">AL-QUR'AN</text>
+    </g>
+    <!-- Hands holding card -->
+    <ellipse cx="160" cy="325" rx="10" ry="8" fill="#fcd7b9"/>
+    <ellipse cx="220" cy="335" rx="10" ry="8" fill="#fcd7b9"/>
+  </g>
+
+  <!-- Islamic Base Pedestal -->
+  <rect x="110" y="455" width="320" height="8" rx="4" fill="#f0eae1"/>
+  <rect x="140" y="463" width="260" height="5" rx="2.5" fill="#e2dacd"/>
+</svg>

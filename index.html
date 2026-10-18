@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al-Ibriez Book • Toko Resmi Al-Qur'an Al-Muttaqin (Cetakan Al-Qosbah)</title>
+  <meta name="description" content="Toko Resmi Al-Ibriez Book - Menyediakan Al-Qur'an Al-Muttaqin cetakan Penerbit Al-Qosbah. Dilengkapi Tajwid Multikode Full Color, Panduan Garis Waqaf & Ibtida', serta pilihan mushaf hafalan, terjemah, dan tafsir.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. NAVBAR
+       Logo on left, Search and Pemesanan on right
+       ========================================================================== -->
+  <header class="site-navbar">
+    <div class="container nav-container">
+      <!-- Brand Logo -->
+      <a href="#hero" class="nav-brand">
+        <span class="brand-logo-text">
+          <span class="logo-part-orange">al-ibriez</span><span class="logo-part-green">book</span>
+        </span>
+        <span class="brand-badge-sub">Official Store</span>
+      </a>
+
+      <!-- Right Actions: Pencarian & Pemesanan Saja -->
+      <div class="nav-right-actions">
+        <!-- Mobile Search Toggle Icon Button -->
+        <button class="nav-search-toggle-mobile" id="btnToggleMobileSearch" aria-label="Toggle Pencarian">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </button>
+
+        <!-- Search Bar -->
+        <div class="nav-search-wrap" id="navSearchWrap">
+          <input type="text" id="navbarSearchInput" class="nav-search-input" placeholder="Cari jenis mushaf, tajwid, ukuran..." autocomplete="off">
+          <button class="nav-search-btn" id="navbarSearchBtn" aria-label="Cari">
+            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/>
+            </svg>
+          </button>
+          
+          <!-- Instant Search Dropdown Results -->
+          <div class="search-results-panel" id="searchResultsPanel">
+            <!-- Populated via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Pemesanan Button -->
+        <button class="nav-order-btn" id="navOrderBtn">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/>
+          </svg>
+          <span>Pemesanan</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. HERO SECTION
+       Left: Illustration of children smiling with Quran inside arch
+       Right: "Inspiring People to Love and Live with Quran"
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid">
+      <!-- Left Visual: Arch with Children holding Quran -->
+      <div class="hero-visual-col">
+        <div class="hero-art-wrapper">
+          <img src="assets/hero-kids-quran.svg" alt="Inspiring People to Love and Live with Quran - Al-Ibriez Book">
+        </div>
+      </div>
+
+      <!-- Right Typography & Copy -->
+      <div class="hero-text-col">
+        <h1 class="hero-title-main">
+          Inspiring<br>
+          People to<br>
+          Love and Live<br>
+          <span class="highlight-orange">with Quran</span>
+        </h1>
+        <p class="hero-desc-main">
+          Menginspirasi umat untuk mencintai dan hidup bersama Al-Qur'an setiap hari.
+        </p>
+
+        <div class="hero-action-row">
+          <a href="#sectionContohBacaan" class="btn-hero-primary">
+            <span>Lihat Contoh Bacaan</span>
+            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
+              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+          </a>
+          <a href="#sectionProduk" class="btn-hero-secondary">
+            <span>Pilih Mushaf</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       3. CONTOH BACAAN SECTION (Replacing company profile video banner)
+       Deep emerald green container (#083427) with interactive Tajwid & Waqaf
+       ========================================================================== -->
+  <section class="reading-sample-section" id="sectionContohBacaan">
+    <div class="container">
+      <div class="sample-header-row">
+        <span class="sample-tag">Teknologi Mushaf Cetakan Al-Qosbah</span>
+        <h2 class="sample-title">Contoh Bacaan: Tajwid Multikode & Waqaf Ibtida'</h2>
+        <p class="sample-desc">
+          Perhatikan visual huruf berwarna dan tanda garis henti-mulai pada ayat di bawah ini. Membantu lisan membaca tartil dan nafas tetap terjaga tanpa rumus rumit!
+        </p>
+      </div>
+
+      <div class="sample-master-grid">
+        <!-- Left: Interactive Verse Card -->
+        <div class="ayah-sample-card">
+          <div class="ayah-card-meta">
+            <div class="ayah-title-group">
+              <h4>Surat Al-Baqarah</h4>
+              <span class="ayah-num-tag">Ayat 2–3</span>
+            </div>
+            <span class="surah-badge">سُورَةُ البَقَرَة</span>
+          </div>
+
+          <!-- Color Coded Arabic Verse -->
+          <div class="ayah-text-box" id="sampleAyahBox">
+            ذَٰلِكَ الْكِتَـٰبُ <span class="tj-waqaf" title="Tanda Waqaf (Berhenti)">لَا رَيْبَ ۛ فِيهِ ۛ</span> <span class="tj-ibtida" title="Tanda Ibtida' (Mulai Kembali)">هُدً<span class="tj-ikhfa">ى لِّ</span>لْمُ<span class="tj-qalqalah">تَّ</span>قِينَ</span> ﴿٢﴾ الَّذِينَ يُؤْمِ<span class="tj-ikhfa">نُونَ بِ</span>الْغَيْبِ وَيُ<span class="tj-qalqalah">قِ</span>يمُونَ الصَّلَوٰةَ وَمِ<span class="tj-ghunnah">مَّ</span>ا رَزَ<span class="tj-qalqalah">قْ</span>نَـٰهُمْ يُ<span class="tj-ikhfa">نفِ</span><span class="tj-mad">قُونَ</span> ﴿٣﴾
+          </div>
+
+          <!-- Interactive Rule Selector Chips -->
+          <div class="tajwid-chips-wrap">
+            <button class="tajwid-chip-btn active" data-rule="mad">
+              <span class="chip-color-dot dot-mad"></span>
+              <span>Mad (Merah)</span>
+            </button>
+            <button class="tajwid-chip-btn" data-rule="ikhfa">
+              <span class="chip-color-dot dot-ikhfa"></span>
+              <span>Ikhfa &amp; Idgham (Hijau)</span>
+            </button>
+            <button class="tajwid-chip-btn" data-rule="qalqalah">
+              <span class="chip-color-dot dot-qalqalah"></span>
+              <span>Qalqalah Pantul (Biru)</span>
+            </button>
+            <button class="tajwid-chip-btn" data-rule="ghunnah">
+              <span class="chip-color-dot dot-ghunnah"></span>
+              <span>Ghunnah Tasydid (Ungu)</span>
+            </button>
+            <button class="tajwid-chip-btn" data-rule="waqaf">
+              <span class="chip-color-dot dot-waqaf"></span>
+              <span>Tanda Waqaf (Garis Merah)</span>
+            </button>
+            <button class="tajwid-chip-btn" data-rule="ibtida">
+              <span class="chip-color-dot dot-ibtida"></span>
+              <span>Tanda Ibtida' (Garis Hijau)</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Explanation Box -->
+          <div class="ayah-explanation-box" id="sampleExplanationBox">
+            <strong>Mad (Warna Merah):</strong> Dibaca panjang 2, 4, hingga 6 harakat. Huruf berwarna merah langsung menandai ketukan panjang tanpa perlu menghafal nama kaidah.
+          </div>
+        </div>
+
+        <!-- Right: 3 Value Proposition Cards -->
+        <div class="sample-features-col">
+          <div class="sample-feature-card">
+            <div class="sample-icon-circle">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm4 4h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+            </div>
+            <div class="sample-feature-text">
+              <h5>Tajwid Multikode Full Color</h5>
+              <p>Warna visual langsung pada setiap huruf memudahkan pembaca anak, mualaf, hingga orang tua tanpa rumus rumit.</p>
+            </div>
+          </div>
+
+          <div class="sample-feature-card">
+            <div class="sample-icon-circle">
+              <svg viewBox="0 0 24 24"><path d="M14 6l-1-2H5v17h2v-7h5l1 2h7V6h-6zm4 8h-4l-1-2H7V6h5l1 2h5v6z"/></svg>
+            </div>
+            <div class="sample-feature-text">
+              <h5>Panduan Garis Waqaf &amp; Ibtida'</h5>
+              <p>Tanda henti dan titik mulai kembali bagi pembaca dengan nafas pendek agar arti firman Allah tidak rusak.</p>
+            </div>
+          </div>
+
+          <div class="sample-feature-card">
+            <div class="sample-icon-circle">
+              <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            </div>
+            <div class="sample-feature-text">
+              <h5>Khat Rasm Utsmani Kemenag RI</h5>
+              <p>Tulisan Arab tebal, proporsional, dan renggang di atas kertas Quran Paper Premium (QPP) yang sejuk di mata.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       4. PRODUK AL-QUR'AN (GAMBAR DUMMY SAJA DULU)
+       Title: "Temukan Mushaf Terbaikmu"
+       6 Product Cards matching Reference Photo
+       ========================================================================== -->
+  <section class="products-section" id="sectionProduk">
+    <div class="container">
+      <div class="section-head-center">
+        <span class="section-tag-orange">Katalog Pilihan Al-Ibriez</span>
+        <h2 class="section-heading-dark">Temukan Mushaf Terbaikmu</h2>
+        <p class="section-sub-dark">
+          Al-Ibriez Book Menghadirkan Al-Qur'an dengan variasi produk yang beragam
+        </p>
+      </div>
+
+      <!-- 6 Products Grid matching Reference Photo -->
+      <div class="products-grid-6">
+        <!-- 1. Al-Qur'an Untuk Hafalan -->
+        <div class="product-card-item" data-product-id="QOS-HAFALAN">
+          <span class="product-card-badge">BEST SELLER</span>
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-hafalan.svg" alt="Al-Qur'an Untuk Hafalan">
+          </div>
+          <h3 class="product-card-title">Al-Qur'an Untuk Hafalan</h3>
+          <p class="product-card-desc">Dilengkapi 5 blok warna hafalan per-halaman, panduan pengingat awal ayat, &amp; motivasi tahfidz.</p>
+          <div class="product-card-price">Rp 75.000 <span>Rp 95.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-HAFALAN', 'Al-Qur\'an Untuk Hafalan', 75000)">
+            Pesan Sekarang
+          </button>
+        </div>
+
+        <!-- 2. Al-Qur'an Dengan Terjemah -->
+        <div class="product-card-item" data-product-id="QOS-TERJEMAH">
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-terjemah.svg" alt="Al-Qur'an Dengan Terjemah">
+          </div>
+          <h3 class="product-card-title">Al-Qur'an Dengan Terjemah</h3>
+          <p class="product-card-desc">Terjemahan lengkap Kementerian Agama RI, asbabun nuzul, serta indeks tematik ayat Al-Qur'an.</p>
+          <div class="product-card-price">Rp 88.000 <span>Rp 110.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-TERJEMAH', 'Al-Qur\'an Dengan Terjemah', 88000)">
+            Pesan Sekarang
+          </button>
+        </div>
+
+        <!-- 3. Al-Qur'an Non Terjemah (Al-Muttaqin) -->
+        <div class="product-card-item" data-product-id="QOS-MTQ-A5">
+          <span class="product-card-badge gold">TILAWAH UTAMA</span>
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-nonterjemah.svg" alt="Al-Qur'an Non Terjemah">
+          </div>
+          <h3 class="product-card-title">Al-Qur'an Non Terjemah</h3>
+          <p class="product-card-desc">Mushaf Al-Muttaqin cetakan Al-Qosbah: Tajwid Multikode warna, panduan Waqaf &amp; Ibtida' nafas pendek.</p>
+          <div class="product-card-price">Rp 65.000 <span>Rp 78.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-MTQ-A5', 'Al-Qur\'an Non Terjemah (Al-Muttaqin)', 65000)">
+            Pesan Sekarang
+          </button>
+        </div>
+
+        <!-- 4. Al-Qur'an Dengan Tafsir Tematik -->
+        <div class="product-card-item" data-product-id="QOS-TAFSIR">
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-tafsir.svg" alt="Al-Qur'an Dengan Tafsir Tematik">
+          </div>
+          <h3 class="product-card-title">Al-Qur'an Dengan Tafsir Tematik</h3>
+          <p class="product-card-desc">Kompilasi tafsir mu'tabar dikelompokkan berdasarkan tema aqidah, syariah, akhlak, dan sejarah Nabi.</p>
+          <div class="product-card-price">Rp 115.000 <span>Rp 145.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-TAFSIR', 'Al-Qur\'an Dengan Tafsir Tematik', 115000)">
+            Pesan Sekarang
+          </button>
+        </div>
+
+        <!-- 5. Al-Qur'an Dengan Cover Jaket -->
+        <div class="product-card-item" data-product-id="QOS-JAKET">
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-jaket.svg" alt="Al-Qur'an Dengan Cover Jaket">
+          </div>
+          <h3 class="product-card-title">Al-Qur'an Dengan Cover Jaket</h3>
+          <p class="product-card-desc">Sampul resleting kulit sintetis lux yang tahan cipratan air, dilengkapi pengait tas dan tali pembatas ganda.</p>
+          <div class="product-card-price">Rp 95.000 <span>Rp 120.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-JAKET', 'Al-Qur\'an Dengan Cover Jaket', 95000)">
+            Pesan Sekarang
+          </button>
+        </div>
+
+        <!-- 6. Buku Bacaan & Panduan Tajwid -->
+        <div class="product-card-item" data-product-id="QOS-BUKU">
+          <div class="product-card-img-wrap">
+            <img src="assets/prod-buku.svg" alt="Buku Bacaan & Panduan Tajwid">
+          </div>
+          <h3 class="product-card-title">Buku Bacaan &amp; Panduan Tajwid</h3>
+          <p class="product-card-desc">Buku bimbingan tajwid praktis, makhorijul huruf bergambar, risalah doa harian, dan tata cara zikir.</p>
+          <div class="product-card-price">Rp 45.000 <span>Rp 60.000</span></div>
+          <button class="btn-card-order" onclick="openOrderModal('QOS-BUKU', 'Buku Bacaan & Panduan Tajwid', 45000)">
+            Pesan Sekarang
+          </button>
+        </div>
+      </div>
+
+      <!-- Button "Semua Produk" -->
+      <div class="center-all-btn-wrap">
+        <button class="btn-all-products" id="btnAllProducts">
+          <span>Semua Produk</span>
+          <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       5. TESTIMONI DUMMY SECTION
+       "dibawahnya ada testimony dummy juga"
+       ========================================================================== -->
+  <section class="testimonials-section" id="sectionTestimoni">
+    <div class="container">
+      <div class="section-head-center">
+        <span class="section-tag-orange">Pengalaman Pembaca</span>
+        <h2 class="section-heading-dark">Dipercaya Santri, Keluarga &amp; Pengajian</h2>
+        <p class="section-sub-dark">
+          Simak ulasan nyata dari para pembeli mushaf di Toko Al-Ibriez Book dari berbagai kota hingga mancanegara.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimoni 1 -->
+        <div class="testi-card">
+          <div class="testi-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="testi-quote">
+            "Alhamdulillah saya pesan ukuran A4 untuk orang tua saya di rumah. Hurufnya sangat besar dan warna tajwidnya sangat kontras. Beliau sekarang bisa mengaji lancar tanpa perlu kacamata tebal lagi."
+          </p>
+          <div class="testi-author-row">
+            <div class="testi-avatar">SR</div>
+            <div>
+              <div class="testi-meta-name">Hj. Siti Rohmah <span class="verified-badge">✓ Terverifikasi</span></div>
+              <div class="testi-meta-loc">🇮🇩 Bandung, Jawa Barat</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimoni 2 -->
+        <div class="testi-card">
+          <div class="testi-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="testi-quote">
+            "Pesan 40 mushaf Al-Muttaqin untuk santri baru di pondok pesantren kami. Pelayanan admin Al-Ibriez ramah, packing kardus tebal dan ada garansi penggantian jika cacat cetak. Mantap!"
+          </p>
+          <div class="testi-author-row">
+            <div class="testi-avatar">AZ</div>
+            <div>
+              <div class="testi-meta-name">Ustaz Ahmad Zaki <span class="verified-badge">✓ Pengasuh Ponpes</span></div>
+              <div class="testi-meta-loc">🇮🇩 Demak, Jawa Tengah</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimoni 3 -->
+        <div class="testi-card">
+          <div class="testi-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="testi-quote">
+            "Penghantaran sampai ke Selangor Malaysia dalam masa 4 hari sahaja melalui Pos EMS. Mushaf dibungkus dengan sangat kemas dan berkualiti tinggi. Panduan waqaf ibtida' sangat membantu tilawah saya."
+          </p>
+          <div class="testi-author-row">
+            <div class="testi-avatar">NI</div>
+            <div>
+              <div class="testi-meta-name">Nurul Izzah binti Mansur <span class="verified-badge">✓ Terverifikasi</span></div>
+              <div class="testi-meta-loc">🇲🇾 Selangor, Malaysia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Swipe Hint -->
+      <div class="swipe-hint-mobile">
+        <span>👈 Geser untuk ulasan pembaca lainnya 👉</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       6. FOOTER
+       Deep emerald green (#062b21), matching reference photo 2
+       ========================================================================== -->
+  <footer class="site-footer-modern">
+    <div class="container">
+      <!-- Top Links Grid -->
+      <div class="footer-top-grid">
+        <!-- Col 1: Brand & Bio -->
+        <div class="footer-brand-col">
+          <a href="#hero" class="nav-brand" style="margin-bottom: 8px;">
+            <span class="brand-logo-text" style="font-size: 1.5rem;">
+              <span class="logo-part-orange">al-ibriez</span><span class="logo-part-green" style="color:#ffffff;">book</span>
+            </span>
+          </a>
+          <p>
+            Toko resmi penyedia mushaf Al-Qur'an cetakan Penerbit Al-Qosbah. Menghubungkan umat dengan Al-Qur'an melalui kemudahan tajwid warna dan waqaf ibtida'.
+          </p>
+        </div>
+
+        <!-- Col 2 & 3: Navigasi dan Informasi (Samping-sampingan di mobile) -->
+        <div class="footer-nav-pair-wrap">
+          <div class="footer-links-col">
+            <h4>Navigasi</h4>
+            <ul>
+              <li><a href="#hero">Home</a></li>
+              <li><a href="#sectionContohBacaan">Tentang Kami</a></li>
+              <li><a href="#sectionProduk">e-Katalog</a></li>
+              <li><a href="#sectionTestimoni">Join Mitra</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-col">
+            <h4>Informasi</h4>
+            <ul>
+              <li><a href="#sectionProduk">Project</a></li>
+              <li><a href="#sectionProduk">Portfolio</a></li>
+              <li><a href="#sectionContohBacaan">Info Terkini</a></li>
+              <li><a href="#footerOffices">Hubungi Kami</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Col 4: Official Store Marketplaces -->
+        <div class="footer-links-col">
+          <h4>Official Store</h4>
+          <div class="official-store-badges">
+            <span class="store-badge-pill">Tokopedia</span>
+            <span class="store-badge-pill">Shopee</span>
+            <span class="store-badge-pill">TikTok Shop</span>
+            <span class="store-badge-pill">Lazada</span>
+            <span class="store-badge-pill">Blibli</span>
+            <a href="https://wa.me/6282229489062" target="_blank" rel="noopener" class="store-badge-pill" style="text-decoration:none; background: #25d366; color: #fff; font-weight:700;">WA: 0822-2948-9062</a>
+          </div>
+        </div>
+
+        <!-- Col 5: Follow Us -->
+        <div class="footer-links-col">
+          <h4>Follow Us</h4>
+          <div class="social-icons-row">
+            <!-- Facebook: Tajug Al-Ibriz -->
+            <a href="https://www.facebook.com/p/Tajug-Al-Ibriz-100093855176414/" target="_blank" rel="noopener" class="social-circle-btn" aria-label="Facebook: Tajug Al-Ibriz" title="Facebook: Tajug Al-Ibriz">
+              <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+            </a>
+            <!-- YouTube: @santri.ngaji1926 -->
+            <a href="https://www.youtube.com/@santri.ngaji1926" target="_blank" rel="noopener" class="social-circle-btn" aria-label="YouTube: @santri.ngaji1926" title="YouTube: @santri.ngaji1926">
+              <svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>
+            </a>
+            <!-- Instagram: @masiwak_ibriez -->
+            <a href="https://www.instagram.com/masiwak_ibriez" target="_blank" rel="noopener" class="social-circle-btn" aria-label="Instagram: @masiwak_ibriez" title="Instagram: @masiwak_ibriez">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <!-- TikTok: Gusmun al-Ibriz -->
+            <a href="https://www.tiktok.com/@gusmun.al.ibriz" target="_blank" rel="noopener" class="social-circle-btn" aria-label="TikTok: Gusmun al-Ibriz" title="TikTok: Gusmun al-Ibriz">
+              <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298 0 .586.044.86.126V9.4a6.33 6.33 0 0 0-.86-.06 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.06a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.49z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Offices Grid matching Screenshot 2 -->
+      <div class="footer-offices-grid" id="footerOffices">
+        <!-- Kantor Pusat Cirebon -->
+        <div class="office-card">
+          <h5>Kantor Pusat</h5>
+          <p>Weru Lor, Kec. Weru, Kabupaten Cirebon, Jawa Barat 45154</p>
+          <p class="contact-phone">WhatsApp: <a href="https://wa.me/6282229489062" target="_blank" rel="noopener" style="color:var(--brand-gold-light);text-decoration:none;">0822-2948-9062</a></p>
+        </div>
+
+        <!-- Kantor Pemasaran Bandung -->
+        <div class="office-card">
+          <h5>Kantor Pemasaran Bandung</h5>
+          <p>Jalan Terusan Galunggung No. 9, Lingkar Selatan, Lengkong, Kota Bandung, Jawa Barat</p>
+          <p class="contact-phone">WhatsApp: <a href="https://wa.me/6282229489062" target="_blank" rel="noopener" style="color:var(--brand-gold-light);text-decoration:none;">0822-2948-9062</a></p>
+        </div>
+
+        <!-- Layanan Pemesanan Online -->
+        <div class="office-card">
+          <h5>Layanan Pemesanan Online</h5>
+          <p>Toko Resmi Al-Ibriez Book • Siap kirim ke seluruh Indonesia &amp; Mancanegara (Malaysia, Singapura, Brunei, dll)</p>
+          <p class="contact-phone">WhatsApp CS: <a href="https://wa.me/6282229489062" target="_blank" rel="noopener" style="color:var(--brand-gold-light);text-decoration:none;">0822-2948-9062 (24 Jam)</a></p>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-bottom-bar">
+        <div>&copy; 2026 Toko Al-Ibriez Book. All rights reserved.</div>
+        <div>Distributor Resmi Penerbit Al-Qosbah • Al-Qur'an Al-Muttaqin</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       7. PEMESANAN MODAL (Interactive Order & Shipping Calculator)
+       ========================================================================== -->
+  <div class="order-modal-backdrop" id="orderModalBackdrop">
+    <div class="order-modal-card">
+      <button class="order-modal-close" id="btnCloseOrderModal" aria-label="Tutup">&times;</button>
+      
+      <span class="modal-header-tag">Form Pemesanan Resmi</span>
+      <h3 class="modal-header-title">Pemesanan Mushaf Al-Qur'an</h3>
+
+      <form id="modalOrderForm" onsubmit="return false;">
+        <!-- Pilihan Produk & Jumlah -->
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalProductSelect">Pilihan Mushaf / Produk *</label>
+            <select id="modalProductSelect" class="modal-form-select">
+              <option value="QOS-HAFALAN" data-price="75000">Al-Qur'an Untuk Hafalan (Rp 75.000)</option>
+              <option value="QOS-TERJEMAH" data-price="88000">Al-Qur'an Dengan Terjemah (Rp 88.000)</option>
+              <option value="QOS-MTQ-A5" data-price="65000" selected>Al-Qur'an Non Terjemah - Al-Muttaqin A5 (Rp 65.000)</option>
+              <option value="QOS-MTQ-A4" data-price="99000">Al-Qur'an Non Terjemah - Al-Muttaqin A4 Jumbo (Rp 99.000)</option>
+              <option value="QOS-TAFSIR" data-price="115000">Al-Qur'an Dengan Tafsir Tematik (Rp 115.000)</option>
+              <option value="QOS-JAKET" data-price="95000">Al-Qur'an Dengan Cover Jaket (Rp 95.000)</option>
+              <option value="QOS-BUKU" data-price="45000">Buku Bacaan &amp; Panduan Tajwid (Rp 45.000)</option>
+            </select>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalOrderQty">Jumlah Pesanan (Qty) *</label>
+            <input type="number" id="modalOrderQty" class="modal-form-input" min="1" max="100" value="1">
+          </div>
+        </div>
+
+        <!-- Pilihan Warna Cover (jika relevan) -->
+        <div class="modal-form-group">
+          <label class="modal-form-label" for="modalCoverColor">Pilihan Warna Cover</label>
+          <select id="modalCoverColor" class="modal-form-select">
+            <option value="Hijau Zamrud">Hijau Zamrud (Emerald Green)</option>
+            <option value="Biru Safir">Biru Safir (Sapphire Blue)</option>
+            <option value="Merah Marun">Merah Marun (Royal Maroon)</option>
+            <option value="Hitam Eksklusif">Hitam Eksklusif (Onyx Black)</option>
+          </select>
+        </div>
+
+        <!-- Data Pemesan -->
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalCustomerName">Nama Lengkap Pemesan *</label>
+            <input type="text" id="modalCustomerName" class="modal-form-input" placeholder="contoh: H. Budi Santoso" required>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalCustomerWa">Nomor WhatsApp Aktif *</label>
+            <input type="tel" id="modalCustomerWa" class="modal-form-input" placeholder="contoh: 08123456789" required>
+          </div>
+        </div>
+
+        <!-- Wilayah Tujuan: Domestik vs Luar Negeri -->
+        <div class="modal-form-group">
+          <label class="modal-form-label">Tujuan Pengiriman *</label>
+          <div class="dest-scope-toggle">
+            <button type="button" class="dest-scope-btn active" id="btnScopeDomestic" onclick="switchDestScope('domestic')">
+              <span class="flag-icon">🇮🇩</span>
+              <span>Domestik (Wilayah Indonesia)</span>
+            </button>
+            <button type="button" class="dest-scope-btn" id="btnScopeIntl" onclick="switchDestScope('international')">
+              <span class="flag-icon">🌍</span>
+              <span>Mancanegara (Luar Negeri)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- FORM ALAMAT DOMESTIK (INDONESIA) -->
+        <div id="domesticAddressSection" class="address-section-block">
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalProvince">Provinsi *</label>
+              <div class="select-wrapper">
+                <select id="modalProvince" class="modal-form-select">
+                  <option value="">-- Memuat Daftar Provinsi... --</option>
+                </select>
+                <span class="select-loading-spinner" id="spinnerProvince" style="display:none;">⏳</span>
+              </div>
+            </div>
+
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalRegency">Kabupaten / Kota *</label>
+              <div class="select-wrapper">
+                <select id="modalRegency" class="modal-form-select" disabled>
+                  <option value="">-- Pilih Provinsi Dahulu --</option>
+                </select>
+                <span class="select-loading-spinner" id="spinnerRegency" style="display:none;">⏳</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalDistrict">Kecamatan *</label>
+              <div class="select-wrapper">
+                <select id="modalDistrict" class="modal-form-select" disabled>
+                  <option value="">-- Pilih Kabupaten/Kota Dahulu --</option>
+                </select>
+                <span class="select-loading-spinner" id="spinnerDistrict" style="display:none;">⏳</span>
+              </div>
+            </div>
+
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalVillage">Desa / Kelurahan *</label>
+              <div class="select-wrapper">
+                <select id="modalVillage" class="modal-form-select" disabled>
+                  <option value="">-- Pilih Kecamatan Dahulu --</option>
+                </select>
+                <span class="select-loading-spinner" id="spinnerVillage" style="display:none;">⏳</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalPostalCode">Kode Pos &amp; RT/RW (Opsional)</label>
+              <input type="text" id="modalPostalCode" class="modal-form-input" placeholder="contoh: 45154, RT 02 / RW 01">
+            </div>
+
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalCourier">Pilihan Ekspedisi *</label>
+              <select id="modalCourier" class="modal-form-select">
+                <option value="jnt">J&amp;T Express Kilat (Rekomendasi Cepat)</option>
+                <option value="pos">Pos Indonesia Reguler (Ekonomis)</option>
+                <option value="kargo">JNE Trucking / Kargo (Grosir / Jumlah Banyak)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalStreetAddress">Detail Alamat Lengkap (Nama Jalan, No. Rumah, Patokan) *</label>
+            <textarea id="modalStreetAddress" class="modal-form-textarea" placeholder="contoh: Jl. Raya Fatahillah No. 25, Blok Pesantren, samping Masjid Jami'"></textarea>
+          </div>
+        </div>
+
+        <!-- FORM ALAMAT MANCANEGARA (LUAR NEGERI) -->
+        <div id="intlAddressSection" class="address-section-block" style="display:none;">
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalCountry">Negara Tujuan *</label>
+              <select id="modalCountry" class="modal-form-select">
+                <option value="MY">Malaysia (Semenanjung &amp; Sabah/Sarawak)</option>
+                <option value="SG">Singapura (Singapore)</option>
+                <option value="BN">Brunei Darussalam</option>
+                <option value="SA">Arab Saudi (Makkah, Madinah, Riyadh, Jeddah)</option>
+                <option value="AE">Uni Emirat Arab (Dubai, Abu Dhabi)</option>
+                <option value="QA">Qatar (Doha)</option>
+                <option value="EG">Mesir (Kairo, Alexandria)</option>
+                <option value="TW">Taiwan (Taipei, Kaohsiung, Taichung)</option>
+                <option value="HK">Hong Kong</option>
+                <option value="JP">Jepang (Tokyo, Osaka)</option>
+                <option value="KR">Korea Selatan (Seoul, Busan)</option>
+                <option value="AU">Australia</option>
+                <option value="GB">Inggris (United Kingdom)</option>
+                <option value="US">Amerika Serikat (USA)</option>
+                <option value="OTHER">Negara Lainnya (Internasional)</option>
+              </select>
+            </div>
+
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalIntlState">Negara Bagian / State / Wilayah *</label>
+              <input type="text" id="modalIntlState" class="modal-form-input" placeholder="contoh: Selangor / Makkah / California">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalIntlCity">Kota / District *</label>
+              <input type="text" id="modalIntlCity" class="modal-form-input" placeholder="contoh: Shah Alam / Jeddah / Los Angeles">
+            </div>
+
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalIntlZip">Kode Pos / Postal / Zip Code *</label>
+              <input type="text" id="modalIntlZip" class="modal-form-input" placeholder="contoh: 40150 / 21514 / 90001">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="modalCourierIntl">Pilihan Ekspedisi Internasional *</label>
+              <select id="modalCourierIntl" class="modal-form-select">
+                <option value="ems">Pos EMS Internasional (Resmi &amp; Terpercaya)</option>
+                <option value="dhl">DHL Express Worldwide (Kilat 3-5 Hari)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalIntlStreet">Alamat Lengkap / Full Street Address *</label>
+            <textarea id="modalIntlStreet" class="modal-form-textarea" placeholder="Full street address, apt/unit number, building, landmark"></textarea>
+          </div>
+        </div>
+
+        <!-- Rincian Biaya Otomatis -->
+        <div class="modal-summary-box">
+          <div class="summary-row-line">
+            <span>Harga Satuan:</span>
+            <span id="modalUnitPriceText">Rp 65.000</span>
+          </div>
+          <div class="summary-row-line">
+            <span>Jumlah Pesanan:</span>
+            <span id="modalSummaryQtyText">1 mushaf</span>
+          </div>
+          <div class="summary-row-line">
+            <span>Subtotal Produk:</span>
+            <strong id="modalSubtotalText">Rp 65.000</strong>
+          </div>
+          <div class="summary-row-line">
+            <span>Estimasi Berat Paket:</span>
+            <span id="modalWeightText" style="color:#0f766e; font-weight:600;">0.65 kg (dihitung 1 kg)</span>
+          </div>
+          <div class="summary-row-line">
+            <span>Tujuan / Zona:</span>
+            <span id="modalZoneText" style="color:#475569; font-size:0.82rem;">Pilih wilayah tujuan</span>
+          </div>
+          <div class="summary-row-line">
+            <span>Ongkos Kirim Otomatis:</span>
+            <span id="modalShippingText" style="font-weight:700; color:#047857;">Rp 10.000</span>
+          </div>
+          <div class="summary-row-line">
+            <span>Kemasan Aman &amp; Asuransi:</span>
+            <span>Rp 2.000</span>
+          </div>
+          <div class="summary-row-line total">
+            <span>Total Tagihan:</span>
+            <span id="modalTotalText">Rp 77.000</span>
+          </div>
+        </div>
+
+        <!-- Rekening Pembayaran Resmi -->
+        <div style="margin-bottom: 8px;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: #475569;">Pilihan Rekening Resmi Toko Al-Ibriez Book:</span>
+        </div>
+        <div class="modal-bank-row">
+          <div class="modal-bank-card">
+            <span class="modal-bank-name">Bank Syariah Indonesia (BSI)</span>
+            <div class="modal-bank-num-copy">
+              <span>7188 2993 01</span>
+              <button type="button" class="btn-mini-copy" onclick="copyText('7188299301')">Salin</button>
+            </div>
+            <span style="font-size:0.7rem; color:#64748b;">a.n Toko Al-Ibriez Book</span>
+          </div>
+          <div class="modal-bank-card">
+            <span class="modal-bank-name">Bank Central Asia (BCA)</span>
+            <div class="modal-bank-num-copy">
+              <span>8930 4928 11</span>
+              <button type="button" class="btn-mini-copy" onclick="copyText('8930492811')">Salin</button>
+            </div>
+            <span style="font-size:0.7rem; color:#64748b;">a.n Toko Al-Ibriez Book</span>
+          </div>
+        </div>
+
+        <!-- Konfirmasi WhatsApp -->
+        <button type="button" class="btn-modal-checkout-wa" id="btnConfirmWhatsApp">
+          <svg viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.05 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <span>Kirim Pesanan ke WhatsApp Admin</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" style="position:fixed;bottom:24px;right:24px;background:#083427;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.9rem;display:none;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.25);border-left:4px solid #ea580c;">
+    Berhasil disalin!
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 260" width="100%" height="100%">
+  <defs>
+    <filter id="bookShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <linearGradient id="tafsirCover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14532d"/>
+      <stop offset="50%" stop-color="#052e16"/>
+      <stop offset="100%" stop-color="#021a0c"/>
+    </linearGradient>
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fffdf8"/>
+      <stop offset="100%" stop-color="#f5efe0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Standing Closed Book (Left) -->
+  <g transform="translate(35, 30)" filter="url(#bookShadow)">
+    <path d="M 0 10 L 22 0 L 22 195 L 0 205 Z" fill="#052e16" stroke="#d4af37" stroke-width="1"/>
+    <text x="-120" y="15" transform="rotate(-90)" font-family="sans-serif" font-size="7" fill="#d4af37" font-weight="bold" letter-spacing="1">AL-QUR'AN TAFSIR TEMATIK</text>
+    <path d="M 22 0 L 105 15 L 105 210 L 22 195 Z" fill="url(#tafsirCover)" stroke="#d4af37" stroke-width="1.5"/>
+    <rect x="34" y="26" width="60" height="150" fill="none" stroke="#eac55f" stroke-width="1" rx="4"/>
+    <circle cx="64" cy="95" r="22" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+    <polygon points="64,78 70,88 82,88 72,96 76,108 64,101 52,108 56,96 46,88 58,88" fill="#fce899"/>
+    <text x="64" y="99" font-family="'Amiri', serif" font-size="9" fill="#14532d" text-anchor="middle" font-weight="bold">التَّفْسِير</text>
+    <text x="64" y="138" font-family="sans-serif" font-size="7" fill="#ffffff" font-weight="bold" text-anchor="middle">TAFSIR TEMATIK</text>
+    <text x="64" y="150" font-family="sans-serif" font-size="5" fill="#eac55f" text-anchor="middle">LENGKAP 30 JUZ</text>
+  </g>
+
+  <!-- Open Book (Right) Showing Thematic Headers -->
+  <g transform="translate(150, 45)" filter="url(#bookShadow)">
+    <path d="M 10 185 Q 50 180 95 188 L 95 18 Q 50 10 10 18 Z" fill="url(#pageGrad)" stroke="#dcd6c5" stroke-width="1"/>
+    <path d="M 95 188 Q 140 180 180 185 L 180 18 Q 140 10 95 18 Z" fill="url(#pageGrad)" stroke="#dcd6c5" stroke-width="1"/>
+    <rect x="93" y="14" width="4" height="174" fill="#000000" opacity="0.15"/>
+
+    <!-- Left Page Thematic Header -->
+    <rect x="18" y="24" width="70" height="12" fill="#0284c7" rx="2"/>
+    <text x="53" y="33" font-family="sans-serif" font-size="6" fill="#ffffff" font-weight="bold" text-anchor="middle">TEMA: AQIDAH &amp; TAUHID</text>
+    <line x1="20" y1="45" x2="84" y2="45" stroke="#0f172a" stroke-width="1.8"/>
+    <line x1="20" y1="58" x2="84" y2="58" stroke="#0f172a" stroke-width="1.8"/>
+    <line x1="20" y1="71" x2="84" y2="71" stroke="#0f172a" stroke-width="1.8"/>
+    <rect x="18" y="82" width="70" height="12" fill="#16a34a" rx="2"/>
+    <text x="53" y="91" font-family="sans-serif" font-size="6" fill="#ffffff" font-weight="bold" text-anchor="middle">TEMA: HUKUM &amp; MUAMALAH</text>
+    <line x1="20" y1="104" x2="84" y2="104" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="20" y1="117" x2="84" y2="117" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="20" y1="130" x2="84" y2="130" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="20" y1="143" x2="84" y2="143" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="20" y1="156" x2="84" y2="156" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+
+    <!-- Right Page Thematic Header -->
+    <rect x="102" y="24" width="70" height="12" fill="#d97706" rx="2"/>
+    <text x="137" y="33" font-family="sans-serif" font-size="6" fill="#ffffff" font-weight="bold" text-anchor="middle">TEMA: KISAH NABI &amp; RASUL</text>
+    <line x1="104" y1="45" x2="168" y2="45" stroke="#0f172a" stroke-width="1.8"/>
+    <line x1="104" y1="58" x2="168" y2="58" stroke="#0f172a" stroke-width="1.8"/>
+    <line x1="104" y1="71" x2="168" y2="71" stroke="#0f172a" stroke-width="1.8"/>
+    <rect x="102" y="82" width="70" height="12" fill="#7c3aed" rx="2"/>
+    <text x="137" y="91" font-family="sans-serif" font-size="6" fill="#ffffff" font-weight="bold" text-anchor="middle">TEMA: AKHLAK &amp; ADAB</text>
+    <line x1="104" y1="104" x2="168" y2="104" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="104" y1="117" x2="168" y2="117" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="104" y1="130" x2="168" y2="130" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="104" y1="143" x2="168" y2="143" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <line x1="104" y1="156" x2="168" y2="156" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,2"/>
+  </g>
+</svg>
