@@ -88,11 +88,17 @@ const TAJWID_RULES = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   initNavbarSearch();
   initTajwidDemo();
   initOrderModal();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // ==========================================================================
 // SEARCH LOGIC
@@ -323,16 +329,41 @@ function formatTitleCase(str) {
   return str.toLowerCase().replace(/(?:^|\s|-)\S/g, (c) => c.toUpperCase());
 }
 
+// Fetch with timeout helper so browser never hangs indefinitely
+async function fetchWithTimeout(url, timeoutMs = 4000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(id);
+    return res;
+  } catch (err) {
+    clearTimeout(id);
+    throw err;
+  }
+}
+
 async function loadProvinces() {
   const provSelect = document.getElementById('modalProvince');
   const spinner = document.getElementById('spinnerProvince');
   if (!provSelect) return;
 
+  // If already populated with options > 1, no need to overwrite
+  if (provSelect.options.length > 5) {
+    return;
+  }
+
   if (spinner) spinner.style.display = 'inline-block';
   try {
+    // 1. Check window.INDONESIA_PROVINCES (bundled)
+    if (window.INDONESIA_PROVINCES && Array.isArray(window.INDONESIA_PROVINCES)) {
+      populateSelect(provSelect, window.INDONESIA_PROVINCES, '-- Pilih Provinsi --');
+      return;
+    }
+
     let data = regionCache.provinces;
     if (!data) {
-      const res = await fetch(`${API_BASE}/provinces.json`);
+      const res = await fetchWithTimeout(`${API_BASE}/provinces.json`);
       if (!res.ok) throw new Error('API Wilayah tidak merespons');
       data = await res.json();
       regionCache.provinces = data;
@@ -365,9 +396,17 @@ async function loadRegencies(provinceId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
+    // 1. Check bundled INDONESIA_REGENCIES (Instant 0ms offline)
+    if (window.INDONESIA_REGENCIES && window.INDONESIA_REGENCIES[provinceId]) {
+      const data = window.INDONESIA_REGENCIES[provinceId];
+      populateSelect(regSelect, data, '-- Pilih Kabupaten / Kota --');
+      regSelect.disabled = false;
+      return;
+    }
+
     let data = regionCache.regencies[provinceId];
     if (!data) {
-      const res = await fetch(`${API_BASE}/regencies/${provinceId}.json`);
+      const res = await fetchWithTimeout(`${API_BASE}/regencies/${provinceId}.json`);
       if (!res.ok) throw new Error('Gagal memuat kabupaten');
       data = await res.json();
       regionCache.regencies[provinceId] = data;
@@ -376,7 +415,12 @@ async function loadRegencies(provinceId) {
     regSelect.disabled = false;
   } catch (err) {
     console.error('Error load regencies:', err);
-    resetSelect(regSelect, '-- Gagal memuat data kota --', true);
+    // Graceful fallback: allow manual entry or inform user
+    regSelect.innerHTML = `
+      <option value="">-- Pilih Kabupaten / Kota --</option>
+      <option value="manual_kota" data-name="KOTA UMUM">Ketik Kota di Detail Alamat</option>
+    `;
+    regSelect.disabled = false;
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -400,9 +444,17 @@ async function loadDistricts(regencyId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
+    // 1. Check bundled offline districts (Jawa Barat & Ciayumajakuning)
+    if (window.INDONESIA_DISTRICTS_OFFLINE && window.INDONESIA_DISTRICTS_OFFLINE[regencyId]) {
+      const data = window.INDONESIA_DISTRICTS_OFFLINE[regencyId];
+      populateSelect(distSelect, data, '-- Pilih Kecamatan --');
+      distSelect.disabled = false;
+      return;
+    }
+
     let data = regionCache.districts[regencyId];
     if (!data) {
-      const res = await fetch(`${API_BASE}/districts/${regencyId}.json`);
+      const res = await fetchWithTimeout(`${API_BASE}/districts/${regencyId}.json`);
       if (!res.ok) throw new Error('Gagal memuat kecamatan');
       data = await res.json();
       regionCache.districts[regencyId] = data;
@@ -411,7 +463,11 @@ async function loadDistricts(regencyId) {
     distSelect.disabled = false;
   } catch (err) {
     console.error('Error load districts:', err);
-    resetSelect(distSelect, '-- Gagal memuat kecamatan --', true);
+    distSelect.innerHTML = `
+      <option value="">-- Pilih Kecamatan --</option>
+      <option value="manual_kecamatan" data-name="KECAMATAN UMUM">Tulis Kecamatan di Alamat</option>
+    `;
+    distSelect.disabled = false;
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -435,7 +491,7 @@ async function loadVillages(districtId) {
   try {
     let data = regionCache.villages[districtId];
     if (!data) {
-      const res = await fetch(`${API_BASE}/villages/${districtId}.json`);
+      const res = await fetchWithTimeout(`${API_BASE}/villages/${districtId}.json`, 3500);
       if (!res.ok) throw new Error('Gagal memuat kelurahan');
       data = await res.json();
       regionCache.villages[districtId] = data;
@@ -443,8 +499,12 @@ async function loadVillages(districtId) {
     populateSelect(villSelect, data, '-- Pilih Desa / Kelurahan --');
     villSelect.disabled = false;
   } catch (err) {
-    console.error('Error load villages:', err);
-    resetSelect(villSelect, '-- Gagal memuat desa --', true);
+    console.warn('API desa tidak merespons, mengaktifkan opsi manual:', err);
+    villSelect.innerHTML = `
+      <option value="">-- Pilih Desa / Kelurahan --</option>
+      <option value="manual_desa" data-name="DESA">Tulis Desa/Kelurahan di Alamat</option>
+    `;
+    villSelect.disabled = false;
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -578,6 +638,10 @@ function initOrderModal() {
 
   if (navBtn) {
     navBtn.addEventListener('click', () => {
+      loadProvinces();
+      if (provSelect && provSelect.value && regSelect && (!regSelect.options || regSelect.options.length <= 1)) {
+        loadRegencies(provSelect.value);
+      }
       backdrop.classList.add('open');
       calculateModalTotal();
     });
@@ -591,6 +655,10 @@ function initOrderModal() {
 
   if (btnAll) {
     btnAll.addEventListener('click', () => {
+      loadProvinces();
+      if (provSelect && provSelect.value && regSelect && (!regSelect.options || regSelect.options.length <= 1)) {
+        loadRegencies(provSelect.value);
+      }
       backdrop.classList.add('open');
       calculateModalTotal();
     });
@@ -634,8 +702,11 @@ function initOrderModal() {
     });
   }
 
-  // Initial load of Indonesian provinces
+  // Initial load of Indonesian provinces & pre-load regencies if default province selected
   loadProvinces();
+  if (provSelect && provSelect.value) {
+    loadRegencies(provSelect.value);
+  }
 
   // WhatsApp Checkout Confirmation Button
   const btnConfirm = document.getElementById('btnConfirmWhatsApp');
@@ -647,7 +718,10 @@ function initOrderModal() {
 window.openOrderModal = function(productId, productName, price) {
   const backdrop = document.getElementById('orderModalBackdrop');
   const productSelect = document.getElementById('modalProductSelect');
-  if (productSelect) {
+  const provSelect = document.getElementById('modalProvince');
+  const regSelect = document.getElementById('modalRegency');
+
+  if (productSelect && productId) {
     for (let i = 0; i < productSelect.options.length; i++) {
       if (productSelect.options[i].value === productId) {
         productSelect.selectedIndex = i;
@@ -655,6 +729,12 @@ window.openOrderModal = function(productId, productName, price) {
       }
     }
   }
+
+  loadProvinces();
+  if (provSelect && provSelect.value && regSelect && (!regSelect.options || regSelect.options.length <= 1)) {
+    loadRegencies(provSelect.value);
+  }
+
   calculateModalTotal();
   if (backdrop) backdrop.classList.add('open');
 };
@@ -772,8 +852,8 @@ function submitWhatsAppOrder() {
     const distName = distSelect && distSelect.selectedIndex > 0 ? distSelect.options[distSelect.selectedIndex].text : '';
     const villName = villSelect && villSelect.selectedIndex > 0 ? villSelect.options[villSelect.selectedIndex].text : '';
 
-    if (!provName || !regName || !distName || !villName || !streetAddress) {
-      alert('Mohon lengkapi wilayah Provinsi, Kabupaten/Kota, Kecamatan, Desa/Kelurahan, dan Detail Jalan pengiriman Anda.');
+    if (!provName || !regName || !streetAddress) {
+      alert('Mohon pilih Provinsi, Kabupaten/Kota, dan isi Detail Alamat Jalan pengiriman Anda.');
       return;
     }
 

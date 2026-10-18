@@ -1227,6 +1227,12 @@ body {
   100% { transform: translateY(-50%) rotate(360deg); }
 }
 
+.modal-form-select {
+  cursor: pointer;
+  appearance: auto;
+  -webkit-appearance: menulist;
+}
+
 .modal-form-select:disabled {
   background: #f1f5f9;
   color: #94a3b8;
