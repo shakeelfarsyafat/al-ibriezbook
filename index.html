@@ -212,8 +212,8 @@
         </p>
       </div>
 
-      <!-- 6 Products Grid matching Reference Photo -->
-      <div class="products-grid-6">
+      <!-- Products Grid (Dynamically rendered from CATALOG_PRODUCTS) -->
+      <div class="products-grid-6" id="productsGridContainer">
         <!-- 1. Al-Qur'an Untuk Hafalan -->
         <div class="product-card-item" data-product-id="QOS-HAFALAN">
           <span class="product-card-badge">BEST SELLER</span>
@@ -385,10 +385,85 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Mobile Swipe Hint -->
-      <div class="swipe-hint-mobile">
-        <span>👈 Geser untuk ulasan pembaca lainnya 👉</span>
+  <!-- ==========================================================================
+       5B. TENTANG KAMI SECTION
+       Profil Toko Resmi Al-Ibriez Book & Penerbit Al-Qosbah
+       ========================================================================== -->
+  <section class="about-us-section" id="sectionTentangKami">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Visual & Stats Left -->
+        <div class="about-visual-col">
+          <div class="about-card-banner">
+            <span class="about-badge-est">EST. RESMI 2020</span>
+            <h3 class="about-banner-title">Menebar Cahaya Al-Qur'an ke Seantero Negeri</h3>
+            <p class="about-banner-p">
+              Toko Resmi <strong>Al-Ibriez Book</strong> berdedikasi mendistribusikan mushaf Al-Qur'an cetakan <strong>Penerbit Al-Qosbah</strong> dengan standar rasm Utsmani Kementerian Agama RI. Kami hadir untuk membantu setiap muslim membaca dan menghafal kalamullah dengan mudah melalui teknologi tajwid multikode dan panduan waqaf ibtida'.
+            </p>
+            <div class="about-stats-grid">
+              <div class="about-stat-item">
+                <span class="about-stat-num">50.000+</span>
+                <span class="about-stat-lbl">Mushaf Tersebar</span>
+              </div>
+              <div class="about-stat-item">
+                <span class="about-stat-num">34</span>
+                <span class="about-stat-lbl">Provinsi Terjangkau</span>
+              </div>
+              <div class="about-stat-item">
+                <span class="about-stat-num">6+</span>
+                <span class="about-stat-lbl">Negara Ekspor</span>
+              </div>
+              <div class="about-stat-item">
+                <span class="about-stat-num">100%</span>
+                <span class="about-stat-lbl">Garansi Tashih Kemenag</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillars Right -->
+        <div class="about-pillars-col">
+          <span class="section-tag-orange">Tentang Al-Ibriez Book</span>
+          <h2 class="section-heading-dark" style="text-align:left; margin-bottom:14px;">Mitra Terpercaya Sahabat Tilawah Keluarga Anda</h2>
+          <p class="about-pillar-intro">
+            Setiap lembar mushaf dicetak dengan kertas Quran Paper Premium (QPP) berstandar tinggi yang nyaman di mata, tidak tembus cahaya, dan dirawat dengan penuh kehormatan serta kehati-hatian.
+          </p>
+
+          <div class="about-pillar-cards">
+            <div class="pillar-mini-card">
+              <div class="pillar-icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+              </div>
+              <div>
+                <h5>Tashih Resmi Kemenag RI</h5>
+                <p>Seluruh ayat dan tanda baca telah melalui verifikasi ketat Lajnah Pentashihan Mushaf Al-Qur'an.</p>
+              </div>
+            </div>
+
+            <div class="pillar-mini-card">
+              <div class="pillar-icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
+              </div>
+              <div>
+                <h5>Metode Tajwid Warna &amp; Waqaf Ibtida'</h5>
+                <p>Memudahkan pemula, santri, anak-anak, dan lansia memahami tempat berhenti dan memulai bacaan tanpa ngos-ngosan.</p>
+              </div>
+            </div>
+
+            <div class="pillar-mini-card">
+              <div class="pillar-icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+              </div>
+              <div>
+                <h5>Pengiriman Aman &amp; Cepat</h5>
+                <p>Dikirim langsung dari Pusat Distribusi Cirebon &amp; Bandung dengan bubble wrap tebal berlapis dan asuransi penuh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -413,27 +488,15 @@
           </p>
         </div>
 
-        <!-- Col 2 & 3: Navigasi dan Informasi (Samping-sampingan di mobile) -->
-        <div class="footer-nav-pair-wrap">
-          <div class="footer-links-col">
-            <h4>Navigasi</h4>
-            <ul>
-              <li><a href="#hero">Home</a></li>
-              <li><a href="#sectionContohBacaan">Tentang Kami</a></li>
-              <li><a href="#sectionProduk">e-Katalog</a></li>
-              <li><a href="#sectionTestimoni">Join Mitra</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-links-col">
-            <h4>Informasi</h4>
-            <ul>
-              <li><a href="#sectionProduk">Project</a></li>
-              <li><a href="#sectionProduk">Portfolio</a></li>
-              <li><a href="#sectionContohBacaan">Info Terkini</a></li>
-              <li><a href="#footerOffices">Hubungi Kami</a></li>
-            </ul>
-          </div>
+        <!-- Col 2: Navigasi -->
+        <div class="footer-links-col">
+          <h4>Navigasi</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#sectionTentangKami">Tentang Kami</a></li>
+            <li><a href="#sectionProduk">e-Katalog</a></li>
+            <li><a href="#sectionTestimoni">Testimoni</a></li>
+          </ul>
         </div>
 
         <!-- Col 4: Official Store Marketplaces -->
@@ -499,7 +562,7 @@
 
       <!-- Copyright -->
       <div class="footer-bottom-bar">
-        <div>&copy; 2026 Toko Al-Ibriez Book. All rights reserved.</div>
+        <div>&copy; 2026 Toko Al-Ibriez Book. All rights reserved. • <a href="admin.html" style="color:#94a3b8; text-decoration:none; font-size:0.75rem;" title="Portal Manajemen Toko">Staff Portal</a></div>
         <div>Distributor Resmi Penerbit Al-Qosbah • Al-Qur'an Al-Muttaqin</div>
       </div>
     </div>
@@ -808,6 +871,42 @@
   <!-- Toast Notification -->
   <div id="toastNotification" style="position:fixed;bottom:24px;right:24px;background:#083427;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.9rem;display:none;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.25);border-left:4px solid #ea580c;">
     Berhasil disalin!
+  </div>
+
+  <!-- ==========================================================================
+       8. MODAL SEMUA PRODUK / KATALOG LENGKAP
+       ========================================================================== -->
+  <div class="catalog-modal-backdrop" id="catalogModalBackdrop">
+    <div class="catalog-modal-card">
+      <button class="catalog-modal-close" id="btnCloseCatalogModal" aria-label="Tutup Katalog">&times;</button>
+      
+      <div class="catalog-header-wrap">
+        <span class="modal-header-tag">Katalog Lengkap Resmi</span>
+        <h3 class="catalog-modal-title">Semua Produk &amp; Mushaf Al-Ibriez Book</h3>
+        <p class="catalog-modal-sub">Temukan seluruh koleksi mushaf Al-Qur'an Al-Muttaqin, Al-Qosbah, tafsir, cover kulit, dan buku bimbingan tajwid.</p>
+      </div>
+
+      <!-- Filter Categories & Search in Catalog -->
+      <div class="catalog-controls-row">
+        <div class="catalog-filter-tabs" id="catalogFilterTabs">
+          <button class="catalog-tab-btn active" data-category="ALL">Semua (<span id="catCountAll">0</span>)</button>
+          <button class="catalog-tab-btn" data-category="Hafalan">Hafalan</button>
+          <button class="catalog-tab-btn" data-category="Terjemah">Terjemah</button>
+          <button class="catalog-tab-btn" data-category="Tilawah">Tilawah</button>
+          <button class="catalog-tab-btn" data-category="Tafsir">Tafsir</button>
+          <button class="catalog-tab-btn" data-category="Cover Kulit">Cover Kulit</button>
+          <button class="catalog-tab-btn" data-category="Buku">Buku &amp; Tajwid</button>
+        </div>
+        <div class="catalog-search-wrap">
+          <input type="text" id="catalogSearchInput" placeholder="Cari nama mushaf, fitur, harga...">
+        </div>
+      </div>
+
+      <!-- Catalog Grid View -->
+      <div class="catalog-items-grid" id="catalogItemsGrid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
   </div>
 
   <script src="regions-data.js"></script>

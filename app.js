@@ -5,60 +5,104 @@
  * ============================================================================
  */
 
-// 1. PRODUCTS DATA
-const CATALOG_PRODUCTS = [
+// 1. PRODUCTS DATA WITH LOCALSTORAGE PERSISTENCE
+const DEFAULT_CATALOG_PRODUCTS = [
   {
     id: 'QOS-HAFALAN',
     name: 'Al-Qur\'an Untuk Hafalan',
     price: 75000,
-    desc: '5 blok warna hafalan per-halaman, panduan pengingat awal ayat.',
+    oldPrice: 95000,
+    image: 'assets/prod-hafalan.svg',
+    desc: 'Dilengkapi 5 blok warna hafalan per-halaman, panduan pengingat awal ayat, & motivasi tahfidz.',
     badge: 'BEST SELLER',
-    category: 'Hafalan'
+    category: 'Hafalan',
+    weight: 0.70
   },
   {
     id: 'QOS-TERJEMAH',
     name: 'Al-Qur\'an Dengan Terjemah',
     price: 88000,
-    desc: 'Terjemahan lengkap Kemenag RI, asbabun nuzul & indeks tematik.',
-    category: 'Terjemah'
+    oldPrice: 110000,
+    image: 'assets/prod-terjemah.svg',
+    desc: 'Terjemahan lengkap Kementerian Agama RI, asbabun nuzul, serta indeks tematik ayat Al-Qur\'an.',
+    category: 'Terjemah',
+    weight: 0.85
   },
   {
     id: 'QOS-MTQ-A5',
     name: 'Al-Qur\'an Non Terjemah (Al-Muttaqin A5)',
     price: 65000,
-    desc: 'Mushaf Al-Muttaqin: Tajwid Multikode warna, panduan Waqaf & Ibtida\'.',
+    oldPrice: 78000,
+    image: 'assets/prod-nonterjemah.svg',
+    desc: 'Mushaf Al-Muttaqin: Tajwid Multikode warna, panduan Waqaf & Ibtida\' nafas pendek.',
     badge: 'TILAWAH UTAMA',
-    category: 'Tilawah'
+    category: 'Tilawah',
+    weight: 0.65
   },
   {
     id: 'QOS-MTQ-A4',
     name: 'Al-Qur\'an Non Terjemah (Al-Muttaqin A4 Jumbo)',
     price: 99000,
+    oldPrice: 125000,
+    image: 'assets/prod-nonterjemah.svg',
     desc: 'Mushaf Al-Muttaqin ukuran besar, huruf ekstra besar ramah lansia.',
-    category: 'Tilawah'
+    category: 'Tilawah',
+    weight: 1.15
   },
   {
     id: 'QOS-TAFSIR',
     name: 'Al-Qur\'an Dengan Tafsir Tematik',
     price: 115000,
-    desc: 'Kompilasi tafsir mu\'tabar berdasar tema aqidah, syariah, akhlak.',
-    category: 'Tafsir'
+    oldPrice: 145000,
+    image: 'assets/prod-tafsir.svg',
+    desc: 'Kompilasi tafsir mu\'tabar berdasar tema aqidah, syariah, akhlak, dan sejarah Nabi.',
+    category: 'Tafsir',
+    weight: 1.20
   },
   {
     id: 'QOS-JAKET',
     name: 'Al-Qur\'an Dengan Cover Jaket',
     price: 95000,
-    desc: 'Sampul resleting kulit sintetis lux tahan percikan air.',
-    category: 'Cover Kulit'
+    oldPrice: 120000,
+    image: 'assets/prod-jaket.svg',
+    desc: 'Sampul resleting kulit sintetis lux yang tahan percikan air, pengait tas & tali pembatas.',
+    category: 'Cover Kulit',
+    weight: 0.75
   },
   {
     id: 'QOS-BUKU',
     name: 'Buku Bacaan & Panduan Tajwid',
     price: 45000,
-    desc: 'Buku tajwid praktis, makhorijul huruf bergambar & doa harian.',
-    category: 'Buku'
+    oldPrice: 60000,
+    image: 'assets/prod-buku.svg',
+    desc: 'Buku bimbingan tajwid praktis, makhorijul huruf bergambar, risalah doa harian & zikir.',
+    category: 'Buku',
+    weight: 0.35
   }
 ];
+
+function loadStoredProducts() {
+  try {
+    const raw = localStorage.getItem('alibriez_catalog_products');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.error('Error loading products from localStorage:', e);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_CATALOG_PRODUCTS));
+}
+
+function saveStoredProducts(products) {
+  try {
+    localStorage.setItem('alibriez_catalog_products', JSON.stringify(products));
+  } catch (e) {
+    console.error('Error saving products to localStorage:', e);
+  }
+}
+
+let CATALOG_PRODUCTS = loadStoredProducts();
 
 // Tajwid Explanations
 const TAJWID_RULES = {
@@ -92,6 +136,12 @@ function initApp() {
   initNavbarSearch();
   initTajwidDemo();
   initOrderModal();
+  renderProductsGrid();
+  updateOrderModalOptions();
+  initCatalogModal();
+  if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
+    initAdminDashboard();
+  }
 }
 
 if (document.readyState === 'loading') {
@@ -655,12 +705,7 @@ function initOrderModal() {
 
   if (btnAll) {
     btnAll.addEventListener('click', () => {
-      loadProvinces();
-      if (provSelect && provSelect.value && regSelect && (!regSelect.options || regSelect.options.length <= 1)) {
-        loadRegencies(provSelect.value);
-      }
-      backdrop.classList.add('open');
-      calculateModalTotal();
+      openCatalogModal();
     });
   }
 
@@ -753,7 +798,8 @@ function calculateModalTotal() {
   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
 
   // Berat produk
-  const unitWeight = PRODUCT_WEIGHTS[prodId] || 0.65;
+  const foundProd = CATALOG_PRODUCTS.find(p => p.id === prodId);
+  const unitWeight = foundProd && foundProd.weight ? foundProd.weight : (PRODUCT_WEIGHTS[prodId] || 0.65);
   const totalActualWeight = unitWeight * qty;
   const chargeableWeight = Math.max(1, Math.ceil(totalActualWeight));
 
@@ -952,4 +998,649 @@ function showToast(msg) {
   setTimeout(() => {
     toast.style.display = 'none';
   }, 3000);
+}
+
+// ==========================================================================
+// RENDER HOMEPAGE PRODUCTS GRID
+// ==========================================================================
+function renderProductsGrid() {
+  const container = document.getElementById('productsGridContainer');
+  if (!container) return;
+
+  container.innerHTML = CATALOG_PRODUCTS.map(p => {
+    const badgeHtml = p.badge ? `<span class="product-card-badge ${p.badge.toLowerCase().includes('tilawah') ? 'gold' : ''}">${p.badge}</span>` : '';
+    const oldPriceHtml = p.oldPrice ? `<span>Rp ${p.oldPrice.toLocaleString('id-ID')}</span>` : '';
+    const safeName = p.name.replace(/'/g, "\\'");
+    const imgSrc = p.image || 'assets/prod-nonterjemah.svg';
+
+    return `
+      <div class="product-card-item" data-product-id="${p.id}">
+        ${badgeHtml}
+        <div class="product-card-img-wrap">
+          <img src="${imgSrc}" alt="${p.name}" onerror="this.src='assets/prod-nonterjemah.svg'">
+        </div>
+        <h3 class="product-card-title">${p.name}</h3>
+        <p class="product-card-desc">${p.desc}</p>
+        <div class="product-card-price">Rp ${p.price.toLocaleString('id-ID')} ${oldPriceHtml}</div>
+        <button class="btn-card-order" onclick="openOrderModal('${p.id}', '${safeName}', ${p.price})">
+          Pesan Sekarang
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+// Update order modal dropdown options to sync with CATALOG_PRODUCTS
+function updateOrderModalOptions() {
+  const productSelect = document.getElementById('modalProductSelect');
+  if (!productSelect) return;
+
+  const currentVal = productSelect.value;
+  productSelect.innerHTML = CATALOG_PRODUCTS.map((p, idx) => {
+    return `<option value="${p.id}" data-price="${p.price}" ${idx === 0 ? 'selected' : ''}>${p.name} (Rp ${p.price.toLocaleString('id-ID')})</option>`;
+  }).join('');
+
+  if (currentVal && CATALOG_PRODUCTS.some(p => p.id === currentVal)) {
+    productSelect.value = currentVal;
+  }
+}
+
+// ==========================================================================
+// 8. KATALOG LENGKAP MODAL LOGIC
+// ==========================================================================
+let activeCatalogCategory = 'ALL';
+
+function initCatalogModal() {
+  const backdrop = document.getElementById('catalogModalBackdrop');
+  const closeBtn = document.getElementById('btnCloseCatalogModal');
+  const searchInput = document.getElementById('catalogSearchInput');
+  const tabsWrap = document.getElementById('catalogFilterTabs');
+
+  if (closeBtn && backdrop) {
+    closeBtn.addEventListener('click', () => {
+      backdrop.classList.remove('open');
+    });
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) backdrop.classList.remove('open');
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      renderCatalogItems();
+    });
+  }
+
+  if (tabsWrap) {
+    tabsWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.catalog-tab-btn');
+      if (!btn) return;
+      tabsWrap.querySelectorAll('.catalog-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCatalogCategory = btn.getAttribute('data-category') || 'ALL';
+      renderCatalogItems();
+    });
+  }
+}
+
+window.openCatalogModal = function(initialCategory = 'ALL') {
+  activeCatalogCategory = initialCategory;
+  const backdrop = document.getElementById('catalogModalBackdrop');
+  const searchInput = document.getElementById('catalogSearchInput');
+  const tabsWrap = document.getElementById('catalogFilterTabs');
+
+  if (searchInput) searchInput.value = '';
+
+  if (tabsWrap) {
+    tabsWrap.querySelectorAll('.catalog-tab-btn').forEach(b => {
+      if (b.getAttribute('data-category') === activeCatalogCategory) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+  }
+
+  renderCatalogItems();
+  if (backdrop) backdrop.classList.add('open');
+};
+
+function renderCatalogItems() {
+  const grid = document.getElementById('catalogItemsGrid');
+  const countSpan = document.getElementById('catCountAll');
+  const searchInput = document.getElementById('catalogSearchInput');
+  if (!grid) return;
+
+  if (countSpan) countSpan.textContent = CATALOG_PRODUCTS.length;
+
+  const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+  const filtered = CATALOG_PRODUCTS.filter(p => {
+    const matchCat = (activeCatalogCategory === 'ALL') || 
+                     (p.category && p.category.toLowerCase() === activeCatalogCategory.toLowerCase());
+    const matchQuery = !query || 
+                       p.name.toLowerCase().includes(query) || 
+                       (p.desc && p.desc.toLowerCase().includes(query)) ||
+                       (p.category && p.category.toLowerCase().includes(query));
+    return matchCat && matchQuery;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: #64748b;">
+        <svg style="width:48px; height:48px; fill:#94a3b8; margin-bottom:12px;" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <p style="font-weight:700; font-size:1rem; color:#1e293b; margin-bottom:4px;">Tidak ada produk yang cocok</p>
+        <span style="font-size:0.84rem;">Coba cari dengan kata kunci lain atau pilih kategori berbeda.</span>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const badgeHtml = p.badge ? `<span class="catalog-card-badge">${p.badge}</span>` : '';
+    const oldPriceHtml = p.oldPrice ? `<span class="catalog-card-old-price">Rp ${p.oldPrice.toLocaleString('id-ID')}</span>` : '';
+    const safeName = p.name.replace(/'/g, "\\'");
+    const imgSrc = p.image || 'assets/prod-nonterjemah.svg';
+
+    return `
+      <div class="catalog-card-item">
+        ${badgeHtml}
+        <div class="catalog-card-img-wrap">
+          <img src="${imgSrc}" alt="${p.name}" onerror="this.src='assets/prod-nonterjemah.svg'">
+        </div>
+        <span class="catalog-card-cat">${p.category || 'Al-Qur\'an'}</span>
+        <h4 class="catalog-card-name">${p.name}</h4>
+        <p class="catalog-card-desc">${p.desc || ''}</p>
+        <div class="catalog-card-price-row">
+          <span class="catalog-card-price">Rp ${p.price.toLocaleString('id-ID')}</span>
+          ${oldPriceHtml}
+        </div>
+        <button type="button" class="btn-catalog-order" onclick="selectFromCatalog('${p.id}', '${safeName}', ${p.price})">
+          <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
+          <span>Pesan Produk</span>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+window.selectFromCatalog = function(id, name, price) {
+  const backdrop = document.getElementById('catalogModalBackdrop');
+  if (backdrop) backdrop.classList.remove('open');
+  openOrderModal(id, name, price);
+};
+
+// ==========================================================================
+// 9. ADMIN AUTH (LOGIN PIN) & DASHBOARD CONTROLLER
+// ==========================================================================
+const DEFAULT_ADMIN_PIN = '123456';
+
+function getAdminPin() {
+  return localStorage.getItem('alibriez_admin_pin') || DEFAULT_ADMIN_PIN;
+}
+
+function setAdminPin(newPin) {
+  localStorage.setItem('alibriez_admin_pin', newPin);
+}
+
+function initAdminDashboard() {
+  const navAdminBtn = document.getElementById('navAdminBtn');
+  const authBackdrop = document.getElementById('adminAuthModalBackdrop');
+  const closeAuthBtn = document.getElementById('btnCloseAdminAuthModal');
+  const btnSubmitPin = document.getElementById('btnSubmitPin');
+  const pinInputs = document.querySelectorAll('#pinInputsWrap .pin-box');
+  const pinErrorMsg = document.getElementById('pinErrorMsg');
+
+  // Dashboard modal elements
+  const dashBackdrop = document.getElementById('adminDashboardBackdrop');
+  const closeDashBtn = document.getElementById('btnCloseAdminDash');
+  const logoutBtn = document.getElementById('btnAdminLogout');
+  const searchInput = document.getElementById('adminSearchInput');
+  const btnReset = document.getElementById('btnResetDefaultProducts');
+  const btnOpenAdd = document.getElementById('btnOpenAddProduct');
+
+  // Change PIN modal elements
+  const btnOpenChangePin = document.getElementById('btnOpenChangePin');
+  const pinChangeBackdrop = document.getElementById('adminPinChangeBackdrop');
+  const closePinChangeBtn = document.getElementById('btnCloseChangePinModal');
+  const changePinForm = document.getElementById('changePinForm');
+
+  // Product Form modal elements
+  const formBackdrop = document.getElementById('adminFormModalBackdrop');
+  const closeFormBtn = document.getElementById('btnCloseAdminFormModal');
+  const cancelFormBtn = document.getElementById('btnCancelProductForm');
+  const productForm = document.getElementById('adminProductForm');
+  const imgFileInput = document.getElementById('prodFormImageFile');
+  const imgUrlInput = document.getElementById('prodFormImageUrl');
+  const imgPreview = document.getElementById('adminImgPreview');
+
+  // Open PIN Modal
+  if (navAdminBtn) {
+    navAdminBtn.addEventListener('click', () => {
+      // Check session
+      if (sessionStorage.getItem('alibriez_admin_logged') === 'true') {
+        openAdminDashboard();
+      } else {
+        openAdminAuthModal();
+      }
+    });
+  }
+
+  if (closeAuthBtn) {
+    closeAuthBtn.addEventListener('click', () => {
+      authBackdrop.classList.remove('open');
+    });
+  }
+
+  // Handle PIN box inputs auto-focus behavior
+  pinInputs.forEach((input, idx) => {
+    input.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if (val.length === 1 && idx < pinInputs.length - 1) {
+        pinInputs[idx + 1].focus();
+      }
+      if (idx === pinInputs.length - 1 && val.length === 1) {
+        verifyAdminPin();
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && idx > 0) {
+        pinInputs[idx - 1].focus();
+      }
+      if (e.key === 'Enter') {
+        verifyAdminPin();
+      }
+    });
+  });
+
+  if (btnSubmitPin) {
+    btnSubmitPin.addEventListener('click', verifyAdminPin);
+  }
+
+  function openAdminAuthModal() {
+    pinInputs.forEach(i => i.value = '');
+    if (pinErrorMsg) pinErrorMsg.style.display = 'none';
+    if (authBackdrop) authBackdrop.classList.add('open');
+    setTimeout(() => {
+      if (pinInputs[0]) pinInputs[0].focus();
+    }, 200);
+  }
+
+  function verifyAdminPin() {
+    let entered = '';
+    pinInputs.forEach(i => entered += i.value);
+    const validPin = getAdminPin();
+
+    if (entered === validPin) {
+      sessionStorage.setItem('alibriez_admin_logged', 'true');
+      if (authBackdrop) authBackdrop.classList.remove('open');
+      showToast('Login Admin Berhasil!');
+      openAdminDashboard();
+    } else {
+      if (pinErrorMsg) pinErrorMsg.style.display = 'block';
+      pinInputs.forEach(i => i.value = '');
+      if (pinInputs[0]) pinInputs[0].focus();
+    }
+  }
+
+  function openAdminDashboard() {
+    renderAdminProductsTable();
+    updateAdminStats();
+    if (dashBackdrop) dashBackdrop.classList.add('open');
+  }
+
+  if (closeDashBtn) {
+    closeDashBtn.addEventListener('click', () => {
+      dashBackdrop.classList.remove('open');
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('alibriez_admin_logged');
+      dashBackdrop.classList.remove('open');
+      showToast('Telah keluar dari Admin.');
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      renderAdminProductsTable(searchInput.value);
+    });
+  }
+
+  // Reset to default products
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (confirm('Kembalikan semua produk ke daftar awal bawaan sistem? Perubahan yang Anda buat sebelumnya akan digantikan.')) {
+        CATALOG_PRODUCTS = JSON.parse(JSON.stringify(DEFAULT_CATALOG_PRODUCTS));
+        saveStoredProducts(CATALOG_PRODUCTS);
+        renderProductsGrid();
+        updateOrderModalOptions();
+        renderAdminProductsTable();
+        updateAdminStats();
+        showToast('Data produk berhasil direset ke setelan awal!');
+      }
+    });
+  }
+
+  // Open Add Product Form
+  if (btnOpenAdd) {
+    btnOpenAdd.addEventListener('click', () => {
+      openProductForm();
+    });
+  }
+
+  // Close Form
+  if (closeFormBtn) closeFormBtn.addEventListener('click', () => formBackdrop.classList.remove('open'));
+  if (cancelFormBtn) cancelFormBtn.addEventListener('click', () => formBackdrop.classList.remove('open'));
+
+  // Image Upload handler (Base64 file or direct URL)
+  if (imgFileInput) {
+    imgFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          if (imgPreview) imgPreview.src = evt.target.result;
+          if (imgUrlInput) imgUrlInput.value = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  if (imgUrlInput) {
+    imgUrlInput.addEventListener('input', () => {
+      if (imgPreview && imgUrlInput.value.trim()) {
+        imgPreview.src = imgUrlInput.value.trim();
+      }
+    });
+  }
+
+  // Save Product Form
+  if (productForm) {
+    productForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      saveProductFormData();
+    });
+  }
+
+  // Change PIN Dialog handlers
+  if (btnOpenChangePin) {
+    btnOpenChangePin.addEventListener('click', () => {
+      if (changePinForm) changePinForm.reset();
+      const alertBox = document.getElementById('changePinAlert');
+      if (alertBox) alertBox.style.display = 'none';
+      if (pinChangeBackdrop) pinChangeBackdrop.classList.add('open');
+    });
+  }
+
+  if (closePinChangeBtn) {
+    closePinChangeBtn.addEventListener('click', () => {
+      pinChangeBackdrop.classList.remove('open');
+    });
+  }
+
+  if (changePinForm) {
+    changePinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const oldPin = document.getElementById('oldPinInput').value.trim();
+      const newPin = document.getElementById('newPinInput').value.trim();
+      const confirmPin = document.getElementById('confirmPinInput').value.trim();
+      const alertBox = document.getElementById('changePinAlert');
+
+      if (oldPin !== getAdminPin()) {
+        alertBox.style.display = 'block';
+        alertBox.style.color = '#dc2626';
+        alertBox.textContent = 'PIN Lama tidak cocok!';
+        return;
+      }
+
+      if (newPin.length !== 6 || !/^\d+$/.test(newPin)) {
+        alertBox.style.display = 'block';
+        alertBox.style.color = '#dc2626';
+        alertBox.textContent = 'PIN Baru harus terdiri dari 6 angka!';
+        return;
+      }
+
+      if (newPin !== confirmPin) {
+        alertBox.style.display = 'block';
+        alertBox.style.color = '#dc2626';
+        alertBox.textContent = 'Konfirmasi PIN Baru tidak sama!';
+        return;
+      }
+
+      setAdminPin(newPin);
+      alertBox.style.display = 'block';
+      alertBox.style.color = '#15803d';
+      alertBox.textContent = 'PIN Berhasil diubah!';
+      setTimeout(() => {
+        pinChangeBackdrop.classList.remove('open');
+        showToast('PIN Admin berhasil diperbarui!');
+      }, 1000);
+    });
+  }
+}
+
+window.setFormPresetImage = function(src) {
+  const imgPreview = document.getElementById('adminImgPreview');
+  const imgUrlInput = document.getElementById('prodFormImageUrl');
+  if (imgPreview) imgPreview.src = src;
+  if (imgUrlInput) imgUrlInput.value = src;
+};
+
+function openProductForm(editProdId = null) {
+  const formBackdrop = document.getElementById('adminFormModalBackdrop');
+  const modalTitle = document.getElementById('adminFormModalTitle');
+  const form = document.getElementById('adminProductForm');
+  const imgPreview = document.getElementById('adminImgPreview');
+  const idInput = document.getElementById('prodFormId');
+  const nameInput = document.getElementById('prodFormName');
+  const catInput = document.getElementById('prodFormCategory');
+  const priceInput = document.getElementById('prodFormPrice');
+  const oldPriceInput = document.getElementById('prodFormOldPrice');
+  const badgeInput = document.getElementById('prodFormBadge');
+  const weightInput = document.getElementById('prodFormWeight');
+  const imgUrlInput = document.getElementById('prodFormImageUrl');
+  const descInput = document.getElementById('prodFormDesc');
+  const fileInput = document.getElementById('prodFormImageFile');
+
+  if (!form || !formBackdrop) return;
+  form.reset();
+  if (fileInput) fileInput.value = '';
+
+  if (editProdId) {
+    const prod = CATALOG_PRODUCTS.find(p => p.id === editProdId);
+    if (!prod) return;
+    modalTitle.textContent = 'Edit Produk: ' + prod.name;
+    idInput.value = prod.id;
+    nameInput.value = prod.name;
+    catInput.value = prod.category || 'Tilawah';
+    priceInput.value = prod.price || '';
+    oldPriceInput.value = prod.oldPrice || '';
+    badgeInput.value = prod.badge || '';
+    weightInput.value = prod.weight || 0.65;
+    descInput.value = prod.desc || '';
+    imgUrlInput.value = prod.image || 'assets/prod-nonterjemah.svg';
+    if (imgPreview) imgPreview.src = prod.image || 'assets/prod-nonterjemah.svg';
+  } else {
+    modalTitle.textContent = 'Tambah Produk Baru';
+    idInput.value = '';
+    weightInput.value = 0.65;
+    imgUrlInput.value = 'assets/prod-nonterjemah.svg';
+    if (imgPreview) imgPreview.src = 'assets/prod-nonterjemah.svg';
+  }
+
+  formBackdrop.classList.add('open');
+}
+
+function saveProductFormData() {
+  const formBackdrop = document.getElementById('adminFormModalBackdrop');
+  const id = document.getElementById('prodFormId').value.trim();
+  const name = document.getElementById('prodFormName').value.trim();
+  const category = document.getElementById('prodFormCategory').value;
+  const price = parseInt(document.getElementById('prodFormPrice').value) || 0;
+  const oldPriceVal = document.getElementById('prodFormOldPrice').value.trim();
+  const oldPrice = oldPriceVal ? parseInt(oldPriceVal) : undefined;
+  const badge = document.getElementById('prodFormBadge').value.trim();
+  const weight = parseFloat(document.getElementById('prodFormWeight').value) || 0.65;
+  const image = document.getElementById('prodFormImageUrl').value.trim() || 'assets/prod-nonterjemah.svg';
+  const desc = document.getElementById('prodFormDesc').value.trim();
+
+  if (!name || price <= 0 || !desc) {
+    alert('Mohon isi nama, harga jual, dan deskripsi produk.');
+    return;
+  }
+
+  if (id) {
+    // EDIT EXISTING
+    const index = CATALOG_PRODUCTS.findIndex(p => p.id === id);
+    if (index !== -1) {
+      CATALOG_PRODUCTS[index] = {
+        ...CATALOG_PRODUCTS[index],
+        name,
+        category,
+        price,
+        oldPrice,
+        badge,
+        weight,
+        image,
+        desc
+      };
+      showToast('Produk ' + name + ' berhasil diperbarui!');
+    }
+  } else {
+    // ADD NEW PRODUCT
+    const newId = 'PROD-' + Date.now().toString(36).toUpperCase();
+    const newProduct = {
+      id: newId,
+      name,
+      category,
+      price,
+      oldPrice,
+      badge,
+      weight,
+      image,
+      desc
+    };
+    CATALOG_PRODUCTS.unshift(newProduct);
+    showToast('Produk baru berhasil ditambahkan!');
+  }
+
+  saveStoredProducts(CATALOG_PRODUCTS);
+  renderProductsGrid();
+  updateOrderModalOptions();
+  renderAdminProductsTable();
+  updateAdminStats();
+
+  if (formBackdrop) formBackdrop.classList.remove('open');
+}
+
+window.deleteProduct = function(prodId) {
+  const prod = CATALOG_PRODUCTS.find(p => p.id === prodId);
+  if (!prod) return;
+
+  if (confirm(`Apakah Anda yakin ingin menghapus produk "${prod.name}"?`)) {
+    CATALOG_PRODUCTS = CATALOG_PRODUCTS.filter(p => p.id !== prodId);
+    saveStoredProducts(CATALOG_PRODUCTS);
+    renderProductsGrid();
+    updateOrderModalOptions();
+    renderAdminProductsTable();
+    updateAdminStats();
+    showToast(`Produk "${prod.name}" telah dihapus.`);
+  }
+};
+
+window.editProduct = function(prodId) {
+  openProductForm(prodId);
+};
+
+function renderAdminProductsTable(filterQuery = '') {
+  const tbody = document.getElementById('adminProductsTableBody');
+  if (!tbody) return;
+
+  const q = filterQuery.trim().toLowerCase();
+  const list = CATALOG_PRODUCTS.filter(p => {
+    return !q || 
+      p.name.toLowerCase().includes(q) || 
+      p.id.toLowerCase().includes(q) || 
+      (p.category && p.category.toLowerCase().includes(q));
+  });
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center; padding:32px; color:#64748b;">
+          Tidak ada produk yang ditemukan.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = list.map(p => {
+    const imgSrc = p.image || 'assets/prod-nonterjemah.svg';
+    const oldPriceHtml = p.oldPrice ? `<div class="admin-table-old-price">Rp ${p.oldPrice.toLocaleString('id-ID')}</div>` : '';
+    const badgeText = p.badge ? `<span style="font-size:0.7rem; font-weight:700; color:#047857; background:#dcfce7; padding:2px 6px; border-radius:4px;">${p.badge}</span>` : '<span style="color:#94a3b8;">-</span>';
+    const weightText = (p.weight || 0.65) + ' kg';
+
+    return `
+      <tr>
+        <td>
+          <div class="admin-table-thumb">
+            <img src="${imgSrc}" alt="${p.name}" onerror="this.src='assets/prod-nonterjemah.svg'">
+          </div>
+        </td>
+        <td>
+          <div class="admin-table-title">${p.name}</div>
+          <div class="admin-table-desc">${p.desc || ''}</div>
+          <span style="font-size:0.68rem; color:#94a3b8; font-family:monospace;">ID: ${p.id}</span>
+        </td>
+        <td>
+          <span class="admin-table-cat-badge">${p.category || 'Umum'}</span>
+        </td>
+        <td>
+          <div class="admin-table-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+          ${oldPriceHtml}
+        </td>
+        <td>${badgeText}</td>
+        <td><span style="font-size:0.75rem; font-weight:600; color:#475569;">${weightText}</span></td>
+        <td>
+          <div class="admin-table-actions">
+            <button type="button" class="btn-action-edit" onclick="editProduct('${p.id}')">Edit</button>
+            <button type="button" class="btn-action-delete" onclick="deleteProduct('${p.id}')">Hapus</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function updateAdminStats() {
+  const statTotal = document.getElementById('statTotalProducts');
+  const statCats = document.getElementById('statTotalCategories');
+  const statMin = document.getElementById('statMinPrice');
+  const statMax = document.getElementById('statMaxPrice');
+
+  if (!statTotal) return;
+
+  statTotal.textContent = CATALOG_PRODUCTS.length;
+
+  const categories = new Set(CATALOG_PRODUCTS.map(p => p.category).filter(Boolean));
+  if (statCats) statCats.textContent = categories.size;
+
+  if (CATALOG_PRODUCTS.length > 0) {
+    const prices = CATALOG_PRODUCTS.map(p => p.price);
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    if (statMin) statMin.textContent = 'Rp ' + min.toLocaleString('id-ID');
+    if (statMax) statMax.textContent = 'Rp ' + max.toLocaleString('id-ID');
+  } else {
+    if (statMin) statMin.textContent = 'Rp 0';
+    if (statMax) statMax.textContent = 'Rp 0';
+  }
 }
