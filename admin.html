@@ -94,6 +94,55 @@
       margin-bottom: 20px;
     }
 
+    .admin-single-pin-wrap {
+      position: relative;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .admin-single-pin-input {
+      width: 100%;
+      height: 54px;
+      border: 2px solid #334155;
+      background: #0f172a;
+      border-radius: 12px;
+      color: #10b981;
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 5px;
+      outline: none;
+      transition: all 0.2s ease;
+      padding: 0 46px;
+      box-sizing: border-box;
+      font-family: monospace, sans-serif;
+    }
+
+    .admin-single-pin-input:focus {
+      border-color: #10b981;
+      background: #1e293b;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-toggle-pin-visibility {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-toggle-pin-visibility:hover {
+      color: #cbd5e1;
+    }
+
     .pin-input-cell {
       width: 48px;
       height: 56px;
@@ -847,29 +896,26 @@
       <h2 class="auth-title">Akses Khusus Admin</h2>
       <p class="auth-desc">Masukkan 6 Digit PIN Admin untuk membuka portal pengelolaan katalog &amp; data toko Al-Ibriez Book.</p>
 
-      <div class="admin-pin-group" id="authPinWrap" title="Ketik atau Paste 6 Digit PIN di sini">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric" autofocus autocomplete="one-time-code">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
-      </div>
+      <form id="adminPinLoginForm" onsubmit="event.preventDefault(); submitPinAuth();">
+        <div class="admin-single-pin-wrap">
+          <input type="password" id="adminPinInput" class="admin-single-pin-input" placeholder="Ketik 6 Digit PIN..." maxlength="12" autofocus autocomplete="current-password" inputmode="numeric">
+          <button type="button" class="btn-toggle-pin-visibility" id="btnTogglePinVisibility" title="Lihat / Sembunyikan PIN">
+            <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+        </div>
 
-      <div id="authErrorMsg" style="display:none; color:#f87171; font-size:0.84rem; font-weight:700; margin-bottom:14px;">
-        PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
-      </div>
+        <div id="authErrorMsg" style="display:none; color:#f87171; font-size:0.84rem; font-weight:700; margin-bottom:14px;">
+          PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
+        </div>
 
-      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-        <button type="button" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard</button>
-        <button type="button" id="btnQuickLogin" style="background:rgba(16,185,129,0.12); color:#34d399; border:1px solid rgba(16,185,129,0.3); border-radius:12px; height:42px; font-weight:700; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s ease;">
-          <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-          <span>Masuk Cepat Instan (PIN: 123456)</span>
+        <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard Admin</button>
+      </form>
+
+      <div style="margin-top:20px; font-size:0.82rem; color:#94a3b8; display:flex; flex-direction:column; gap:8px;">
+        <div>PIN Standar: <strong style="color:#10b981; font-size:0.95rem; letter-spacing:1px;">123456</strong></div>
+        <button type="button" id="btnResetPinDefault" style="background:transparent; border:none; color:#38bdf8; font-size:0.78rem; text-decoration:underline; cursor:pointer; padding:4px;">
+          Lupa PIN atau tidak bisa masuk? Klik di sini untuk Reset PIN ke 123456
         </button>
-      </div>
-
-      <div style="font-size:0.75rem; color:#64748b; line-height:1.5;">
-        Tips: Anda bisa langsung mengetik atau <strong>Copy-Paste</strong> 6 digit PIN.
       </div>
 
       <a href="index.html" class="auth-back-link">← Kembali ke Landing Page Toko</a>
@@ -1842,9 +1888,11 @@
     // AUTH WALL LOGIC
     const authWall = document.getElementById('adminAuthWall');
     const adminLayout = document.getElementById('adminLayout');
-    const pinCells = document.querySelectorAll('#authPinWrap .pin-input-cell');
+    const adminPinInput = document.getElementById('adminPinInput');
     const btnAuthSubmit = document.getElementById('btnAuthSubmit');
     const authErrorMsg = document.getElementById('authErrorMsg');
+    const btnTogglePin = document.getElementById('btnTogglePinVisibility');
+    const btnResetPin = document.getElementById('btnResetPinDefault');
 
     function checkAuthSession() {
       if (sessionStorage.getItem('alibriez_admin_logged') === 'true') {
@@ -1855,68 +1903,38 @@
       } else {
         authWall.style.display = 'flex';
         adminLayout.style.display = 'none';
-        setTimeout(() => pinCells[0].focus(), 200);
+        if (adminPinInput) {
+          setTimeout(() => adminPinInput.focus(), 150);
+        }
       }
     }
 
-    const authPinWrap = document.getElementById('authPinWrap');
-    const btnQuickLogin = document.getElementById('btnQuickLogin');
-
-    // Auto-paste handler for 6 digits PIN
-    if (authPinWrap) {
-      authPinWrap.addEventListener('paste', (e) => {
-        e.preventDefault();
-        const pasteData = (e.clipboardData || window.clipboardData).getData('text').trim();
-        const digits = pasteData.replace(/\D/g, '').split('');
-        if (digits.length > 0) {
-          pinCells.forEach((c, i) => {
-            c.value = digits[i] || '';
-          });
-          if (digits.length >= 6) {
-            submitPinAuth();
-          } else {
-            const nextIdx = Math.min(digits.length, pinCells.length - 1);
-            pinCells[nextIdx].focus();
-          }
-        }
+    // Toggle Lihat/Sembunyikan PIN
+    if (btnTogglePin && adminPinInput) {
+      btnTogglePin.addEventListener('click', () => {
+        adminPinInput.type = adminPinInput.type === 'password' ? 'text' : 'password';
       });
     }
 
-    // 1-Click Quick Login with Default PIN
-    if (btnQuickLogin) {
-      btnQuickLogin.addEventListener('click', () => {
-        const pin = getAdminPin();
-        const digits = pin.split('');
-        pinCells.forEach((c, i) => c.value = digits[i] || '');
-        submitPinAuth();
+    // Tombol Reset PIN ke Standar 123456 jika lupa / terkunci
+    if (btnResetPin && adminPinInput) {
+      btnResetPin.addEventListener('click', () => {
+        localStorage.removeItem('alibriez_admin_pin');
+        setAdminPin('123456');
+        adminPinInput.value = '123456';
+        authErrorMsg.style.display = 'none';
+        adminPinInput.focus();
+        showToast('PIN berhasil direset ke standar: 123456');
       });
     }
 
-    pinCells.forEach((cell, idx) => {
-      cell.addEventListener('input', (e) => {
-        if (cell.value && idx < pinCells.length - 1) {
-          pinCells[idx + 1].focus();
-        }
-        if (idx === pinCells.length - 1 && cell.value) {
-          submitPinAuth();
-        }
-      });
-      cell.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !cell.value && idx > 0) {
-          pinCells[idx - 1].focus();
-        }
-        if (e.key === 'Enter') {
-          submitPinAuth();
-        }
-      });
-    });
+    // Submit PIN Login
+    window.submitPinAuth = function() {
+      const entered = adminPinInput ? adminPinInput.value.trim() : '';
+      const currentPin = getAdminPin();
 
-    btnAuthSubmit.addEventListener('click', submitPinAuth);
-
-    function submitPinAuth() {
-      let entered = '';
-      pinCells.forEach(c => entered += c.value);
-      if (entered === getAdminPin()) {
+      // Bolehkan PIN tersimpan ATAU default master 123456
+      if (entered === currentPin || entered === '123456') {
         sessionStorage.setItem('alibriez_admin_logged', 'true');
         authWall.style.display = 'none';
         adminLayout.style.display = 'flex';
@@ -1925,9 +1943,15 @@
         showToast('Login Admin Berhasil!');
       } else {
         authErrorMsg.style.display = 'block';
-        pinCells.forEach(c => c.value = '');
-        pinCells[0].focus();
+        if (adminPinInput) {
+          adminPinInput.value = '';
+          adminPinInput.focus();
+        }
       }
+    };
+
+    if (btnAuthSubmit) {
+      btnAuthSubmit.addEventListener('click', submitPinAuth);
     }
 
     // LOGOUT
