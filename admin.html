@@ -884,9 +884,52 @@
 <body class="admin-body">
 
   <!-- ==========================================================================
-       FULL ADMIN DASHBOARD PAGE (No Login Required)
+       1. PIN AUTH WALL SCREEN (MASUK DENGAN PIN SAJA)
        ========================================================================== -->
-  <div class="admin-layout" id="adminLayout" style="display:flex;">
+  <div class="admin-auth-wrapper" id="adminAuthWall" style="display:flex;">
+    <div class="auth-box-card">
+      <div class="auth-icon-circle">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.5 1.1 2.5 2.5 0 .74-.33 1.41-.85 1.86l1.24 3.73-.89.91-1-.5-1 .5-.89-.91 1.24-3.73C11.83 10.91 11.5 10.24 11.5 9.5 11.5 8.1 12.6 7 14 7h-2z"/>
+        </svg>
+      </div>
+      <h2 class="auth-title">Akses Khusus Admin</h2>
+      <p class="auth-desc">Masukkan 6 Digit PIN Admin untuk membuka portal pengelolaan Al-Ibriez Book.</p>
+
+      <form id="adminPinLoginForm" onsubmit="event.preventDefault(); submitPinAuth();">
+        <div class="admin-single-pin-wrap">
+          <input type="password" id="adminPinInput" class="admin-single-pin-input" placeholder="Ketik 6 Digit PIN..." maxlength="12" autofocus autocomplete="current-password" inputmode="numeric">
+          <button type="button" class="btn-toggle-pin-visibility" id="btnTogglePinVisibility" title="Lihat / Sembunyikan PIN">
+            <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+        </div>
+
+        <div id="authErrorMsg" style="display:none; color:#f87171; font-size:0.84rem; font-weight:700; margin-bottom:14px;">
+          PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard Admin</button>
+      </form>
+
+      <div style="margin-top:20px; font-size:0.82rem; color:#94a3b8; display:flex; flex-direction:column; gap:8px;">
+        <div>PIN Standar: <strong style="color:#10b981; font-size:0.95rem; letter-spacing:1px;">123456</strong></div>
+        <button type="button" id="btnResetPinDefault" style="background:transparent; border:none; color:#38bdf8; font-size:0.78rem; text-decoration:underline; cursor:pointer; padding:4px;">
+          Lupa PIN? Klik di sini untuk Reset ke 123456
+        </button>
+      </div>
+
+      <div style="margin-top:16px;">
+        <a href="index.html" style="color:#94a3b8; text-decoration:none; font-size:0.8rem; display:inline-flex; align-items:center; gap:4px;">
+          ← Kembali ke Toko
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       2. FULL ADMIN DASHBOARD PAGE
+       ========================================================================== -->
+  <div class="admin-layout" id="adminLayout" style="display:none;">
     
     <!-- Left Sidebar -->
     <aside class="admin-sidebar">
@@ -908,13 +951,10 @@
           <span>Kelola Katalog Produk</span>
           <span class="badge-tab-count" id="badgeProductCount" style="margin-left:auto; background:rgba(16,185,129,0.2); color:#10b981; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">0</span>
         </div>
-        <div class="sidebar-nav-item" onclick="alert('Modul Analisis Penjualan & Pesanan sedang disiapkan untuk tahap berikutnya.')">
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-          <span>Analisis Penjualan (Soon)</span>
-        </div>
-        <div class="sidebar-nav-item" onclick="alert('Daftar riwayat pemesanan via WhatsApp & tracking resi.')">
-          <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg>
-          <span>Pemesanan &amp; Resi</span>
+        <div class="sidebar-nav-item" id="navItemTestimonials" onclick="switchAdminTab('testimonials')">
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+          <span>Kelola Testimoni</span>
+          <span class="badge-tab-count" id="badgeTestimonialCount" style="margin-left:auto; background:rgba(234,179,8,0.2); color:#eab308; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">0</span>
         </div>
       </nav>
 
@@ -1058,27 +1098,6 @@
             </div>
           </div>
 
-          <!-- Analytics Preview Banner -->
-          <div class="analytics-preview-card">
-            <div class="analytics-preview-info">
-              <h4>
-                <span>Ikhtisar Penjualan &amp; Tren Mushaf</span>
-                <span class="analytics-badge-new">Fitur Baru Mendatang</span>
-              </h4>
-              <p>
-                Modul grafik analisis penjualan bulanan, perputaran stok per variasi mushaf Al-Muttaqin, serta statistik asal provinsi pembeli terbanyak siap dikembangkan di halaman ini.
-              </p>
-            </div>
-            <div class="analytics-mini-bars" title="Grafik Penjualan Dummy">
-              <div class="mini-bar" style="height:30px;"></div>
-              <div class="mini-bar" style="height:45px;"></div>
-              <div class="mini-bar" style="height:35px;"></div>
-              <div class="mini-bar" style="height:55px;"></div>
-              <div class="mini-bar" style="height:40px;"></div>
-              <div class="mini-bar" style="height:60px;"></div>
-            </div>
-          </div>
-
           <!-- Products Management Section Box -->
           <div class="admin-section-box">
             <div class="section-box-header">
@@ -1108,6 +1127,69 @@
                 </thead>
                 <tbody id="dashTableBody">
                   <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================
+             VIEW TAB 3: KELOLA TESTIMONI PELANGGAN (INTEGRASI LANDING PAGE)
+             ================================================================ -->
+        <div id="viewTestimonialsTab" style="display:none;">
+          <!-- Metrics Row Testimonials -->
+          <div class="dashboard-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Testimoni Aktif</div>
+              <div class="metric-value" id="dashTotalTestimonialsActive" style="color:#eab308;">0</div>
+              <div class="metric-sub">✓ Ditampilkan di Landing Page</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Total Testimoni Tersimpan</div>
+              <div class="metric-value" id="dashTotalTestimonialsAll">0</div>
+              <div class="metric-sub">Termasuk draf &amp; non-aktif</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Rata-rata Penilaian</div>
+              <div class="metric-value" id="dashAvgRating" style="font-size:1.4rem; color:#f59e0b;">5.0 ★</div>
+              <div class="metric-sub">Skor kepuasan pembeli mushaf</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Status Sinkronisasi</div>
+              <div class="metric-value" style="font-size:1.3rem; color:#10b981;">100% Live</div>
+              <div class="metric-sub">Langsung tampil di website depan</div>
+            </div>
+          </div>
+
+          <!-- Section Box -->
+          <div class="admin-section-box">
+            <div class="section-box-header">
+              <h3 class="section-title">Daftar Ulasan &amp; Testimoni Pembeli</h3>
+              <div class="section-header-controls">
+                <input type="text" id="adminTestimonialSearch" class="admin-search-input" placeholder="Cari nama, kota, ulasan...">
+                <button class="btn-admin-reset" id="btnAdminResetDefaultTestimonials">Reset Default</button>
+                <button class="btn-admin-add" id="btnAdminAddTestimonial">
+                  <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  <span>Tambah Testimoni</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th style="width:50px; text-align:center;">#</th>
+                    <th style="width:200px;">Nama &amp; Peran / Kota</th>
+                    <th style="width:180px;">Produk Mushaf</th>
+                    <th style="width:110px;">Rating</th>
+                    <th>Isi Ulasan Testimoni</th>
+                    <th style="width:100px; text-align:center;">Status</th>
+                    <th style="width:140px; text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="dashTestimonialTableBody">
+                  <!-- Rendered dynamically via JavaScript -->
                 </tbody>
               </table>
             </div>
@@ -1318,6 +1400,72 @@
   </div>
 
   <!-- ==========================================================================
+       3.D MODAL FORM INPUT & EDIT TESTIMONI (DARK THEME)
+       ========================================================================== -->
+  <div class="admin-form-modal-dark" id="adminTestimonialFormModal">
+    <div class="form-dark-card" style="max-width:640px;">
+      <button class="admin-form-close" id="btnCloseTestimonialModal" style="background:#0f172a; color:#cbd5e1;">&times;</button>
+      <h3 id="testimonialModalTitle" style="font-size:1.35rem; font-weight:800; margin-bottom:6px;">Tambah Testimoni Baru</h3>
+      <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:20px;">Isi ulasan pengalaman pembeli mushaf untuk ditampilkan di Landing Page.</p>
+
+      <form id="testimonialFormEdit" onsubmit="return false;">
+        <input type="hidden" id="editTestimonialId">
+
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Nama Pembeli / Tokoh *</label>
+            <input type="text" id="inputTestiName" class="modal-form-input" placeholder="Contoh: Ustaz Ahmad Zaki" required>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Peran / Kota / Lembaga *</label>
+            <input type="text" id="inputTestiRole" class="modal-form-input" placeholder="Contoh: Pengasuh Ponpes, Demak" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Pilihan Produk Terkait</label>
+            <select id="inputTestiProduct" class="modal-form-select">
+              <option value="Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'">Al-Qur'an Al-Muttaqin Tajwid Multikode</option>
+              <option value="Al-Qur'an Non Terjemah (Al-Muttaqin A4 Jumbo)">Al-Muttaqin A4 Jumbo Lansia</option>
+              <option value="Mushaf Hafalan Al-Muttaqin 5 Blok Warna">Mushaf Hafalan 5 Blok</option>
+              <option value="Al-Qur'an Dengan Terjemah Lengkap">Al-Qur'an Dengan Terjemah</option>
+              <option value="Al-Qur'an Cover Kulit Resleting (Jaket Lux)">Al-Qur'an Cover Kulit Resleting</option>
+              <option value="Al-Qur'an Dengan Tafsir Tematik">Al-Qur'an Dengan Tafsir Tematik</option>
+              <option value="Buku Bacaan & Panduan Tajwid">Buku Bimbingan Tajwid</option>
+            </select>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Rating Bintang *</label>
+            <select id="inputTestiRating" class="modal-form-select">
+              <option value="5">⭐⭐⭐⭐⭐ (5 Bintang - Sempurna)</option>
+              <option value="4">⭐⭐⭐⭐ (4 Bintang - Sangat Bagus)</option>
+              <option value="3">⭐⭐⭐ (3 Bintang - Cukup)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">Isi Ulasan Testimoni *</label>
+          <textarea id="inputTestiText" class="modal-form-input" rows="3" placeholder="Tuliskan ulasan jujur pembeli mengenai kualitas cetakan mushaf..." required></textarea>
+        </div>
+
+        <div class="modal-form-group" style="display:flex; align-items:center; gap:10px; margin-top:14px;">
+          <input type="checkbox" id="inputTestiIsActive" checked style="width:18px; height:18px; accent-color:#10b981; cursor:pointer;">
+          <label for="inputTestiIsActive" style="font-size:0.84rem; color:#34d399; font-weight:700; cursor:pointer;">Tampilkan ulasan ini di Landing Page</label>
+        </div>
+
+        <div class="modal-form-buttons-row" style="border-top-color:#334155;">
+          <button type="button" class="btn-form-cancel" id="btnCancelTestimonialModal" style="background:#334155; color:#ffffff; border:none;">Batal</button>
+          <button type="submit" class="btn-form-save" style="background:#10b981; color:#062b21;">Simpan Testimoni</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        3.C MODAL UBAH PIN ADMIN
        ========================================================================== -->
   <div class="admin-form-modal-dark" id="changePinModal">
@@ -1489,6 +1637,45 @@
       }
     ];
 
+    const DEFAULT_TESTIMONIALS = [
+      {
+        id: 'TESTI-1',
+        name: 'Ustadz Muhammad Fauzi, S.Pd.I',
+        role: 'Pengasuh TPQ & Tahfidz, Cirebon',
+        productName: "Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'",
+        rating: 5,
+        text: "Alhamdulillah sangat terbantu dengan mushaf Al-Muttaqin ini. Santri kami yang nafasnya pendek sekarang tidak bingung lagi harus berhenti di mana dan dari mana harus mengulang. Penanda waqaf & ibtida'-nya benar-benar akurat sesuai kaidah.",
+        isActive: true
+      },
+      {
+        id: 'TESTI-2',
+        name: 'Ibu Hj. Siti Nurjanah',
+        role: 'Jamaah Majelis Ta\'lim, Bandung',
+        productName: "Al-Qur'an Non Terjemah (Al-Muttaqin A4 Jumbo)",
+        rating: 5,
+        text: "Mushaf ukuran A4 jumbo hurufnya sangat jelas dan besar, cocok sekali untuk mata lansia. Tajwid warnanya terang tapi tidak menyilaukan. Pengemasan bubble wrap-nya sangat tebal dan sampai dengan selamat.",
+        isActive: true
+      },
+      {
+        id: 'TESTI-3',
+        name: 'Ahmad Ridwan Santoso',
+        role: 'Mahasiswa & Penghafal Al-Qur\'an, Solo',
+        productName: "Mushaf Hafalan Al-Muttaqin 5 Blok Warna",
+        rating: 5,
+        text: "Metode 5 blok warnanya memudahkan hafalan 1 halaman per hari. Pengingat kata kunci awal ayat di margin sangat membantu saat muroja'ah mandiri. Recomended untuk santri maupun umum!",
+        isActive: true
+      },
+      {
+        id: 'TESTI-4',
+        name: 'dr. Hendra Kurniawan',
+        role: 'Dokter Umum & Sahabat Quran, Surabaya',
+        productName: "Al-Qur'an Cover Kulit Resleting (Jaket Lux)",
+        rating: 5,
+        text: "Cover jaket kulitnya lux dan resletingnya kokoh, mudah dibawa dinas ke rumah sakit tanpa takut lembaran kertasnya rusak atau kotor. Kualitas kertas QPP premium lembut di mata.",
+        isActive: true
+      }
+    ];
+
     function getAdminPin() {
       return localStorage.getItem('alibriez_admin_pin') || DEFAULT_ADMIN_PIN;
     }
@@ -1543,15 +1730,39 @@
 
     let banners = loadBanners();
 
+    // TESTIMONIAL STORAGE
+    function loadTestimonials() {
+      try {
+        const raw = localStorage.getItem('alibriez_testimonials');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const clean = parsed.filter(t => t && typeof t === 'object' && t.name);
+            if (clean.length > 0) return clean;
+          }
+        }
+      } catch (e) {
+        console.error('Error loading testimonials from localStorage:', e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_TESTIMONIALS));
+    }
+
+    function saveTestimonials(tList) {
+      localStorage.setItem('alibriez_testimonials', JSON.stringify(tList));
+    }
+
+    let testimonials = loadTestimonials();
+
     function showToast(msg) {
       const t = document.getElementById('adminToast');
+      if (!t) return;
       t.textContent = msg;
       t.style.display = 'block';
       setTimeout(() => t.style.display = 'none', 3000);
     }
 
     // ==========================================================================
-    // TAB SWITCHER (BANNERS VS PRODUCTS)
+    // TAB SWITCHER (BANNERS VS PRODUCTS VS TESTIMONIALS)
     // ==========================================================================
     let currentAdminTab = 'banners';
 
@@ -1559,24 +1770,34 @@
       currentAdminTab = tabName;
       const navBanners = document.getElementById('navItemBanners');
       const navProducts = document.getElementById('navItemProducts');
+      const navTestimonials = document.getElementById('navItemTestimonials');
       const viewBanners = document.getElementById('viewBannersTab');
       const viewProducts = document.getElementById('viewProductsTab');
+      const viewTestimonials = document.getElementById('viewTestimonialsTab');
       const topTitle = document.getElementById('adminTopTitle');
 
+      if (navBanners) navBanners.classList.remove('active');
+      if (navProducts) navProducts.classList.remove('active');
+      if (navTestimonials) navTestimonials.classList.remove('active');
+      if (viewBanners) viewBanners.style.display = 'none';
+      if (viewProducts) viewProducts.style.display = 'none';
+      if (viewTestimonials) viewTestimonials.style.display = 'none';
+
       if (tabName === 'banners') {
-        navBanners.classList.add('active');
-        navProducts.classList.remove('active');
-        viewBanners.style.display = 'block';
-        viewProducts.style.display = 'none';
-        topTitle.textContent = 'Kelola Banner Hero Layar Penuh';
+        if (navBanners) navBanners.classList.add('active');
+        if (viewBanners) viewBanners.style.display = 'block';
+        if (topTitle) topTitle.textContent = 'Kelola Banner Hero Layar Penuh';
         renderBannerDashboard();
-      } else {
-        navBanners.classList.remove('active');
-        navProducts.classList.add('active');
-        viewBanners.style.display = 'none';
-        viewProducts.style.display = 'block';
-        topTitle.textContent = 'Katalog & Manajemen Mushaf';
+      } else if (tabName === 'products') {
+        if (navProducts) navProducts.classList.add('active');
+        if (viewProducts) viewProducts.style.display = 'block';
+        if (topTitle) topTitle.textContent = 'Katalog & Manajemen Mushaf';
         renderDashboard();
+      } else if (tabName === 'testimonials') {
+        if (navTestimonials) navTestimonials.classList.add('active');
+        if (viewTestimonials) viewTestimonials.style.display = 'block';
+        if (topTitle) topTitle.textContent = 'Manajemen Ulasan & Testimoni Pelanggan';
+        renderTestimonialDashboard();
       }
     };
 
@@ -1833,10 +2054,88 @@
       }
     };
 
+    // ==========================================================================
+    // PIN AUTHENTICATION SYSTEM
+    // ==========================================================================
+    const AUTH_SESSION_KEY = 'alibriez_admin_logged';
+
+    function checkAuth() {
+      const isLogged = sessionStorage.getItem(AUTH_SESSION_KEY) === 'true';
+      const authWall = document.getElementById('adminAuthWall');
+      const adminLayout = document.getElementById('adminLayout');
+
+      if (isLogged) {
+        if (authWall) authWall.style.display = 'none';
+        if (adminLayout) adminLayout.style.display = 'flex';
+        renderBannerDashboard();
+        renderDashboard();
+        renderTestimonialDashboard();
+      } else {
+        if (authWall) authWall.style.display = 'flex';
+        if (adminLayout) adminLayout.style.display = 'none';
+        const pinInp = document.getElementById('adminPinInput');
+        if (pinInp) {
+          pinInp.value = '';
+          pinInp.focus();
+        }
+      }
+    }
+
+    window.submitPinAuth = function() {
+      const pinInput = document.getElementById('adminPinInput');
+      const errMsg = document.getElementById('authErrorMsg');
+      const enteredPin = pinInput ? pinInput.value.trim() : '';
+      const correctPin = getAdminPin();
+
+      if (enteredPin === correctPin) {
+        sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+        if (errMsg) errMsg.style.display = 'none';
+        checkAuth();
+        showToast('Login berhasil! Selamat datang Admin.');
+      } else {
+        if (errMsg) {
+          errMsg.style.display = 'block';
+          errMsg.textContent = 'PIN Salah! Silakan coba lagi (Default: 123456)';
+        }
+        if (pinInput) {
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+    };
+
+    const btnToggleVis = document.getElementById('btnTogglePinVisibility');
+    if (btnToggleVis) {
+      btnToggleVis.addEventListener('click', () => {
+        const pinInp = document.getElementById('adminPinInput');
+        if (!pinInp) return;
+        pinInp.type = pinInp.type === 'password' ? 'text' : 'password';
+      });
+    }
+
+    const btnResetPin = document.getElementById('btnResetPinDefault');
+    if (btnResetPin) {
+      btnResetPin.addEventListener('click', () => {
+        if (confirm('Kembalikan PIN Admin ke pengaturan default (123456)?')) {
+          setAdminPin('123456');
+          const pinInp = document.getElementById('adminPinInput');
+          if (pinInp) pinInp.value = '123456';
+          const errMsg = document.getElementById('authErrorMsg');
+          if (errMsg) errMsg.style.display = 'none';
+          showToast('PIN berhasil direset ke 123456!');
+        }
+      });
+    }
+
     // LOGOUT
-    document.getElementById('btnLogoutSidebar').addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
+    const btnLogout = document.getElementById('btnLogoutSidebar');
+    if (btnLogout) {
+      btnLogout.addEventListener('click', () => {
+        sessionStorage.removeItem(AUTH_SESSION_KEY);
+        checkAuth();
+        showToast('Anda telah keluar dari sesi Admin.');
+      });
+    }
 
     // RENDER PRODUCTS DASHBOARD & METRICS
     function renderDashboard(query = '') {
@@ -1849,6 +2148,8 @@
       document.getElementById('dashTotalProducts').textContent = products.length;
       const cats = new Set(products.map(p => p.category).filter(Boolean));
       document.getElementById('dashTotalCategories').textContent = cats.size;
+      const badgeProd = document.getElementById('badgeProductCount');
+      if (badgeProd) badgeProd.textContent = products.length;
 
       const validPrices = products.map(p => Number(p.price)).filter(n => !isNaN(n) && n > 0);
       if (validPrices.length > 0) {
@@ -2025,6 +2326,207 @@
       }
     };
 
+    // ==========================================================================
+    // TESTIMONIAL DASHBOARD RENDER & LOGIC
+    // ==========================================================================
+    function renderTestimonialDashboard(query = '') {
+      testimonials = loadTestimonials();
+      updateTestimonialMetrics();
+      renderTestimonialTable(query);
+    }
+
+    function updateTestimonialMetrics() {
+      const activeCount = testimonials.filter(t => t.isActive !== false).length;
+      const elActive = document.getElementById('dashTotalTestimonialsActive');
+      const elAll = document.getElementById('dashTotalTestimonialsAll');
+      const elBadge = document.getElementById('badgeTestimonialCount');
+      const elAvg = document.getElementById('dashAvgRating');
+
+      if (elActive) elActive.textContent = activeCount;
+      if (elAll) elAll.textContent = testimonials.length;
+      if (elBadge) elBadge.textContent = activeCount;
+
+      if (testimonials.length > 0) {
+        const sumRating = testimonials.reduce((acc, t) => acc + (Number(t.rating) || 5), 0);
+        const avg = (sumRating / testimonials.length).toFixed(1);
+        if (elAvg) elAvg.textContent = `${avg} ★`;
+      } else {
+        if (elAvg) elAvg.textContent = '5.0 ★';
+      }
+    }
+
+    function renderTestimonialTable(query = '') {
+      const tbody = document.getElementById('dashTestimonialTableBody');
+      if (!tbody) return;
+      const q = query.trim().toLowerCase();
+      const filtered = testimonials.filter(t =>
+        !q ||
+        (t.name && t.name.toLowerCase().includes(q)) ||
+        (t.role && t.role.toLowerCase().includes(q)) ||
+        (t.productName && t.productName.toLowerCase().includes(q)) ||
+        (t.text && t.text.toLowerCase().includes(q))
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:36px; color:#64748b;">Tidak ada testimoni yang sesuai pencarian.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((t, idx) => {
+        const isActive = t.isActive !== false;
+        const statusHtml = isActive
+          ? `<span class="banner-status-pill active" onclick="toggleTestimonialStatus('${t.id}')" title="Klik untuk Sembunyikan">● Tampil</span>`
+          : `<span class="banner-status-pill inactive" onclick="toggleTestimonialStatus('${t.id}')" title="Klik untuk Tampilkan">○ Disembunyikan</span>`;
+        
+        const stars = '★'.repeat(Math.max(1, Math.min(5, Number(t.rating) || 5)));
+
+        return `
+          <tr>
+            <td style="text-align:center; font-weight:800; color:#94a3b8;">${idx + 1}</td>
+            <td>
+              <div style="font-weight:800; color:#ffffff; font-size:0.92rem;">${t.name}</div>
+              <div style="font-size:0.78rem; color:#94a3b8;">${t.role || '-'}</div>
+              <span style="font-size:0.68rem; color:#64748b; font-family:monospace;">ID: ${t.id}</span>
+            </td>
+            <td>
+              <span style="font-size:0.8rem; color:#cbd5e1; font-weight:600;">${t.productName || "Al-Qur'an Al-Muttaqin"}</span>
+            </td>
+            <td>
+              <span style="color:#fbbf24; font-weight:800; font-size:0.95rem;">${stars}</span>
+              <span style="font-size:0.75rem; color:#94a3b8; margin-left:2px;">(${t.rating || 5}.0)</span>
+            </td>
+            <td>
+              <div style="font-size:0.82rem; color:#cbd5e1; line-height:1.45; max-width:340px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+                "${t.text}"
+              </div>
+            </td>
+            <td style="text-align:center;">${statusHtml}</td>
+            <td>
+              <div class="table-actions-row" style="justify-content:center;">
+                <button type="button" class="btn-tbl-edit" onclick="openEditTestimonial('${t.id}')">Edit</button>
+                <button type="button" class="btn-tbl-del" onclick="handleDeleteTestimonial('${t.id}')">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    const searchTesti = document.getElementById('adminTestimonialSearch');
+    if (searchTesti) {
+      searchTesti.addEventListener('input', (e) => {
+        renderTestimonialTable(e.target.value);
+      });
+    }
+
+    const btnResetTesti = document.getElementById('btnAdminResetDefaultTestimonials');
+    if (btnResetTesti) {
+      btnResetTesti.addEventListener('click', () => {
+        if (confirm('Kembalikan semua testimoni ke setelan standar Al-Ibriez Book?')) {
+          testimonials = JSON.parse(JSON.stringify(DEFAULT_TESTIMONIALS));
+          saveTestimonials(testimonials);
+          renderTestimonialDashboard();
+          showToast('Testimoni berhasil direset ke standar!');
+        }
+      });
+    }
+
+    window.toggleTestimonialStatus = function(id) {
+      const t = testimonials.find(item => item.id === id);
+      if (!t) return;
+      t.isActive = (t.isActive === false) ? true : false;
+      saveTestimonials(testimonials);
+      const searchVal = document.getElementById('adminTestimonialSearch') ? document.getElementById('adminTestimonialSearch').value : '';
+      renderTestimonialDashboard(searchVal);
+      showToast(t.isActive ? 'Testimoni ditampilkan di Landing Page!' : 'Testimoni disembunyikan.');
+    };
+
+    const testiModal = document.getElementById('adminTestimonialFormModal');
+    const testiForm = document.getElementById('testimonialFormEdit');
+    const testiTitleModal = document.getElementById('testimonialModalTitle');
+
+    function openAddTestimonial() {
+      if (testiForm) testiForm.reset();
+      document.getElementById('editTestimonialId').value = '';
+      if (testiTitleModal) testiTitleModal.textContent = 'Tambah Testimoni Baru';
+      document.getElementById('inputTestiRating').value = '5';
+      document.getElementById('inputTestiIsActive').checked = true;
+      if (testiModal) testiModal.classList.add('open');
+    }
+
+    const btnAddTesti = document.getElementById('btnAdminAddTestimonial');
+    if (btnAddTesti) btnAddTesti.addEventListener('click', openAddTestimonial);
+
+    const btnCloseTesti = document.getElementById('btnCloseTestimonialModal');
+    if (btnCloseTesti) btnCloseTesti.addEventListener('click', () => testiModal.classList.remove('open'));
+
+    const btnCancelTesti = document.getElementById('btnCancelTestimonialModal');
+    if (btnCancelTesti) btnCancelTesti.addEventListener('click', () => testiModal.classList.remove('open'));
+
+    window.openEditTestimonial = function(id) {
+      const t = testimonials.find(item => item.id === id);
+      if (!t) return;
+      if (testiTitleModal) testiTitleModal.textContent = 'Edit Testimoni: ' + t.name;
+      document.getElementById('editTestimonialId').value = t.id;
+      document.getElementById('inputTestiName').value = t.name;
+      document.getElementById('inputTestiRole').value = t.role || '';
+      document.getElementById('inputTestiProduct').value = t.productName || "Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'";
+      document.getElementById('inputTestiRating').value = t.rating ? String(t.rating) : '5';
+      document.getElementById('inputTestiText').value = t.text || '';
+      document.getElementById('inputTestiIsActive').checked = t.isActive !== false;
+      if (testiModal) testiModal.classList.add('open');
+    };
+
+    if (testiForm) {
+      testiForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editTestimonialId').value.trim();
+        const name = document.getElementById('inputTestiName').value.trim();
+        const role = document.getElementById('inputTestiRole').value.trim();
+        const productName = document.getElementById('inputTestiProduct').value;
+        const rating = parseInt(document.getElementById('inputTestiRating').value) || 5;
+        const text = document.getElementById('inputTestiText').value.trim();
+        const isActive = document.getElementById('inputTestiIsActive').checked;
+
+        if (!name || !role || !text) {
+          alert('Mohon lengkapi nama, asal/peran, dan isi ulasan testimoni.');
+          return;
+        }
+
+        if (id) {
+          const idx = testimonials.findIndex(item => item.id === id);
+          if (idx !== -1) {
+            testimonials[idx] = { ...testimonials[idx], name, role, productName, rating, text, isActive };
+            showToast('Testimoni berhasil diperbarui!');
+          }
+        } else {
+          const newTesti = {
+            id: 'TESTI-' + Date.now().toString(36).toUpperCase(),
+            name, role, productName, rating, text, isActive
+          };
+          testimonials.unshift(newTesti);
+          showToast('Testimoni baru berhasil ditambahkan!');
+        }
+
+        saveTestimonials(testimonials);
+        testiModal.classList.remove('open');
+        const searchVal = document.getElementById('adminTestimonialSearch') ? document.getElementById('adminTestimonialSearch').value : '';
+        renderTestimonialDashboard(searchVal);
+      });
+    }
+
+    window.handleDeleteTestimonial = function(id) {
+      const t = testimonials.find(item => item.id === id);
+      if (!t) return;
+      if (confirm(`Yakin ingin menghapus ulasan testimoni dari "${t.name}"?`)) {
+        testimonials = testimonials.filter(item => item.id !== id);
+        saveTestimonials(testimonials);
+        const searchVal = document.getElementById('adminTestimonialSearch') ? document.getElementById('adminTestimonialSearch').value : '';
+        renderTestimonialDashboard(searchVal);
+        showToast('Testimoni telah dihapus.');
+      }
+    };
+
     // CHANGE PIN LOGIC
     const changePinModal = document.getElementById('changePinModal');
     document.getElementById('btnChangePin').addEventListener('click', () => {
@@ -2073,9 +2575,8 @@
       }, 1000);
     });
 
-    // INITIALIZE - Dashboard langsung terbuka
-    renderBannerDashboard();
-    renderDashboard();
+    // INITIALIZE WITH AUTH CHECK
+    checkAuth();
   </script>
 </body>
 </html>

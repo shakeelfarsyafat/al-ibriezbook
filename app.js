@@ -223,6 +223,108 @@ const TAJWID_RULES = {
   }
 };
 
+// ============================================================================
+// 1.C TESTIMONIALS DATA & LOCALSTORAGE INTEGRATION
+// ============================================================================
+const DEFAULT_LANDING_TESTIMONIALS = [
+  {
+    id: 'TESTI-1',
+    name: 'Ustadz Muhammad Fauzi, S.Pd.I',
+    role: 'Pengasuh TPQ & Tahfidz, Cirebon',
+    productName: "Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'",
+    rating: 5,
+    text: "Alhamdulillah sangat terbantu dengan mushaf Al-Muttaqin ini. Santri kami yang nafasnya pendek sekarang tidak bingung lagi harus berhenti di mana dan dari mana harus mengulang. Penanda waqaf & ibtida'-nya benar-benar akurat sesuai kaidah.",
+    isActive: true
+  },
+  {
+    id: 'TESTI-2',
+    name: 'Ibu Hj. Siti Nurjanah',
+    role: 'Jamaah Majelis Ta\'lim, Bandung',
+    productName: "Al-Qur'an Non Terjemah (Al-Muttaqin A4 Jumbo)",
+    rating: 5,
+    text: "Mushaf ukuran A4 jumbo hurufnya sangat jelas dan besar, cocok sekali untuk mata lansia. Tajwid warnanya terang tapi tidak menyilaukan. Pengemasan bubble wrap-nya sangat tebal dan sampai dengan selamat.",
+    isActive: true
+  },
+  {
+    id: 'TESTI-3',
+    name: 'Ahmad Ridwan Santoso',
+    role: 'Mahasiswa & Penghafal Al-Qur\'an, Solo',
+    productName: "Mushaf Hafalan Al-Muttaqin 5 Blok Warna",
+    rating: 5,
+    text: "Metode 5 blok warnanya memudahkan hafalan 1 halaman per hari. Pengingat kata kunci awal ayat di margin sangat membantu saat muroja'ah mandiri. Recomended untuk santri maupun umum!",
+    isActive: true
+  },
+  {
+    id: 'TESTI-4',
+    name: 'dr. Hendra Kurniawan',
+    role: 'Dokter Umum & Sahabat Quran, Surabaya',
+    productName: "Al-Qur'an Cover Kulit Resleting (Jaket Lux)",
+    rating: 5,
+    text: "Cover jaket kulitnya lux dan resletingnya kokoh, mudah dibawa dinas ke rumah sakit tanpa takut lembaran kertasnya rusak atau kotor. Kualitas kertas QPP premium lembut di mata.",
+    isActive: true
+  }
+];
+
+function loadStoredTestimonials() {
+  try {
+    const raw = localStorage.getItem('alibriez_testimonials');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const clean = parsed.filter(t => t && typeof t === 'object' && t.name);
+        if (clean.length > 0) return clean;
+      }
+    }
+  } catch (e) {
+    console.error('Error loading testimonials from localStorage:', e);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_LANDING_TESTIMONIALS));
+}
+
+function renderLandingTestimonials() {
+  const container = document.getElementById('testimonialsGrid');
+  if (!container) return;
+
+  const list = loadStoredTestimonials().filter(t => t.isActive !== false);
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">
+        Belum ada ulasan yang ditampilkan saat ini.
+      </div>
+    `;
+    return;
+  }
+
+  const starSvg = '<svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+
+  container.innerHTML = list.map(t => {
+    const ratingCount = Math.max(1, Math.min(5, Number(t.rating) || 5));
+    const starsHtml = starSvg.repeat(ratingCount);
+    const words = (t.name || 'Pelanggan').trim().split(/\s+/);
+    const initials = (words[0][0] + (words[1] ? words[1][0] : '')).toUpperCase();
+    const productBadge = t.productName ? `<div style="font-size:0.75rem; color:#f97316; font-weight:700; margin-bottom:8px;">★ ${t.productName}</div>` : '';
+
+    return `
+      <div class="testi-card">
+        <div class="testi-stars">
+          ${starsHtml}
+        </div>
+        ${productBadge}
+        <p class="testi-quote">
+          "${t.text}"
+        </p>
+        <div class="testi-author-row">
+          <div class="testi-avatar">${initials}</div>
+          <div>
+            <div class="testi-meta-name">${t.name} <span class="verified-badge">✓ Terverifikasi</span></div>
+            <div class="testi-meta-loc">📍 ${t.role || 'Pembeli Resmi Al-Ibriez'}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function initApp() {
   initHeroBannerCarousel();
   initNavbarSearch();
@@ -231,6 +333,7 @@ function initApp() {
   renderProductsGrid();
   updateOrderModalOptions();
   initCatalogModal();
+  renderLandingTestimonials();
   initNavLoginButton();
   if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
     initAdminDashboard();
@@ -238,14 +341,22 @@ function initApp() {
 }
 
 function initNavLoginButton() {
-  const btn = document.getElementById('navLoginCheckBtn');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      sessionStorage.setItem('alibriez_admin_logged', 'true');
-      localStorage.setItem('alibriez_admin_logged', 'true');
-    });
-  }
+  // Tombol centang mengarahkan pengguna ke halaman login admin.html untuk autentikasi PIN
 }
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'alibriez_testimonials') {
+    renderLandingTestimonials();
+  }
+  if (e.key === 'alibriez_hero_banners') {
+    initHeroBannerCarousel();
+  }
+  if (e.key === 'alibriez_catalog_products') {
+    CATALOG_PRODUCTS = loadStoredProducts();
+    renderProductsGrid();
+    updateOrderModalOptions();
+  }
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
