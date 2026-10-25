@@ -325,6 +325,31 @@ function renderLandingTestimonials() {
   }).join('');
 }
 
+function initTestimonialsCarousel() {
+  const container = document.getElementById('testimonialsGrid');
+  const btnPrev = document.getElementById('btnTestiScrollPrev');
+  const btnNext = document.getElementById('btnTestiScrollNext');
+
+  if (!container) return;
+
+  function getScrollStep() {
+    const card = container.querySelector('.testi-card');
+    return card ? (card.offsetWidth + 24) : 340;
+  }
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => {
+      container.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      container.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+    });
+  }
+}
+
 function initApp() {
   initHeroBannerCarousel();
   initNavbarSearch();
@@ -334,6 +359,7 @@ function initApp() {
   updateOrderModalOptions();
   initCatalogModal();
   renderLandingTestimonials();
+  initTestimonialsCarousel();
   initNavLoginButton();
   if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
     initAdminDashboard();

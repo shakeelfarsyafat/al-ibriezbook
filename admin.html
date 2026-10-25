@@ -572,34 +572,35 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.86rem;
+      font-size: 0.83rem;
     }
 
     .dash-table th {
-      padding: 14px 20px;
+      padding: 11px 12px;
       background: #152132;
       color: var(--admin-text-muted);
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border-bottom: 1px solid var(--admin-card-border);
+      white-space: nowrap;
     }
 
     .dash-table td {
-      padding: 16px 20px;
+      padding: 10px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       vertical-align: middle;
       color: #e2e8f0;
     }
 
     .dash-table tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.025);
     }
 
     .table-prod-img {
-      width: 48px;
-      height: 48px;
+      width: 42px;
+      height: 42px;
       border-radius: 8px;
       background: #0f172a;
       border: 1px solid #334155;
@@ -607,24 +608,27 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin: 0 auto;
     }
 
     .table-prod-img img {
-      max-width: 85%;
-      max-height: 85%;
+      max-width: 88%;
+      max-height: 88%;
       object-fit: contain;
     }
 
     .table-prod-name {
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 3px;
+      font-size: 0.88rem;
+      margin-bottom: 2px;
+      line-height: 1.3;
     }
 
     .table-prod-desc {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--admin-text-muted);
-      max-width: 320px;
+      max-width: 260px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -633,37 +637,43 @@
     .badge-cat {
       background: rgba(255, 255, 255, 0.08);
       color: #e2e8f0;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.74rem;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 0.72rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .cell-price {
       font-weight: 800;
       color: #34d399;
+      font-size: 0.85rem;
+      white-space: nowrap;
     }
 
     .cell-old-price {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: #64748b;
       text-decoration: line-through;
     }
 
     .table-actions-row {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      justify-content: center;
+      white-space: nowrap;
     }
 
     .btn-tbl-edit {
       background: rgba(14, 165, 233, 0.15);
       color: #38bdf8;
       border: 1px solid rgba(14, 165, 233, 0.3);
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .btn-tbl-edit:hover {
@@ -675,11 +685,12 @@
       background: rgba(239, 68, 68, 0.15);
       color: #f87171;
       border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .btn-tbl-del:hover {
@@ -687,11 +698,11 @@
       color: #ffffff;
     }
 
-    /* MODAL FORM DARK */
+    /* MODAL FORM DARK (FIXED - NEVER WHITE ON FOCUS/AUTOFILL) */
     .admin-form-modal-dark {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       z-index: 10000;
       display: none;
@@ -705,36 +716,185 @@
     }
 
     .form-dark-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 20px;
+      background: #182234 !important;
+      border: 1px solid #334155 !important;
+      border-radius: 20px !important;
       width: 100%;
-      max-width: 680px;
+      max-width: 660px;
       max-height: 92vh;
       overflow-y: auto;
-      padding: 32px;
-      color: #ffffff;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      padding: 28px 32px !important;
+      color: #ffffff !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
       position: relative;
       animation: modalPopUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .form-dark-card input,
-    .form-dark-card select,
-    .form-dark-card textarea {
-      background: #0f172a;
+    .form-dark-card .admin-form-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #0f172a !important;
       border: 1px solid #334155;
-      color: #ffffff;
-      border-radius: 8px;
-      padding: 10px 14px;
-      outline: none;
-      font-family: inherit;
+      color: #94a3b8 !important;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
+    .form-dark-card .admin-form-close:hover {
+      background: #ef4444 !important;
+      color: #ffffff !important;
+      border-color: #ef4444;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    .modal-form-group {
+      margin-bottom: 16px;
+    }
+
+    .modal-form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0 !important;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ALL MODAL INPUTS - STRICTLY DARK THEME & COMFORTABLE SIZING */
+    .admin-form-modal-dark input,
+    .admin-form-modal-dark select,
+    .admin-form-modal-dark textarea,
+    .form-dark-card input,
+    .form-dark-card select,
+    .form-dark-card textarea,
+    .form-dark-card .modal-form-input,
+    .form-dark-card .modal-form-select,
+    .form-dark-card .modal-form-textarea {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      background-color: #0b1322 !important;
+      border: 1.5px solid #334155 !important;
+      color: #ffffff !important;
+      border-radius: 9px !important;
+      padding: 10px 14px !important;
+      font-size: 0.88rem !important;
+      font-family: inherit !important;
+      outline: none !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .admin-form-modal-dark input:focus,
+    .admin-form-modal-dark select:focus,
+    .admin-form-modal-dark textarea:focus,
     .form-dark-card input:focus,
     .form-dark-card select:focus,
-    .form-dark-card textarea:focus {
-      border-color: #10b981;
+    .form-dark-card textarea:focus,
+    .form-dark-card .modal-form-input:focus,
+    .form-dark-card .modal-form-select:focus,
+    .form-dark-card .modal-form-textarea:focus {
+      background-color: #0f1c30 !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
+      color: #ffffff !important;
+    }
+
+    /* BROWSER AUTOFILL FIX - NO WHITE BG */
+    .admin-form-modal-dark input:-webkit-autofill,
+    .admin-form-modal-dark input:-webkit-autofill:hover,
+    .admin-form-modal-dark input:-webkit-autofill:focus,
+    .form-dark-card input:-webkit-autofill,
+    .form-dark-card input:-webkit-autofill:hover,
+    .form-dark-card input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0px 1000px #0b1322 inset !important;
+      box-shadow: 0 0 0px 1000px #0b1322 inset !important;
+      -webkit-text-fill-color: #ffffff !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+    }
+
+    .admin-form-modal-dark input::placeholder,
+    .admin-form-modal-dark textarea::placeholder,
+    .form-dark-card input::placeholder,
+    .form-dark-card textarea::placeholder {
+      color: #64748b !important;
+      opacity: 1;
+    }
+
+    .admin-form-modal-dark select option,
+    .form-dark-card select option {
+      background-color: #0b1322 !important;
+      color: #ffffff !important;
+      padding: 8px;
+    }
+
+    .modal-form-textarea,
+    .form-dark-card textarea {
+      min-height: 85px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .modal-form-buttons-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-form-cancel {
+      background: #243247;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 10px 20px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-form-cancel:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .btn-form-save {
+      background: #10b981;
+      border: none;
+      color: #062b21;
+      padding: 10px 24px;
+      border-radius: 9px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-form-save:hover {
+      background: #34d399;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      transform: translateY(-1px);
     }
 
     /* BANNER MANAGEMENT SPECIFIC STYLES */
@@ -894,32 +1054,25 @@
         </svg>
       </div>
       <h2 class="auth-title">Akses Khusus Admin</h2>
-      <p class="auth-desc">Masukkan 6 Digit PIN Admin untuk membuka portal pengelolaan Al-Ibriez Book.</p>
+      <p class="auth-desc">Masukkan PIN Admin untuk membuka portal pengelolaan Al-Ibriez Book.</p>
 
       <form id="adminPinLoginForm" onsubmit="event.preventDefault(); submitPinAuth();">
         <div class="admin-single-pin-wrap">
-          <input type="password" id="adminPinInput" class="admin-single-pin-input" placeholder="Ketik 6 Digit PIN..." maxlength="12" autofocus autocomplete="current-password" inputmode="numeric">
+          <input type="password" id="adminPinInput" class="admin-single-pin-input" placeholder="Masukkan PIN Admin..." maxlength="12" autofocus autocomplete="current-password" inputmode="numeric">
           <button type="button" class="btn-toggle-pin-visibility" id="btnTogglePinVisibility" title="Lihat / Sembunyikan PIN">
             <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
           </button>
         </div>
 
         <div id="authErrorMsg" style="display:none; color:#f87171; font-size:0.84rem; font-weight:700; margin-bottom:14px;">
-          PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
+          PIN tidak valid! Silakan masukkan PIN yang benar.
         </div>
 
         <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard Admin</button>
       </form>
 
-      <div style="margin-top:20px; font-size:0.82rem; color:#94a3b8; display:flex; flex-direction:column; gap:8px;">
-        <div>PIN Standar: <strong style="color:#10b981; font-size:0.95rem; letter-spacing:1px;">123456</strong></div>
-        <button type="button" id="btnResetPinDefault" style="background:transparent; border:none; color:#38bdf8; font-size:0.78rem; text-decoration:underline; cursor:pointer; padding:4px;">
-          Lupa PIN? Klik di sini untuk Reset ke 123456
-        </button>
-      </div>
-
-      <div style="margin-top:16px;">
-        <a href="index.html" style="color:#94a3b8; text-decoration:none; font-size:0.8rem; display:inline-flex; align-items:center; gap:4px;">
+      <div style="margin-top:22px;">
+        <a href="index.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#94a3b8'">
           ← Kembali ke Toko
         </a>
       </div>
@@ -1053,13 +1206,13 @@
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th style="width:50px; text-align:center;">Urutan</th>
-                    <th style="width:110px;">Visual</th>
-                    <th>Judul &amp; Subtitle Banner</th>
-                    <th style="width:120px;">Tema</th>
-                    <th>Tombol CTA &amp; Link Tujuan</th>
-                    <th style="width:100px; text-align:center;">Status</th>
-                    <th style="width:160px; text-align:center;">Aksi</th>
+                    <th style="width:48px; text-align:center;">Urutan</th>
+                    <th style="width:100px; text-align:center;">Visual</th>
+                    <th style="min-width:240px;">Judul &amp; Subtitle Banner</th>
+                    <th style="width:90px; text-align:center;">Tema</th>
+                    <th style="width:180px;">Tombol CTA &amp; Link</th>
+                    <th style="width:85px; text-align:center;">Status</th>
+                    <th style="width:115px; text-align:center;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="dashBannerTableBody">
@@ -1116,13 +1269,13 @@
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th style="width:65px;">Gambar</th>
-                    <th>Nama Produk Mushaf</th>
-                    <th style="width:120px;">Kategori</th>
-                    <th style="width:130px;">Harga Jual</th>
-                    <th style="width:110px;">Badge</th>
-                    <th style="width:90px;">Berat</th>
-                    <th style="width:130px; text-align:center;">Aksi</th>
+                    <th style="width:52px; text-align:center;">Gambar</th>
+                    <th style="min-width:190px;">Nama Produk Mushaf</th>
+                    <th style="width:95px; text-align:center;">Kategori</th>
+                    <th style="width:105px;">Harga Jual</th>
+                    <th style="width:85px; text-align:center;">Badge</th>
+                    <th style="width:68px; text-align:center;">Berat</th>
+                    <th style="width:115px; text-align:center;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="dashTableBody">
@@ -1179,13 +1332,13 @@
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th style="width:50px; text-align:center;">#</th>
-                    <th style="width:200px;">Nama &amp; Peran / Kota</th>
-                    <th style="width:180px;">Produk Mushaf</th>
-                    <th style="width:110px;">Rating</th>
-                    <th>Isi Ulasan Testimoni</th>
-                    <th style="width:100px; text-align:center;">Status</th>
-                    <th style="width:140px; text-align:center;">Aksi</th>
+                    <th style="width:45px; text-align:center;">#</th>
+                    <th style="width:170px;">Nama &amp; Peran</th>
+                    <th style="width:150px;">Produk Mushaf</th>
+                    <th style="width:85px; text-align:center;">Rating</th>
+                    <th style="min-width:200px;">Isi Ulasan Testimoni</th>
+                    <th style="width:85px; text-align:center;">Status</th>
+                    <th style="width:115px; text-align:center;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="dashTestimonialTableBody">
@@ -1866,8 +2019,8 @@
             </td>
             <td>
               ${tagHtml}
-              <div style="font-weight:800; color:#ffffff; font-size:0.92rem; line-height:1.3; margin-bottom:4px;">${b.title}</div>
-              <div style="font-size:0.78rem; color:#94a3b8; line-height:1.4; max-width:320px;">${b.subtitle || ''}</div>
+              <div style="font-weight:800; color:#ffffff; font-size:0.88rem; line-height:1.3; margin-bottom:3px;">${b.title}</div>
+              <div style="font-size:0.75rem; color:#94a3b8; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-width:340px;" title="${b.subtitle || ''}">${b.subtitle || ''}</div>
               <span style="font-size:0.68rem; color:#64748b; font-family:monospace;">ID: ${b.id}</span>
             </td>
             <td>
@@ -2095,7 +2248,7 @@
       } else {
         if (errMsg) {
           errMsg.style.display = 'block';
-          errMsg.textContent = 'PIN Salah! Silakan coba lagi (Default: 123456)';
+          errMsg.textContent = 'PIN Salah! Silakan periksa kembali.';
         }
         if (pinInput) {
           pinInput.value = '';
@@ -2103,6 +2256,17 @@
         }
       }
     };
+
+    const adminPinInputEl = document.getElementById('adminPinInput');
+    if (adminPinInputEl) {
+      adminPinInputEl.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        const correct = getAdminPin();
+        if (val.length >= 6 && val === correct) {
+          submitPinAuth();
+        }
+      });
+    }
 
     const btnToggleVis = document.getElementById('btnTogglePinVisibility');
     if (btnToggleVis) {
@@ -2113,25 +2277,31 @@
       });
     }
 
-    const btnResetPin = document.getElementById('btnResetPinDefault');
-    if (btnResetPin) {
-      btnResetPin.addEventListener('click', () => {
-        if (confirm('Kembalikan PIN Admin ke pengaturan default (123456)?')) {
-          setAdminPin('123456');
-          const pinInp = document.getElementById('adminPinInput');
-          if (pinInp) pinInp.value = '123456';
-          const errMsg = document.getElementById('authErrorMsg');
-          if (errMsg) errMsg.style.display = 'none';
-          showToast('PIN berhasil direset ke 123456!');
-        }
-      });
+    // KEAMANAN SESI: Setiap kali admin meninggalkan halaman atau kembali ke toko,
+    // sesi langsung dihapus agar ketika kembali wajib memasukkan PIN ulang.
+    function clearAdminSession() {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
     }
+
+    document.querySelectorAll('a[href="index.html"], a[href="./index.html"]').forEach(link => {
+      link.addEventListener('click', () => {
+        clearAdminSession();
+      });
+    });
+
+    window.addEventListener('pagehide', () => {
+      clearAdminSession();
+    });
+
+    window.addEventListener('pageshow', (event) => {
+      checkAuth();
+    });
 
     // LOGOUT
     const btnLogout = document.getElementById('btnLogoutSidebar');
     if (btnLogout) {
       btnLogout.addEventListener('click', () => {
-        sessionStorage.removeItem(AUTH_SESSION_KEY);
+        clearAdminSession();
         checkAuth();
         showToast('Anda telah keluar dari sesi Admin.');
       });
