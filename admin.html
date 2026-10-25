@@ -1026,17 +1026,424 @@
       color: #ffffff;
     }
 
-    @media (max-width: 900px) {
+    /* ==========================================================================
+       MOBILE & TABLET RESPONSIVE SYSTEM (100% FLEKSIBEL & RAPI)
+       ========================================================================== */
+
+    /* Drawer Overlay */
+    .sidebar-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar-drawer-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Mobile toggle and close buttons */
+    .btn-mobile-sidebar-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid #334155;
+      color: #ffffff;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .btn-mobile-sidebar-toggle:hover {
+      background: #10b981;
+      color: #062b21;
+      border-color: #10b981;
+    }
+
+    .btn-mobile-sidebar-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .btn-sidebar-close {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid #334155;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      margin-left: auto;
+      transition: all 0.2s;
+    }
+
+    .btn-sidebar-close:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+    }
+
+    .btn-sidebar-close svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .top-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .top-brand-mobile {
+      display: none;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-logout-mobile {
+      display: none;
+      background: rgba(239, 68, 68, 0.15) !important;
+      border-color: rgba(239, 68, 68, 0.3) !important;
+      color: #f87171 !important;
+    }
+
+    .btn-logout-mobile:hover {
+      background: #ef4444 !important;
+      color: #ffffff !important;
+    }
+
+    /* Mobile Subnav Horizontal Pill Bar */
+    .admin-mobile-subnav {
+      display: none;
+      background: #0f172a;
+      border-bottom: 1px solid var(--admin-card-border);
+      padding: 8px 12px;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .admin-mobile-subnav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mobile-subnav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 6px 12px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-subnav-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .mobile-subnav-btn.active {
+      background: #10b981;
+      border-color: #10b981;
+      color: #062b21;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .mob-badge-cnt {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .mobile-subnav-btn.active .mob-badge-cnt {
+      background: rgba(6, 43, 33, 0.3);
+      color: #062b21;
+    }
+
+    /* Table Mobile Scroll Hint */
+    .table-mobile-scroll-hint {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
+    .table-mobile-scroll-hint svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* BREAKPOINT: TABLET & MOBILE (<= 992px) */
+    @media (max-width: 992px) {
+      body.admin-body {
+        display: block;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
       .admin-layout {
+        display: flex;
         flex-direction: column;
-      }
-      .admin-sidebar {
+        min-height: 100vh;
         width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--admin-card-border);
+        overflow-x: hidden;
       }
+
+      /* Sidebar becomes an off-canvas drawer */
+      .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 290px;
+        max-width: 86vw;
+        height: 100vh;
+        z-index: 10001;
+        background: var(--admin-sidebar-bg);
+        border-right: 1px solid var(--admin-card-border);
+        box-shadow: 10px 0 35px rgba(0, 0, 0, 0.75);
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .admin-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .btn-sidebar-close {
+        display: inline-flex;
+      }
+
+      .btn-mobile-sidebar-toggle {
+        display: inline-flex;
+      }
+
+      .top-brand-mobile {
+        display: inline-block;
+      }
+
+      .admin-mobile-subnav {
+        display: flex;
+      }
+
+      .btn-logout-mobile {
+        display: inline-flex;
+      }
+
+      .table-mobile-scroll-hint {
+        display: flex;
+      }
+
+      /* Main container resets max-height so document body scrolls naturally */
+      .admin-main {
+        max-height: none !important;
+        overflow-y: visible !important;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .admin-top-nav {
+        height: auto;
+        min-height: 58px;
+        padding: 10px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 99;
+      }
+
+      .top-nav-title {
+        font-size: 1.05rem;
+      }
+
+      .admin-content-body {
+        padding: 18px 14px;
+      }
+
       .dashboard-metrics-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .metric-card {
+        padding: 14px 16px;
+      }
+
+      .metric-card-val {
+        font-size: 1.6rem;
+      }
+
+      .section-header-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .section-header-controls {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 100%;
+        gap: 8px;
+      }
+
+      .admin-search-input {
+        width: 100%;
+        height: 40px;
+        font-size: 0.86rem;
+        box-sizing: border-box;
+      }
+
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .dash-table {
+        min-width: 680px;
+      }
+    }
+
+    /* BREAKPOINT: SMARTPHONE (<= 640px) */
+    @media (max-width: 640px) {
+      .admin-top-nav {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .top-nav-left {
+        gap: 8px;
+      }
+
+      .top-nav-title {
+        display: none;
+      }
+
+      .top-action-text {
+        display: none;
+      }
+
+      .btn-top-action {
+        padding: 7px 9px;
+        border-radius: 8px;
+      }
+
+      .admin-content-body {
+        padding: 12px 10px;
+      }
+
+      .dashboard-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .metric-card {
+        padding: 10px 12px;
+        border-radius: 10px;
+      }
+
+      .metric-card-val {
+        font-size: 1.35rem;
+      }
+
+      .metric-card-label {
+        font-size: 0.68rem;
+      }
+
+      .btn-admin-add,
+      .btn-admin-reset {
+        height: 42px;
+        font-size: 0.84rem;
+        justify-content: center;
+        width: 100%;
+      }
+
+      /* Modal Dialog on Mobile */
+      .admin-form-modal-dark {
+        padding: 10px 8px;
+        align-items: flex-end;
+      }
+
+      .form-dark-card {
+        padding: 20px 14px !important;
+        border-radius: 18px 18px 8px 8px !important;
+        max-height: 94vh !important;
+      }
+
+      .form-dark-card h3 {
+        font-size: 1.15rem !important;
+      }
+
+      .form-dark-card input,
+      .form-dark-card select,
+      .form-dark-card textarea {
+        font-size: 16px !important;
+        min-height: 42px;
+      }
+
+      /* Auth PIN card */
+      .auth-box-card {
+        padding: 26px 18px;
+        border-radius: 18px;
+      }
+
+      .auth-title {
+        font-size: 1.3rem;
+      }
+
+      .admin-single-pin-input {
+        height: 48px;
+        font-size: 1.2rem;
+        letter-spacing: 4px;
+        padding: 0 40px;
+      }
+
+      .btn-auth-submit {
+        height: 46px;
+        font-size: 0.92rem;
       }
     }
   </style>
@@ -1084,13 +1491,19 @@
        ========================================================================== -->
   <div class="admin-layout" id="adminLayout" style="display:none;">
     
-    <!-- Left Sidebar -->
-    <aside class="admin-sidebar">
+    <!-- Backdrop Overlay for Mobile Drawer -->
+    <div class="sidebar-drawer-overlay" id="sidebarDrawerOverlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- Left Sidebar (Responsive Drawer on Mobile/Tablet) -->
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-brand">
         <span class="brand-logo-text" style="font-size:1.3rem;">
           <span class="logo-part-orange">al-ibriez</span><span class="logo-part-green" style="color:#10b981;">book</span>
         </span>
         <span class="sidebar-brand-badge">ADMIN</span>
+        <button type="button" class="btn-sidebar-close" id="btnCloseAdminSidebar" onclick="closeAdminSidebar()" aria-label="Tutup Menu">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </div>
 
       <nav class="sidebar-nav">
@@ -1126,18 +1539,49 @@
     <main class="admin-main">
       <!-- Top Navigation Bar -->
       <header class="admin-top-nav">
-        <h1 class="top-nav-title" id="adminTopTitle">Kelola Banner Hero Layar Penuh</h1>
+        <div class="top-nav-left">
+          <button type="button" class="btn-mobile-sidebar-toggle" id="btnToggleAdminSidebar" onclick="toggleAdminSidebar()" aria-label="Buka Menu Navigasi">
+            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          </button>
+          <div class="top-brand-mobile">
+            <span class="logo-part-orange">al-ibriez</span><span class="logo-part-green" style="color:#10b981;">book</span>
+          </div>
+          <h1 class="top-nav-title" id="adminTopTitle">Kelola Banner Hero Layar Penuh</h1>
+        </div>
         <div class="top-nav-actions">
           <button class="btn-top-action btn-change-pin" id="btnChangePin">
             <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-            <span>Ubah PIN</span>
+            <span class="top-action-text">Ubah PIN</span>
           </button>
           <a href="index.html" target="_blank" class="btn-top-action btn-view-store">
             <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-            <span>Pratinjau Toko</span>
+            <span class="top-action-text">Pratinjau Toko</span>
           </a>
+          <button type="button" class="btn-top-action btn-logout-mobile" id="btnLogoutTopNav" onclick="adminLogout()" title="Keluar Admin">
+            <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span class="top-action-text">Keluar</span>
+          </button>
         </div>
       </header>
+
+      <!-- Fast Mobile Sub Navigation Bar -->
+      <nav class="admin-mobile-subnav" aria-label="Menu Cepat Admin">
+        <button type="button" class="mobile-subnav-btn active" id="mobSubnavBanners" onclick="switchAdminTab('banners')">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
+          <span>Banner</span>
+          <span class="mob-badge-cnt" id="mobBadgeHero">0</span>
+        </button>
+        <button type="button" class="mobile-subnav-btn" id="mobSubnavProducts" onclick="switchAdminTab('products')">
+          <svg viewBox="0 0 24 24"><path d="M4 11h6V4H4v7zm0 9h6v-7H4v7zm10 0h6v-7h-6v7zm0-16v7h6V4h-6z"/></svg>
+          <span>Katalog Produk</span>
+          <span class="mob-badge-cnt" id="mobBadgeProd">0</span>
+        </button>
+        <button type="button" class="mobile-subnav-btn" id="mobSubnavTestimonials" onclick="switchAdminTab('testimonials')">
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+          <span>Testimoni</span>
+          <span class="mob-badge-cnt" id="mobBadgeTesti">0</span>
+        </button>
+      </nav>
 
       <div class="admin-content-body">
         
@@ -1202,6 +1646,10 @@
               </div>
             </div>
 
+            <div class="table-mobile-scroll-hint">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+              <span>Geser tabel ke samping untuk melihat kolom &amp; tombol aksi lengkap</span>
+            </div>
             <div class="table-responsive">
               <table class="dash-table">
                 <thead>
@@ -1265,6 +1713,10 @@
               </div>
             </div>
 
+            <div class="table-mobile-scroll-hint">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+              <span>Geser tabel ke samping untuk melihat kolom &amp; tombol aksi lengkap</span>
+            </div>
             <div class="table-responsive">
               <table class="dash-table">
                 <thead>
@@ -1328,6 +1780,10 @@
               </div>
             </div>
 
+            <div class="table-mobile-scroll-hint">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+              <span>Geser tabel ke samping untuk melihat kolom &amp; tombol aksi lengkap</span>
+            </div>
             <div class="table-responsive">
               <table class="dash-table">
                 <thead>
@@ -1915,15 +2371,44 @@
     }
 
     // ==========================================================================
+    // RESPONSIVE MOBILE SIDEBAR DRAWER & LOGOUT
+    // ==========================================================================
+    window.toggleAdminSidebar = function() {
+      const sidebar = document.getElementById('adminSidebar');
+      const overlay = document.getElementById('sidebarDrawerOverlay');
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('open');
+    };
+
+    window.closeAdminSidebar = function() {
+      const sidebar = document.getElementById('adminSidebar');
+      const overlay = document.getElementById('sidebarDrawerOverlay');
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+    };
+
+    window.adminLogout = function() {
+      if (confirm('Apakah Anda yakin ingin keluar dari sesi Dashboard Admin?')) {
+        sessionStorage.removeItem('alibriez_admin_session');
+        window.location.reload();
+      }
+    };
+
+    // ==========================================================================
     // TAB SWITCHER (BANNERS VS PRODUCTS VS TESTIMONIALS)
     // ==========================================================================
     let currentAdminTab = 'banners';
 
     window.switchAdminTab = function(tabName) {
       currentAdminTab = tabName;
+      if (typeof closeAdminSidebar === 'function') closeAdminSidebar();
+
       const navBanners = document.getElementById('navItemBanners');
       const navProducts = document.getElementById('navItemProducts');
       const navTestimonials = document.getElementById('navItemTestimonials');
+      const mobBanners = document.getElementById('mobSubnavBanners');
+      const mobProducts = document.getElementById('mobSubnavProducts');
+      const mobTestimonials = document.getElementById('mobSubnavTestimonials');
       const viewBanners = document.getElementById('viewBannersTab');
       const viewProducts = document.getElementById('viewProductsTab');
       const viewTestimonials = document.getElementById('viewTestimonialsTab');
@@ -1932,22 +2417,29 @@
       if (navBanners) navBanners.classList.remove('active');
       if (navProducts) navProducts.classList.remove('active');
       if (navTestimonials) navTestimonials.classList.remove('active');
+      if (mobBanners) mobBanners.classList.remove('active');
+      if (mobProducts) mobProducts.classList.remove('active');
+      if (mobTestimonials) mobTestimonials.classList.remove('active');
+
       if (viewBanners) viewBanners.style.display = 'none';
       if (viewProducts) viewProducts.style.display = 'none';
       if (viewTestimonials) viewTestimonials.style.display = 'none';
 
       if (tabName === 'banners') {
         if (navBanners) navBanners.classList.add('active');
+        if (mobBanners) mobBanners.classList.add('active');
         if (viewBanners) viewBanners.style.display = 'block';
         if (topTitle) topTitle.textContent = 'Kelola Banner Hero Layar Penuh';
         renderBannerDashboard();
       } else if (tabName === 'products') {
         if (navProducts) navProducts.classList.add('active');
+        if (mobProducts) mobProducts.classList.add('active');
         if (viewProducts) viewProducts.style.display = 'block';
         if (topTitle) topTitle.textContent = 'Katalog & Manajemen Mushaf';
         renderDashboard();
       } else if (tabName === 'testimonials') {
         if (navTestimonials) navTestimonials.classList.add('active');
+        if (mobTestimonials) mobTestimonials.classList.add('active');
         if (viewTestimonials) viewTestimonials.style.display = 'block';
         if (topTitle) topTitle.textContent = 'Manajemen Ulasan & Testimoni Pelanggan';
         renderTestimonialDashboard();
@@ -1969,6 +2461,10 @@
       document.getElementById('dashTotalBannersAll').textContent = banners.length;
       document.getElementById('badgeHeroBannerCount').textContent = activeCount;
       document.getElementById('badgeProductCount').textContent = products.length;
+      const mobHero = document.getElementById('mobBadgeHero');
+      const mobProd = document.getElementById('mobBadgeProd');
+      if (mobHero) mobHero.textContent = activeCount;
+      if (mobProd) mobProd.textContent = products.length;
     }
 
     function renderBannerTable(query = '') {
@@ -2320,6 +2816,8 @@
       document.getElementById('dashTotalCategories').textContent = cats.size;
       const badgeProd = document.getElementById('badgeProductCount');
       if (badgeProd) badgeProd.textContent = products.length;
+      const mobBadgeProd = document.getElementById('mobBadgeProd');
+      if (mobBadgeProd) mobBadgeProd.textContent = products.length;
 
       const validPrices = products.map(p => Number(p.price)).filter(n => !isNaN(n) && n > 0);
       if (validPrices.length > 0) {
@@ -2515,6 +3013,8 @@
       if (elActive) elActive.textContent = activeCount;
       if (elAll) elAll.textContent = testimonials.length;
       if (elBadge) elBadge.textContent = activeCount;
+      const mobBadgeTesti = document.getElementById('mobBadgeTesti');
+      if (mobBadgeTesti) mobBadgeTesti.textContent = activeCount;
 
       if (testimonials.length > 0) {
         const sumRating = testimonials.reduce((acc, t) => acc + (Number(t.rating) || 5), 0);

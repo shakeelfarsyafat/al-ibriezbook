@@ -1333,69 +1333,38 @@ body {
   50% { opacity: 0.4; transform: scale(0.8); }
 }
 
-.interactive-audio-widget {
-  margin-top: 14px;
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 10px;
+.qr-info-pills-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
-.btn-play-sample-audio {
-  background: #10b981;
-  border: none;
-  color: #062b21;
-  padding: 7px 14px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 800;
-  cursor: pointer;
+.qr-info-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  transition: all 0.2s ease;
 }
 
-.btn-play-sample-audio:hover {
-  background: #34d399;
-  transform: translateY(-1px);
+.qr-info-pill:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: var(--brand-gold-light);
 }
 
-.btn-play-sample-audio svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-.audio-waves-container {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 20px;
-  padding-right: 6px;
-}
-
-.wave-bar {
-  width: 3px;
-  height: 6px;
-  background: var(--brand-gold-light);
-  border-radius: 2px;
-  transition: height 0.2s ease;
-}
-
-.interactive-audio-widget.playing .wave-bar:nth-child(1) { animation: waveAnim 0.7s infinite alternate ease-in-out; }
-.interactive-audio-widget.playing .wave-bar:nth-child(2) { animation: waveAnim 0.5s infinite alternate ease-in-out 0.1s; }
-.interactive-audio-widget.playing .wave-bar:nth-child(3) { animation: waveAnim 0.8s infinite alternate ease-in-out 0.2s; }
-.interactive-audio-widget.playing .wave-bar:nth-child(4) { animation: waveAnim 0.6s infinite alternate ease-in-out 0.15s; }
-.interactive-audio-widget.playing .wave-bar:nth-child(5) { animation: waveAnim 0.75s infinite alternate ease-in-out 0.25s; }
-
-@keyframes waveAnim {
-  0% { height: 4px; }
-  100% { height: 18px; }
+.qr-info-pill svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--brand-gold-light);
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -2579,6 +2548,23 @@ body {
     font-size: 0.74rem;
     line-height: 1.35;
     color: #cbd5e1;
+  }
+
+  .qr-info-pills-row {
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .qr-info-pill {
+    padding: 4px 8px;
+    font-size: 0.68rem;
+    gap: 4px;
+    border-radius: 14px;
+  }
+
+  .qr-info-pill svg {
+    width: 12px;
+    height: 12px;
   }
 
   /* 4. KATALOG PRODUK: 2 PRODUK PER BARIS (Gambar 4) */
