@@ -1211,29 +1211,6 @@
   </div>
 
   <!-- ==========================================================================
-       4. MODAL UBAH PIN ADMIN (DARK THEME)
-       ========================================================================== -->
-  <div class="admin-form-modal-dark" id="changePinModal">
-    <div class="auth-box-card" style="position:relative;">
-      <button class="admin-modal-close" id="btnCloseChangePinModal" style="background:#0f172a; color:#cbd5e1;">&times;</button>
-      <h3 style="font-size:1.35rem; font-weight:800; color:#ffffff; margin-bottom:6px;">Ubah PIN Admin</h3>
-      <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:20px;">Tentukan 6 Digit PIN baru untuk menjaga keamanan akses dashboard Anda.</p>
-
-      <form id="formChangePinSubmit" onsubmit="return false;" style="text-align:left;">
-        <div class="modal-form-group">
-          <label class="modal-form-label" style="color:#cbd5e1;">PIN Lama (6 Digit):</label>
-          <input type="password" id="oldPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
-        </div>
-        <div class="modal-form-group">
-          <label class="modal-form-label" style="color:#cbd5e1;">PIN Baru (6 Digit):</label>
-          <input type="password" id="newPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
-        </div>
-        <div class="modal-form-group">
-          <label class="modal-form-label" style="color:#cbd5e1;">Konfirmasi PIN Baru:</label>
-          <input type="password" id="confirmPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
-        </div>
-
-  <!-- ==========================================================================
        3.B MODAL FORM INPUT & EDIT BANNER HERO (DARK THEME)
        ========================================================================== -->
   <div class="admin-form-modal-dark" id="adminBannerFormModal">
@@ -1526,9 +1503,14 @@
         const raw = localStorage.getItem('alibriez_catalog_products');
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const clean = parsed.filter(p => p && typeof p === 'object' && p.name);
+            if (clean.length > 0) return clean;
+          }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error('Error loading products from localStorage:', e);
+      }
       return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
     }
 
@@ -1544,9 +1526,14 @@
         const raw = localStorage.getItem('alibriez_hero_banners');
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const clean = parsed.filter(b => b && typeof b === 'object' && b.title);
+            if (clean.length > 0) return clean;
+          }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error('Error loading hero banners from localStorage:', e);
+      }
       return JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
     }
 
@@ -1863,10 +1850,10 @@
       const cats = new Set(products.map(p => p.category).filter(Boolean));
       document.getElementById('dashTotalCategories').textContent = cats.size;
 
-      if (products.length > 0) {
-        const prices = products.map(p => p.price);
-        document.getElementById('dashMinPrice').textContent = 'Rp ' + Math.min(...prices).toLocaleString('id-ID');
-        document.getElementById('dashMaxPrice').textContent = 'Rp ' + Math.max(...prices).toLocaleString('id-ID');
+      const validPrices = products.map(p => Number(p.price)).filter(n => !isNaN(n) && n > 0);
+      if (validPrices.length > 0) {
+        document.getElementById('dashMinPrice').textContent = 'Rp ' + Math.min(...validPrices).toLocaleString('id-ID');
+        document.getElementById('dashMaxPrice').textContent = 'Rp ' + Math.max(...validPrices).toLocaleString('id-ID');
       } else {
         document.getElementById('dashMinPrice').textContent = 'Rp 0';
         document.getElementById('dashMaxPrice').textContent = 'Rp 0';

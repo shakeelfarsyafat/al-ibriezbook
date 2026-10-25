@@ -225,6 +225,44 @@ body {
   fill: currentColor;
 }
 
+/* Submit Login Admin Button (Centang Hijau Mewah) */
+.nav-login-check-btn {
+  height: 44px;
+  width: 44px;
+  min-width: 44px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  text-decoration: none;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.nav-login-check-btn:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+  border-color: #ffffff;
+}
+
+.nav-login-check-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.nav-login-check-btn svg.icon-check {
+  width: 22px;
+  height: 22px;
+  fill: #ffffff;
+  display: block;
+}
+
 /* ==========================================================================
    2. HERO BANNER CAROUSEL (FULL BANNER D;ENGAN ANIMASI CIAMIK)
    Banner responsif layar penuh, gesture drag/swipe, transisi halus,

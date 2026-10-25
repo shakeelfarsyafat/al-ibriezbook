@@ -86,7 +86,10 @@ function loadStoredProducts() {
     const raw = localStorage.getItem('alibriez_catalog_products');
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const clean = parsed.filter(p => p && typeof p === 'object' && p.name);
+        if (clean.length > 0) return clean;
+      }
     }
   } catch (e) {
     console.error('Error loading products from localStorage:', e);
@@ -171,7 +174,10 @@ function loadStoredBanners() {
     const raw = localStorage.getItem('alibriez_hero_banners');
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const clean = parsed.filter(b => b && typeof b === 'object' && b.title);
+        if (clean.length > 0) return clean;
+      }
     }
   } catch (e) {
     console.error('Error loading hero banners from localStorage:', e);
@@ -225,8 +231,19 @@ function initApp() {
   renderProductsGrid();
   updateOrderModalOptions();
   initCatalogModal();
+  initNavLoginButton();
   if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
     initAdminDashboard();
+  }
+}
+
+function initNavLoginButton() {
+  const btn = document.getElementById('navLoginCheckBtn');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      sessionStorage.setItem('alibriez_admin_logged', 'true');
+      localStorage.setItem('alibriez_admin_logged', 'true');
+    });
   }
 }
 
