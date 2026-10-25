@@ -884,48 +884,9 @@
 <body class="admin-body">
 
   <!-- ==========================================================================
-       1. PIN AUTH WALL SCREEN (HANYA BISA MASUK LEWAT PIN)
+       FULL ADMIN DASHBOARD PAGE (No Login Required)
        ========================================================================== -->
-  <div class="admin-auth-wrapper" id="adminAuthWall">
-    <div class="auth-box-card">
-      <div class="auth-icon-circle">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.5 1.1 2.5 2.5 0 .74-.33 1.41-.85 1.86l1.24 3.73-.89.91-1-.5-1 .5-.89-.91 1.24-3.73C11.83 10.91 11.5 10.24 11.5 9.5 11.5 8.1 12.6 7 14 7h-2z"/>
-        </svg>
-      </div>
-      <h2 class="auth-title">Akses Khusus Admin</h2>
-      <p class="auth-desc">Masukkan 6 Digit PIN Admin untuk membuka portal pengelolaan katalog &amp; data toko Al-Ibriez Book.</p>
-
-      <form id="adminPinLoginForm" onsubmit="event.preventDefault(); submitPinAuth();">
-        <div class="admin-single-pin-wrap">
-          <input type="password" id="adminPinInput" class="admin-single-pin-input" placeholder="Ketik 6 Digit PIN..." maxlength="12" autofocus autocomplete="current-password" inputmode="numeric">
-          <button type="button" class="btn-toggle-pin-visibility" id="btnTogglePinVisibility" title="Lihat / Sembunyikan PIN">
-            <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-          </button>
-        </div>
-
-        <div id="authErrorMsg" style="display:none; color:#f87171; font-size:0.84rem; font-weight:700; margin-bottom:14px;">
-          PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
-        </div>
-
-        <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard Admin</button>
-      </form>
-
-      <div style="margin-top:20px; font-size:0.82rem; color:#94a3b8; display:flex; flex-direction:column; gap:8px;">
-        <div>PIN Standar: <strong style="color:#10b981; font-size:0.95rem; letter-spacing:1px;">123456</strong></div>
-        <button type="button" id="btnResetPinDefault" style="background:transparent; border:none; color:#38bdf8; font-size:0.78rem; text-decoration:underline; cursor:pointer; padding:4px;">
-          Lupa PIN atau tidak bisa masuk? Klik di sini untuk Reset PIN ke 123456
-        </button>
-      </div>
-
-      <a href="index.html" class="auth-back-link">← Kembali ke Landing Page Toko</a>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       2. FULL ADMIN DASHBOARD PAGE
-       ========================================================================== -->
-  <div class="admin-layout" id="adminLayout" style="display:none;">
+  <div class="admin-layout" id="adminLayout" style="display:flex;">
     
     <!-- Left Sidebar -->
     <aside class="admin-sidebar">
@@ -1885,79 +1846,9 @@
       }
     };
 
-    // AUTH WALL LOGIC
-    const authWall = document.getElementById('adminAuthWall');
-    const adminLayout = document.getElementById('adminLayout');
-    const adminPinInput = document.getElementById('adminPinInput');
-    const btnAuthSubmit = document.getElementById('btnAuthSubmit');
-    const authErrorMsg = document.getElementById('authErrorMsg');
-    const btnTogglePin = document.getElementById('btnTogglePinVisibility');
-    const btnResetPin = document.getElementById('btnResetPinDefault');
-
-    function checkAuthSession() {
-      if (sessionStorage.getItem('alibriez_admin_logged') === 'true') {
-        authWall.style.display = 'none';
-        adminLayout.style.display = 'flex';
-        renderBannerDashboard();
-        renderDashboard();
-      } else {
-        authWall.style.display = 'flex';
-        adminLayout.style.display = 'none';
-        if (adminPinInput) {
-          setTimeout(() => adminPinInput.focus(), 150);
-        }
-      }
-    }
-
-    // Toggle Lihat/Sembunyikan PIN
-    if (btnTogglePin && adminPinInput) {
-      btnTogglePin.addEventListener('click', () => {
-        adminPinInput.type = adminPinInput.type === 'password' ? 'text' : 'password';
-      });
-    }
-
-    // Tombol Reset PIN ke Standar 123456 jika lupa / terkunci
-    if (btnResetPin && adminPinInput) {
-      btnResetPin.addEventListener('click', () => {
-        localStorage.removeItem('alibriez_admin_pin');
-        setAdminPin('123456');
-        adminPinInput.value = '123456';
-        authErrorMsg.style.display = 'none';
-        adminPinInput.focus();
-        showToast('PIN berhasil direset ke standar: 123456');
-      });
-    }
-
-    // Submit PIN Login
-    window.submitPinAuth = function() {
-      const entered = adminPinInput ? adminPinInput.value.trim() : '';
-      const currentPin = getAdminPin();
-
-      // Bolehkan PIN tersimpan ATAU default master 123456
-      if (entered === currentPin || entered === '123456') {
-        sessionStorage.setItem('alibriez_admin_logged', 'true');
-        authWall.style.display = 'none';
-        adminLayout.style.display = 'flex';
-        renderBannerDashboard();
-        renderDashboard();
-        showToast('Login Admin Berhasil!');
-      } else {
-        authErrorMsg.style.display = 'block';
-        if (adminPinInput) {
-          adminPinInput.value = '';
-          adminPinInput.focus();
-        }
-      }
-    };
-
-    if (btnAuthSubmit) {
-      btnAuthSubmit.addEventListener('click', submitPinAuth);
-    }
-
     // LOGOUT
     document.getElementById('btnLogoutSidebar').addEventListener('click', () => {
-      sessionStorage.removeItem('alibriez_admin_logged');
-      window.location.reload();
+      window.location.href = 'index.html';
     });
 
     // RENDER PRODUCTS DASHBOARD & METRICS
@@ -2195,8 +2086,9 @@
       }, 1000);
     });
 
-    // INITIALIZE
-    checkAuthSession();
+    // INITIALIZE - Dashboard langsung terbuka
+    renderBannerDashboard();
+    renderDashboard();
   </script>
 </body>
 </html>

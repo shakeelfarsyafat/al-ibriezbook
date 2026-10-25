@@ -34,14 +34,16 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-full: 9999px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-card: 0 4px 16px -2px rgba(0,0,0,0.06), 0 2px 6px -1px rgba(0,0,0,0.04);
-  --shadow-card-hover: 0 16px 32px -4px rgba(8,52,39,0.12), 0 4px 12px -2px rgba(0,0,0,0.06);
-  --shadow-modal: 0 25px 50px -12px rgba(0,0,0,0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 16px 32px -4px rgba(8, 52, 39, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
 }
 
 /* Base Resets */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -80,7 +82,7 @@ body {
   border-bottom: 1px solid #edf2ef;
   z-index: 1000;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .nav-container {
@@ -224,7 +226,7 @@ body {
 }
 
 /* ==========================================================================
-   2. HERO BANNER CAROUSEL (FULL BANNER DENGAN ANIMASI CIAMIK)
+   2. HERO BANNER CAROUSEL (FULL BANNER D;ENGAN ANIMASI CIAMIK)
    Banner responsif layar penuh, gesture drag/swipe, transisi halus,
    efek glassmorphism, dan indikator progres interaktif.
    ========================================================================== */
@@ -322,6 +324,7 @@ body {
 .hero-slide-item.theme-emerald {
   background: linear-gradient(135deg, #031c14 0%, #064031 45%, #0b5944 100%);
 }
+
 .hero-slide-item.theme-emerald .hero-slide-bg-ambient {
   background: radial-gradient(circle at 80% 30%, rgba(52, 211, 153, 0.25) 0%, transparent 60%);
 }
@@ -329,6 +332,7 @@ body {
 .hero-slide-item.theme-navy {
   background: linear-gradient(135deg, #091322 0%, #0e2942 45%, #075985 100%);
 }
+
 .hero-slide-item.theme-navy .hero-slide-bg-ambient {
   background: radial-gradient(circle at 80% 30%, rgba(56, 189, 248, 0.3) 0%, transparent 60%);
 }
@@ -336,6 +340,7 @@ body {
 .hero-slide-item.theme-amber {
   background: linear-gradient(135deg, #231202 0%, #5e3408 45%, #9a3412 100%);
 }
+
 .hero-slide-item.theme-amber .hero-slide-bg-ambient {
   background: radial-gradient(circle at 80% 30%, rgba(251, 191, 36, 0.28) 0%, transparent 60%);
 }
@@ -343,6 +348,7 @@ body {
 .hero-slide-item.theme-ruby {
   background: linear-gradient(135deg, #2b040e 0%, #5b0f24 45%, #881337 100%);
 }
+
 .hero-slide-item.theme-ruby .hero-slide-bg-ambient {
   background: radial-gradient(circle at 80% 30%, rgba(244, 63, 94, 0.3) 0%, transparent 60%);
 }
@@ -350,6 +356,7 @@ body {
 .hero-slide-item.theme-forest {
   background: linear-gradient(135deg, #021a11 0%, #0a3325 50%, #134e3a 100%);
 }
+
 .hero-slide-item.theme-forest .hero-slide-bg-ambient {
   background: radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.25) 0%, transparent 60%);
 }
@@ -413,10 +420,13 @@ body {
 }
 
 @keyframes badgePulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
     border-color: rgba(255, 255, 255, 0.25);
   }
+
   50% {
     transform: translateY(-2px);
     border-color: rgba(251, 191, 36, 0.6);
@@ -600,6 +610,7 @@ body {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -611,6 +622,7 @@ body {
     opacity: 0;
     transform: translateY(-16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -622,6 +634,7 @@ body {
     opacity: 0;
     transform: scale(0.92) translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -669,12 +682,19 @@ body {
     width: 40px;
     height: 40px;
   }
+
   .hero-nav-arrow svg {
     width: 20px;
     height: 20px;
   }
-  .hero-nav-prev { left: 10px; }
-  .hero-nav-next { right: 10px; }
+
+  .hero-nav-prev {
+    left: 10px;
+  }
+
+  .hero-nav-next {
+    right: 10px;
+  }
 }
 
 .hero-nav-arrow:hover {
@@ -688,6 +708,7 @@ body {
 .hero-nav-prev:hover svg {
   transform: translateX(-2px);
 }
+
 .hero-nav-next:hover svg {
   transform: translateX(2px);
 }
@@ -861,7 +882,7 @@ body {
   backdrop-filter: blur(12px);
   border-radius: var(--radius-lg);
   padding: 32px;
-  box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
@@ -870,7 +891,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 14px;
   margin-bottom: 20px;
   gap: 12px;
@@ -998,12 +1019,29 @@ body {
   display: inline-block;
 }
 
-.dot-mad { background-color: #ff6b6b; }
-.dot-ikhfa { background-color: #4ade80; }
-.dot-qalqalah { background-color: #38bdf8; }
-.dot-ghunnah { background-color: #c084fc; }
-.dot-waqaf { background-color: #ef4444; }
-.dot-ibtida { background-color: #22c55e; }
+.dot-mad {
+  background-color: #ff6b6b;
+}
+
+.dot-ikhfa {
+  background-color: #4ade80;
+}
+
+.dot-qalqalah {
+  background-color: #38bdf8;
+}
+
+.dot-ghunnah {
+  background-color: #c084fc;
+}
+
+.dot-waqaf {
+  background-color: #ef4444;
+}
+
+.dot-ibtida {
+  background-color: #22c55e;
+}
 
 /* Explanation Box */
 .ayah-explanation-box {
@@ -1170,7 +1208,7 @@ body {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.08));
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.08));
 }
 
 .product-card-title {
@@ -1336,7 +1374,7 @@ body {
   justify-content: center;
   flex-shrink: 0;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .testi-meta-name {
@@ -1658,8 +1696,13 @@ body {
 }
 
 @keyframes spinSlow {
-  0% { transform: translateY(-50%) rotate(0deg); }
-  100% { transform: translateY(-50%) rotate(360deg); }
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
 }
 
 .modal-form-select {
@@ -1871,7 +1914,7 @@ body {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  
+
   .hero-text-col {
     align-items: center;
   }
@@ -1906,6 +1949,7 @@ body {
    Fine-tuned for clean aesthetics, fast scanning, and 2-column e-commerce grid
    ========================================================================== */
 @media (max-width: 640px) {
+
   /* Container mobile padding */
   .container {
     padding: 0 16px;
@@ -1928,7 +1972,8 @@ body {
   }
 
   .brand-badge-sub {
-    display: none; /* Hide sub badge on small mobile to avoid crowding */
+    display: none;
+    /* Hide sub badge on small mobile to avoid crowding */
   }
 
   .nav-right-actions {
@@ -2462,6 +2507,7 @@ body {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2884,9 +2930,19 @@ body {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-6px); }
-  75% { transform: translateX(6px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-6px);
+  }
+
+  75% {
+    transform: translateX(6px);
+  }
 }
 
 .btn-admin-submit-pin {
@@ -3428,20 +3484,25 @@ body {
   .catalog-modal-card {
     padding: 20px 16px;
   }
+
   .catalog-controls-row {
     flex-direction: column;
     align-items: stretch;
   }
+
   .catalog-search-wrap {
     max-width: 100%;
   }
+
   .admin-stats-row {
     grid-template-columns: repeat(2, 1fr);
     padding: 12px 16px 4px 16px;
   }
+
   .admin-action-bar {
     padding: 10px 16px;
   }
+
   .admin-table-container {
     margin: 8px 16px 16px 16px;
   }
@@ -3619,4 +3680,3 @@ body {
     gap: 36px;
   }
 }
-
