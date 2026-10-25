@@ -913,183 +913,317 @@ body {
   z-index: 1;
 }
 
-/* Verse Card */
-.ayah-sample-card {
+/* ==========================================================================
+   2-SLIDE AUTHENTIC MUSHAF SHOWCASE (GAMBAR 2 & GAMBAR 3)
+   ========================================================================== */
+.mushaf-slider-card {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  backdrop-filter: blur(14px);
   border-radius: var(--radius-lg);
-  padding: 32px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
 }
 
-.ayah-card-meta {
+/* Slide Switcher Tabs */
+.mushaf-slide-tabs {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 14px;
+  gap: 10px;
   margin-bottom: 20px;
-  gap: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.ayah-title-group {
+.mushaf-tab-btn {
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  flex-wrap: wrap;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #cbd5e1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
 }
 
-.ayah-card-meta h4 {
-  font-size: 1.1rem;
+.mushaf-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mushaf-tab-btn.active {
+  background: #ffffff;
+  color: var(--brand-green-deep);
+  border-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tab-badge-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.25);
   color: var(--brand-gold-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.mushaf-tab-btn.active .tab-badge-num {
+  background: var(--brand-green-deep);
+  color: #ffffff;
+}
+
+/* Slides Viewport & Slide */
+.mushaf-slides-viewport {
+  position: relative;
+  min-height: 280px;
+}
+
+.mushaf-slide {
+  display: flex;
+  flex-direction: column;
+  animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide Visual Frame */
+.slide-visual-frame {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 0 30px rgba(245, 240, 230, 0.4);
+  margin-bottom: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-floating-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(6, 43, 33, 0.92);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.72rem;
   font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.badge-dot-green {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.badge-dot-orange {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f97316;
+}
+
+.mushaf-sample-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.mushaf-sample-img:hover {
+  transform: scale(1.015);
+}
+
+/* Slide Tags / Pills */
+.slide-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tajwid-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: #e2e8f0;
+}
+
+.tajwid-pill strong {
+  color: #ffffff;
+}
+
+.pill-mj {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+
+.pill-ik {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+}
+
+.pill-gh {
+  border-color: rgba(236, 72, 153, 0.5);
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
+}
+
+.pill-mw {
+  border-color: rgba(14, 165, 233, 0.5);
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+}
+
+.pill-qol {
+  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+}
+
+.pill-waqaf {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.pill-perkata {
+  border-color: rgba(20, 184, 166, 0.5);
+  background: rgba(20, 184, 166, 0.15);
+  color: #5eead4;
+}
+
+.pill-pa {
+  border-color: rgba(249, 115, 22, 0.5);
+  background: rgba(249, 115, 22, 0.15);
+  color: #fdba74;
+}
+
+/* Slide Caption Box */
+.slide-caption-box {
+  background: rgba(0, 0, 0, 0.28);
+  border-left: 3.5px solid var(--brand-gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.84rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.icon-info-gold {
+  width: 20px;
+  height: 20px;
+  fill: var(--brand-gold-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.slide-caption-box p {
   margin: 0;
 }
 
-.ayah-num-tag {
-  font-size: 0.72rem;
-  background: rgba(212, 175, 55, 0.2);
-  color: #ffffff;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 700;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  white-space: nowrap;
-}
-
-.surah-badge {
-  font-family: var(--font-arabic);
-  font-size: 1.25rem;
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-/* Arabic Text Box with Tajwid and Waqaf Highlights */
-.ayah-text-box {
-  font-family: var(--font-arabic);
-  font-size: 2.1rem;
-  line-height: 2.3;
-  text-align: right;
-  direction: rtl;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: var(--radius-md);
-  padding: 24px;
-  margin-bottom: 24px;
-  letter-spacing: 0.5px;
-}
-
-/* Colored Tajwid Classes */
-.tj-mad {
-  color: #ff6b6b;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
-}
-
-.tj-ikhfa {
-  color: #4ade80;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
-}
-
-.tj-qalqalah {
-  color: #38bdf8;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-}
-
-.tj-ghunnah {
-  color: #c084fc;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(192, 132, 252, 0.4);
-}
-
-/* Waqaf and Ibtida' line markers */
-.tj-waqaf {
-  border-bottom: 3px solid #ef4444;
-  padding-bottom: 4px;
-}
-
-.tj-ibtida {
-  border-bottom: 3px solid #22c55e;
-  padding-bottom: 4px;
-}
-
-/* Interactive Chips */
-.tajwid-chips-wrap {
+/* Slide Footer Nav Controls */
+.slide-nav-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.tajwid-chip-btn {
+.btn-slide-nav {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #e2e8f0;
   padding: 6px 14px;
-  border-radius: var(--radius-full);
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.tajwid-chip-btn:hover,
-.tajwid-chip-btn.active {
+.btn-slide-nav:hover {
   background: #ffffff;
   color: var(--brand-green-deep);
-  border-color: #ffffff;
-  transform: translateY(-1px);
 }
 
-.chip-color-dot {
-  width: 9px;
-  height: 9px;
+.btn-slide-nav svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.slide-dots-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot-indicator {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-.dot-mad {
-  background-color: #ff6b6b;
-}
-
-.dot-ikhfa {
-  background-color: #4ade80;
-}
-
-.dot-qalqalah {
-  background-color: #38bdf8;
-}
-
-.dot-ghunnah {
-  background-color: #c084fc;
-}
-
-.dot-waqaf {
-  background-color: #ef4444;
-}
-
-.dot-ibtida {
-  background-color: #22c55e;
-}
-
-/* Explanation Box */
-.ayah-explanation-box {
-  background: rgba(0, 0, 0, 0.25);
-  border-left: 3px solid var(--brand-gold);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 12px 16px;
-  font-size: 0.88rem;
-  color: #e2e8f0;
-  line-height: 1.5;
+.dot-indicator.active {
+  width: 26px;
+  border-radius: 9999px;
+  background: var(--brand-gold);
 }
 
 /* Right Side: 3 Features of Mushaf */
@@ -1147,6 +1281,121 @@ body {
   font-size: 0.88rem;
   color: #cbd5e1;
   line-height: 1.5;
+}
+
+/* Audio QR Feature Highlight Card */
+.highlight-card-audio {
+  background: rgba(212, 175, 55, 0.08) !important;
+  border-color: rgba(212, 175, 55, 0.35) !important;
+}
+
+.audio-icon-circle {
+  background: rgba(212, 175, 55, 0.2) !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+  color: var(--brand-gold-light) !important;
+}
+
+.audio-card-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.badge-audio-live {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-audio-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  animation: pulseDot 1.5s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.interactive-audio-widget {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.btn-play-sample-audio {
+  background: #10b981;
+  border: none;
+  color: #062b21;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-play-sample-audio:hover {
+  background: #34d399;
+  transform: translateY(-1px);
+}
+
+.btn-play-sample-audio svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.audio-waves-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding-right: 6px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 6px;
+  background: var(--brand-gold-light);
+  border-radius: 2px;
+  transition: height 0.2s ease;
+}
+
+.interactive-audio-widget.playing .wave-bar:nth-child(1) { animation: waveAnim 0.7s infinite alternate ease-in-out; }
+.interactive-audio-widget.playing .wave-bar:nth-child(2) { animation: waveAnim 0.5s infinite alternate ease-in-out 0.1s; }
+.interactive-audio-widget.playing .wave-bar:nth-child(3) { animation: waveAnim 0.8s infinite alternate ease-in-out 0.2s; }
+.interactive-audio-widget.playing .wave-bar:nth-child(4) { animation: waveAnim 0.6s infinite alternate ease-in-out 0.15s; }
+.interactive-audio-widget.playing .wave-bar:nth-child(5) { animation: waveAnim 0.75s infinite alternate ease-in-out 0.25s; }
+
+@keyframes waveAnim {
+  0% { height: 4px; }
+  100% { height: 18px; }
 }
 
 /* ==========================================================================
@@ -2253,72 +2502,45 @@ body {
     line-height: 1.45;
   }
 
-  .ayah-sample-card {
+  .mushaf-slider-card {
     padding: 16px 14px;
     border-radius: var(--radius-md);
   }
 
-  .ayah-card-meta {
-    padding-bottom: 10px;
-    margin-bottom: 14px;
-    gap: 8px;
-  }
-
-  .ayah-card-meta h4 {
-    font-size: 0.92rem;
-  }
-
-  .ayah-num-tag {
-    font-size: 0.68rem;
-    padding: 1px 6px;
-  }
-
-  .surah-badge {
-    font-size: 1.05rem;
-  }
-
-  .ayah-text-box {
-    font-size: 1.45rem;
-    line-height: 2.1;
-    padding: 14px 12px;
-    margin-bottom: 14px;
-    border-radius: 8px;
-  }
-
-  /* Chips Tajwid rapi: 2 Kolom Grid seimbang (Gambar 2) */
-  .tajwid-chips-wrap {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-    margin-bottom: 12px;
-  }
-
-  .tajwid-chip-btn {
-    width: 100%;
-    padding: 8px 8px;
-    font-size: 0.75rem;
-    justify-content: flex-start;
+  .mushaf-slide-tabs {
+    flex-direction: column;
     gap: 6px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .chip-color-dot {
-    width: 8px;
-    height: 8px;
-    flex-shrink: 0;
+  .mushaf-tab-btn {
+    padding: 8px 10px;
+    font-size: 0.76rem;
   }
 
-  .ayah-explanation-box {
+  .slide-visual-frame {
+    padding: 6px;
+  }
+
+  .slide-floating-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .slide-tags-wrap {
+    gap: 6px;
+  }
+
+  .tajwid-pill {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .slide-caption-box {
     padding: 10px 12px;
     font-size: 0.78rem;
     line-height: 1.45;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.35);
   }
 
   /* 3 Pilar Keunggulan Diperkecil (Gambar 3) */

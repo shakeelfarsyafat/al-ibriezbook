@@ -102,95 +102,160 @@
        3. CONTOH BACAAN SECTION (Replacing company profile video banner)
        Deep emerald green container (#083427) with interactive Tajwid & Waqaf
        ========================================================================== -->
+  <!-- ==========================================================================
+       3. CONTOH BACAAN SECTION (2 SLIDE DARI FOTO MUSHAF ASLI + FITUR AUDIO QR)
+       Menampilkan Gambar 2 (Tajwid Multikode) dan Gambar 3 (Tanda Waqaf & Per-kata)
+       serta penjelasan Tajwid Multikode, Tanda Waqaf, dan QR Code Rekaman Audio.
+       ========================================================================== -->
   <section class="reading-sample-section" id="sectionContohBacaan">
     <div class="container">
       <div class="sample-header-row">
         <span class="sample-tag">Teknologi Mushaf Cetakan Al-Qosbah</span>
-        <h2 class="sample-title">Contoh Bacaan: Tajwid Multikode & Waqaf Ibtida'</h2>
+        <h2 class="sample-title">Contoh Bacaan: Tajwid Multikode, Tanda Waqaf &amp; Audio QR</h2>
         <p class="sample-desc">
-          Perhatikan visual huruf berwarna dan tanda garis henti-mulai pada ayat di bawah ini. Membantu lisan membaca tartil dan nafas tetap terjaga tanpa rumus rumit!
+          Perhatikan visual mushaf cetakan resmi Penerbit Al-Qosbah pada 2 slide contoh di bawah ini. Dilengkapi panduan <strong>Tajwid Multikode</strong>, tanda <strong>Waqaf &amp; Ibtida'</strong>, serta <strong>QR Code rekaman audio</strong> yang bisa didengar langsung untuk bimbingan tilawah tartil.
         </p>
       </div>
 
       <div class="sample-master-grid">
-        <!-- Left: Interactive Verse Card -->
-        <div class="ayah-sample-card">
-          <div class="ayah-card-meta">
-            <div class="ayah-title-group">
-              <h4>Surat Al-Baqarah</h4>
-              <span class="ayah-num-tag">Ayat 2–3</span>
+        <!-- Left: 2-Slide Interactive Showcase (Foto Asli Mushaf) -->
+        <div class="mushaf-slider-card">
+          <!-- Slide Switcher Tabs -->
+          <div class="mushaf-slide-tabs" role="tablist">
+            <button type="button" class="mushaf-tab-btn active" id="tabMushafSlide1" data-slide="0" role="tab" aria-selected="true">
+              <span class="tab-badge-num">1</span>
+              <span>Slide 1: Tajwid Multikode (QS. Al-Baqarah: 30)</span>
+            </button>
+            <button type="button" class="mushaf-tab-btn" id="tabMushafSlide2" data-slide="1" role="tab" aria-selected="false">
+              <span class="tab-badge-num">2</span>
+              <span>Slide 2: Tanda Waqaf &amp; Per-Kata (QS. Maryam: 26)</span>
+            </button>
+          </div>
+
+          <!-- Slides Viewport -->
+          <div class="mushaf-slides-viewport">
+            <!-- Slide 1: Tajwid Multikode -->
+            <div class="mushaf-slide active" id="mushafSlide1">
+              <div class="slide-visual-frame">
+                <div class="slide-floating-badge">
+                  <span class="badge-dot-green"></span>
+                  <span>Surat Al-Baqarah • Ayat 30 (Tajwid Multikode)</span>
+                </div>
+                <img src="assets/contoh-tajwid-multikode.jpg" alt="Contoh Tajwid Multikode Al-Qur'an Al-Muttaqin Cetakan Al-Qosbah" class="mushaf-sample-img">
+              </div>
+
+              <!-- Highlight Explanation Pills for Slide 1 -->
+              <div class="slide-tags-wrap">
+                <span class="tajwid-pill pill-mj"><strong>5 Pan MJ</strong> Mad Jaiz (5 Ketukan)</span>
+                <span class="tajwid-pill pill-ik"><strong>2 Sa Ik</strong> Ikhfa Samawi (2 Ketukan)</span>
+                <span class="tajwid-pill pill-gh"><strong>2 De Gh</strong> Ghunnah (2 Ketukan)</span>
+                <span class="tajwid-pill pill-mw"><strong>5 Pan MW</strong> Mad Wajib (5 Ketukan)</span>
+                <span class="tajwid-pill pill-qol"><strong>0 Ptl Qol</strong> Qalqalah Pantul</span>
+              </div>
+
+              <div class="slide-caption-box">
+                <svg viewBox="0 0 24 24" class="icon-info-gold"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <p>
+                  <strong>Kaidah Tajwid Multikode:</strong> Singkatan panduan tajwid tertera langsung di atas huruf/kata berwarna. Pembaca langsung tahu panjang ketukan dan cara pengucapannya secara instan tanpa perlu menghafal rumus teoritis.
+                </p>
+              </div>
             </div>
-            <span class="surah-badge">سُورَةُ البَقَرَة</span>
+
+            <!-- Slide 2: Tanda Waqaf & Per-Kata -->
+            <div class="mushaf-slide" id="mushafSlide2" style="display:none;">
+              <div class="slide-visual-frame">
+                <div class="slide-floating-badge">
+                  <span class="badge-dot-orange"></span>
+                  <span>Surat Maryam • Ayat 26 (Tanda Waqaf &amp; Terjemah Per-Kata)</span>
+                </div>
+                <img src="assets/contoh-waqaf-terjemah.jpg" alt="Contoh Tanda Waqaf & Terjemah Per-Kata Mushaf Al-Qur'an Al-Qosbah" class="mushaf-sample-img">
+              </div>
+
+              <!-- Highlight Explanation Pills for Slide 2 -->
+              <div class="slide-tags-wrap">
+                <span class="tajwid-pill pill-waqaf"><strong>Tanda WAKAF / TERUS</strong> Tegak di Antara Kata</span>
+                <span class="tajwid-pill pill-perkata"><strong>Terjemah Per-Kata</strong> Latin &amp; Indonesia</span>
+                <span class="tajwid-pill pill-pa"><strong>5 M Pa / 2 Ik Sa</strong> Kode Harakat Lengkap</span>
+              </div>
+
+              <div class="slide-caption-box">
+                <svg viewBox="0 0 24 24" class="icon-info-gold"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <p>
+                  <strong>Panduan Tanda Waqaf &amp; Terjemah:</strong> Garis vertikal bertuliskan <em>WAKAF/TERUS</em> memberikan kepastian tempat berhenti bagi nafas pendek tanpa merusak makna, dilengkapi arti per-kata untuk mendalami kandungan ayat.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <!-- Color Coded Arabic Verse -->
-          <div class="ayah-text-box" id="sampleAyahBox">
-            ذَٰلِكَ الْكِتَـٰبُ <span class="tj-waqaf" title="Tanda Waqaf (Berhenti)">لَا رَيْبَ ۛ فِيهِ ۛ</span> <span class="tj-ibtida" title="Tanda Ibtida' (Mulai Kembali)">هُدً<span class="tj-ikhfa">ى لِّ</span>لْمُ<span class="tj-qalqalah">تَّ</span>قِينَ</span> ﴿٢﴾ الَّذِينَ يُؤْمِ<span class="tj-ikhfa">نُونَ بِ</span>الْغَيْبِ وَيُ<span class="tj-qalqalah">قِ</span>يمُونَ الصَّلَوٰةَ وَمِ<span class="tj-ghunnah">مَّ</span>ا رَزَ<span class="tj-qalqalah">قْ</span>نَـٰهُمْ يُ<span class="tj-ikhfa">نفِ</span><span class="tj-mad">قُونَ</span> ﴿٣﴾
-          </div>
-
-          <!-- Interactive Rule Selector Chips -->
-          <div class="tajwid-chips-wrap">
-            <button class="tajwid-chip-btn active" data-rule="mad">
-              <span class="chip-color-dot dot-mad"></span>
-              <span>Mad (Merah)</span>
+          <!-- Slide Nav Footer Controls -->
+          <div class="slide-nav-controls">
+            <button type="button" class="btn-slide-nav" id="btnPrevMushafSlide" title="Slide Sebelumnya">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              <span>Slide Sebelumnya</span>
             </button>
-            <button class="tajwid-chip-btn" data-rule="ikhfa">
-              <span class="chip-color-dot dot-ikhfa"></span>
-              <span>Ikhfa &amp; Idgham (Hijau)</span>
+            <div class="slide-dots-indicator" id="slideDotsIndicator">
+              <span class="dot-indicator active" data-slide="0" title="Slide 1"></span>
+              <span class="dot-indicator" data-slide="1" title="Slide 2"></span>
+            </div>
+            <button type="button" class="btn-slide-nav" id="btnNextMushafSlide" title="Slide Berikutnya">
+              <span>Slide Berikutnya</span>
+              <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </button>
-            <button class="tajwid-chip-btn" data-rule="qalqalah">
-              <span class="chip-color-dot dot-qalqalah"></span>
-              <span>Qalqalah Pantul (Biru)</span>
-            </button>
-            <button class="tajwid-chip-btn" data-rule="ghunnah">
-              <span class="chip-color-dot dot-ghunnah"></span>
-              <span>Ghunnah Tasydid (Ungu)</span>
-            </button>
-            <button class="tajwid-chip-btn" data-rule="waqaf">
-              <span class="chip-color-dot dot-waqaf"></span>
-              <span>Tanda Waqaf (Garis Merah)</span>
-            </button>
-            <button class="tajwid-chip-btn" data-rule="ibtida">
-              <span class="chip-color-dot dot-ibtida"></span>
-              <span>Tanda Ibtida' (Garis Hijau)</span>
-            </button>
-          </div>
-
-          <!-- Dynamic Explanation Box -->
-          <div class="ayah-explanation-box" id="sampleExplanationBox">
-            <strong>Mad (Warna Merah):</strong> Dibaca panjang 2, 4, hingga 6 harakat. Huruf berwarna merah langsung menandai ketukan panjang tanpa perlu menghafal nama kaidah.
           </div>
         </div>
 
-        <!-- Right: 3 Value Proposition Cards -->
+        <!-- Right: 3 Core Value Proposition Cards -->
         <div class="sample-features-col">
+          <!-- Card 1: Tajwid Multikode -->
           <div class="sample-feature-card">
             <div class="sample-icon-circle">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm4 4h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
             </div>
             <div class="sample-feature-text">
               <h5>Tajwid Multikode Full Color</h5>
-              <p>Warna visual langsung pada setiap huruf memudahkan pembaca anak, mualaf, hingga orang tua tanpa rumus rumit.</p>
+              <p>Warna visual dan singkatan kode ketukan (contoh: <em>5 Pan MJ, 2 Sa Ik, 2 De Gh</em>) langsung pada setiap huruf memudahkan anak, santri, mualaf, hingga orang tua membaca tartil tanpa pusing menghafal rumus kaidah.</p>
             </div>
           </div>
 
+          <!-- Card 2: Tanda Waqaf & Ibtida' -->
           <div class="sample-feature-card">
             <div class="sample-icon-circle">
               <svg viewBox="0 0 24 24"><path d="M14 6l-1-2H5v17h2v-7h5l1 2h7V6h-6zm4 8h-4l-1-2H7V6h5l1 2h5v6z"/></svg>
             </div>
             <div class="sample-feature-text">
-              <h5>Panduan Garis Waqaf &amp; Ibtida'</h5>
-              <p>Tanda henti dan titik mulai kembali bagi pembaca dengan nafas pendek agar arti firman Allah tidak rusak.</p>
+              <h5>Panduan Tanda Waqaf &amp; Ibtida'</h5>
+              <p>Tanda henti (Waqaf) dan titik mulai kembali (Ibtida') yang jelas serta akurat. Memberikan kepastian jeda nafas bagi pembaca dengan nafas pendek agar arti firman Allah tetap terjaga sempurna.</p>
             </div>
           </div>
 
-          <div class="sample-feature-card">
-            <div class="sample-icon-circle">
-              <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <!-- Card 3: QR Code Rekaman Audio yang Bisa Didengar -->
+          <div class="sample-feature-card highlight-card-audio">
+            <div class="sample-icon-circle audio-icon-circle">
+              <!-- QR Code & Headphones combined icon -->
+              <svg viewBox="0 0 24 24"><path d="M3 5v4h2V5h4V3H5c-1.1 0-2 .9-2 2zm2 10H3v4c0 1.1.9 2 2 2h4v-2H5v-4zm14 4h-4v2h4c1.1 0 2-.9 2-2v-4h-2v4zm0-16h-4v2h4v4h2V5c0-1.1-.9-2-2-2zm-7 4H8v6h6V7zm-2 4h-2V9h2v2zm8 1v5c0 1.66-1.34 3-3 3h-2v-6h2v-2h-8v2h2v6H9c-1.66 0-3-1.34-3-3v-5c0-3.31 2.69-6 6-6s6 2.69 6 6z"/></svg>
             </div>
-            <div class="sample-feature-text">
-              <h5>Khat Rasm Utsmani Kemenag RI</h5>
-              <p>Tulisan Arab tebal, proporsional, dan renggang di atas kertas Quran Paper Premium (QPP) yang sejuk di mata.</p>
+            <div class="sample-feature-text" style="width:100%;">
+              <div class="audio-card-head-row">
+                <h5>QR Code Rekaman Audio Tartil</h5>
+                <span class="badge-audio-live">Bisa Didengar Langsung</span>
+              </div>
+              <p>Tersedia QR Code rekaman audio di setiap halaman mushaf. Cukup scan menggunakan kamera HP untuk mendengarkan bacaan murottal tartil per ayat sebagai bimbingan nada, makhorijul huruf, dan ketukan tajwid yang sahih.</p>
+              
+              <!-- Interactive Audio Recitation Previewer -->
+              <div class="interactive-audio-widget" id="sampleAudioWidget">
+                <button type="button" class="btn-play-sample-audio" id="btnPlaySampleAudio" aria-label="Putar Contoh Audio Rekaman Murottal">
+                  <svg id="iconPlayAudio" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg id="iconPauseAudio" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                  <span id="textPlayAudioStatus">Putar Contoh Audio Murottal</span>
+                </button>
+                <div class="audio-waves-container" id="audioWavesContainer">
+                  <span class="wave-bar"></span>
+                  <span class="wave-bar"></span>
+                  <span class="wave-bar"></span>
+                  <span class="wave-bar"></span>
+                  <span class="wave-bar"></span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

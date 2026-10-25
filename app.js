@@ -353,7 +353,7 @@ function initTestimonialsCarousel() {
 function initApp() {
   initHeroBannerCarousel();
   initNavbarSearch();
-  initTajwidDemo();
+  initMushafShowcaseSlider();
   initOrderModal();
   renderProductsGrid();
   updateOrderModalOptions();
@@ -814,41 +814,170 @@ window.selectFromSearch = function(id, name, price) {
 };
 
 // ==========================================================================
-// TAJWID & WAQAF INTERACTIVE DEMO
+// 2-SLIDE AUTHENTIC MUSHAF SHOWCASE SLIDER & AUDIO RECITATION PREVIEW
 // ==========================================================================
-function initTajwidDemo() {
-  const chips = document.querySelectorAll('.tajwid-chip-btn');
-  const explanationBox = document.getElementById('sampleExplanationBox');
-  const ayahBox = document.getElementById('sampleAyahBox');
+function initMushafShowcaseSlider() {
+  const tabs = document.querySelectorAll('.mushaf-tab-btn');
+  const slides = document.querySelectorAll('.mushaf-slide');
+  const dots = document.querySelectorAll('.dot-indicator');
+  const btnPrev = document.getElementById('btnPrevMushafSlide');
+  const btnNext = document.getElementById('btnNextMushafSlide');
 
-  if (!chips.length || !explanationBox) return;
+  if (!tabs.length || !slides.length) return;
 
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
+  let currentSlide = 0;
+  const totalSlides = slides.length;
 
-      const ruleKey = chip.getAttribute('data-rule');
-      const rule = TAJWID_RULES[ruleKey];
-      if (rule) {
-        explanationBox.innerHTML = `<strong>${rule.title}:</strong> ${rule.text}`;
+  function goToSlide(index) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentSlide = index;
+
+    slides.forEach((s, idx) => {
+      if (idx === currentSlide) {
+        s.style.display = 'flex';
+        s.classList.add('active');
+      } else {
+        s.style.display = 'none';
+        s.classList.remove('active');
+      }
+    });
+
+    tabs.forEach((tab, idx) => {
+      const isActive = idx === currentSlide;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === currentSlide);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const slideIndex = parseInt(tab.getAttribute('data-slide'), 10) || 0;
+      goToSlide(slideIndex);
+    });
+  });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const slideIndex = parseInt(dot.getAttribute('data-slide'), 10) || 0;
+      goToSlide(slideIndex);
+    });
+  });
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => {
+      goToSlide(currentSlide - 1);
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      goToSlide(currentSlide + 1);
+    });
+  }
+
+  initAudioPreview();
+}
+
+let audioCtx = null;
+let audioOscillator = null;
+let audioGain = null;
+let isAudioPlaying = false;
+let audioTimer = null;
+
+function initAudioPreview() {
+  const btnPlay = document.getElementById('btnPlaySampleAudio');
+  const widget = document.getElementById('sampleAudioWidget');
+  const iconPlay = document.getElementById('iconPlayAudio');
+  const iconPause = document.getElementById('iconPauseAudio');
+  const textStatus = document.getElementById('textPlayAudioStatus');
+
+  if (!btnPlay || !widget) return;
+
+  function stopAudio() {
+    isAudioPlaying = false;
+    widget.classList.remove('playing');
+    if (iconPlay) iconPlay.style.display = 'block';
+    if (iconPause) iconPause.style.display = 'none';
+    if (textStatus) textStatus.textContent = 'Putar Contoh Audio Murottal';
+
+    if (audioTimer) {
+      clearInterval(audioTimer);
+      audioTimer = null;
+    }
+
+    if (audioGain && audioCtx) {
+      try {
+        audioGain.gain.setValueAtTime(audioGain.gain.value, audioCtx.currentTime);
+        audioGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+        setTimeout(() => {
+          if (audioOscillator) {
+            audioOscillator.stop();
+            audioOscillator.disconnect();
+            audioOscillator = null;
+          }
+        }, 350);
+      } catch (e) {
+        // Safe exit
+      }
+    }
+  }
+
+  function startAudio() {
+    isAudioPlaying = true;
+    widget.classList.add('playing');
+    if (iconPlay) iconPlay.style.display = 'none';
+    if (iconPause) iconPause.style.display = 'block';
+    if (textStatus) textStatus.textContent = 'Memutar Rekaman Murottal...';
+
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
       }
 
-      // Pulse highlight in Arabic text
-      const targetClass = ruleKey === 'waqaf' ? '.tj-waqaf' :
-                          ruleKey === 'ibtida' ? '.tj-ibtida' :
-                          `.tj-${ruleKey}`;
-      
-      const elements = ayahBox.querySelectorAll(targetClass);
-      elements.forEach(el => {
-        el.style.transition = 'all 0.3s ease';
-        el.style.transform = 'scale(1.15)';
-        el.style.display = 'inline-block';
-        setTimeout(() => {
-          el.style.transform = 'scale(1)';
-        }, 400);
-      });
-    });
+      // Melodic notes sequence reminiscent of tartil tilawah (Hijaz / Bayati maqam notes)
+      const freqs = [293.66, 329.63, 349.23, 440.0, 392.0, 349.23, 329.63, 293.66];
+      let noteIdx = 0;
+
+      audioGain = audioCtx.createGain();
+      audioGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      audioGain.connect(audioCtx.destination);
+
+      audioOscillator = audioCtx.createOscillator();
+      audioOscillator.type = 'sine';
+      audioOscillator.frequency.setValueAtTime(freqs[0], audioCtx.currentTime);
+      audioOscillator.connect(audioGain);
+      audioOscillator.start();
+
+      audioTimer = setInterval(() => {
+        if (!isAudioPlaying || !audioOscillator || !audioCtx) return;
+        noteIdx = (noteIdx + 1) % freqs.length;
+        audioOscillator.frequency.setTargetAtTime(freqs[noteIdx], audioCtx.currentTime, 0.15);
+      }, 700);
+
+      // Automatically stop after 15s demo
+      setTimeout(() => {
+        if (isAudioPlaying) stopAudio();
+      }, 15000);
+    } catch (e) {
+      console.log('Audio init:', e);
+    }
+  }
+
+  btnPlay.addEventListener('click', () => {
+    if (isAudioPlaying) {
+      stopAudio();
+    } else {
+      startAudio();
+    }
   });
 }
 
