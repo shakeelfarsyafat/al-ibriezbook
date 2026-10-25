@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard • Al-Ibriez Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <style>
     :root {
@@ -686,6 +688,135 @@
       border-color: #10b981;
     }
 
+    /* BANNER MANAGEMENT SPECIFIC STYLES */
+    .table-banner-thumb {
+      width: 100px;
+      height: 56px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0f172a;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .table-banner-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .banner-theme-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .theme-badge-emerald { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .theme-badge-navy    { background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.35); }
+    .theme-badge-amber   { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .theme-badge-ruby    { background: rgba(244, 63, 94, 0.2);  color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.35); }
+    .theme-badge-forest  { background: rgba(5, 150, 105, 0.2); color: #6ee7b7; border: 1px solid rgba(5, 150, 105, 0.35); }
+
+    .banner-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .banner-status-pill.active {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .banner-status-pill.inactive {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .banner-cta-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .banner-cta-link-pill:hover {
+      background: rgba(249, 115, 22, 0.2);
+      color: #f97316;
+      border-color: rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-tbl-move {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.2s;
+    }
+
+    .btn-tbl-move:hover {
+      background: #10b981;
+      color: #062b21;
+      border-color: #10b981;
+    }
+
+    .btn-tbl-move svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .banner-preset-btn {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .banner-preset-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #ffffff;
+    }
+
     @media (max-width: 900px) {
       .admin-layout {
         flex-direction: column;
@@ -716,8 +847,8 @@
       <h2 class="auth-title">Akses Khusus Admin</h2>
       <p class="auth-desc">Masukkan 6 Digit PIN Admin untuk membuka portal pengelolaan katalog &amp; data toko Al-Ibriez Book.</p>
 
-      <div class="admin-pin-group" id="authPinWrap">
-        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric" autofocus>
+      <div class="admin-pin-group" id="authPinWrap" title="Ketik atau Paste 6 Digit PIN di sini">
+        <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric" autofocus autocomplete="one-time-code">
         <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
         <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
         <input type="password" maxlength="1" class="pin-input-cell" inputmode="numeric">
@@ -729,10 +860,16 @@
         PIN tidak valid! Silakan masukkan 6 digit PIN yang benar.
       </div>
 
-      <button type="button" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard</button>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+        <button type="button" class="btn-auth-submit" id="btnAuthSubmit">Buka Dashboard</button>
+        <button type="button" id="btnQuickLogin" style="background:rgba(16,185,129,0.12); color:#34d399; border:1px solid rgba(16,185,129,0.3); border-radius:12px; height:42px; font-weight:700; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s ease;">
+          <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+          <span>Masuk Cepat Instan (PIN: 123456)</span>
+        </button>
+      </div>
 
-      <div style="margin-top:14px; font-size:0.75rem; color:#64748b;">
-        PIN Standar: <strong style="color:#10b981;">123456</strong>
+      <div style="font-size:0.75rem; color:#64748b; line-height:1.5;">
+        Tips: Anda bisa langsung mengetik atau <strong>Copy-Paste</strong> 6 digit PIN.
       </div>
 
       <a href="index.html" class="auth-back-link">← Kembali ke Landing Page Toko</a>
@@ -754,9 +891,15 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="sidebar-nav-item active">
+        <div class="sidebar-nav-item active" id="navItemBanners" onclick="switchAdminTab('banners')">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
+          <span>Kelola Banner Hero</span>
+          <span class="badge-tab-count" id="badgeHeroBannerCount" style="margin-left:auto; background:rgba(249,115,22,0.2); color:#f97316; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">0</span>
+        </div>
+        <div class="sidebar-nav-item" id="navItemProducts" onclick="switchAdminTab('products')">
           <svg viewBox="0 0 24 24"><path d="M4 11h6V4H4v7zm0 9h6v-7H4v7zm10 0h6v-7h-6v7zm0-16v7h6V4h-6z"/></svg>
           <span>Kelola Katalog Produk</span>
+          <span class="badge-tab-count" id="badgeProductCount" style="margin-left:auto; background:rgba(16,185,129,0.2); color:#10b981; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">0</span>
         </div>
         <div class="sidebar-nav-item" onclick="alert('Modul Analisis Penjualan & Pesanan sedang disiapkan untuk tahap berikutnya.')">
           <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
@@ -783,96 +926,184 @@
     <main class="admin-main">
       <!-- Top Navigation Bar -->
       <header class="admin-top-nav">
-        <h1 class="top-nav-title">Katalog &amp; Manajemen Mushaf</h1>
+        <h1 class="top-nav-title" id="adminTopTitle">Kelola Banner Hero Layar Penuh</h1>
         <div class="top-nav-actions">
           <button class="btn-top-action btn-change-pin" id="btnChangePin">
             <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
             <span>Ubah PIN</span>
           </button>
-          <a href="index.html" class="btn-top-action btn-view-store">
-            <span>Buka Toko</span>
+          <a href="index.html" target="_blank" class="btn-top-action btn-view-store">
+            <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            <span>Pratinjau Toko</span>
           </a>
         </div>
       </header>
 
       <div class="admin-content-body">
         
-        <!-- Metrics Row -->
-        <div class="dashboard-metrics-grid">
-          <div class="metric-card">
-            <div class="metric-label">Total Produk Aktif</div>
-            <div class="metric-value" id="dashTotalProducts">0</div>
-            <div class="metric-sub">✓ Tersedia di Landing Page</div>
+        <!-- ================================================================
+             VIEW TAB 1: KELOLA BANNER HERO (HERO SLIDER)
+             ================================================================ -->
+        <div id="viewBannersTab">
+          <!-- Metrics Row Banners -->
+          <div class="dashboard-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Banner Hero Aktif</div>
+              <div class="metric-value" id="dashTotalBannersActive" style="color:#10b981;">0</div>
+              <div class="metric-sub">✓ Ditampilkan di carousel depan</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Total Banner Tersedia</div>
+              <div class="metric-value" id="dashTotalBannersAll">0</div>
+              <div class="metric-sub">Termasuk draf &amp; non-aktif</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Animasi &amp; Auto Slide</div>
+              <div class="metric-value" style="font-size:1.3rem; color:#f97316;">5 Detik</div>
+              <div class="metric-sub">Cubic transition + Touch swipe</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Interaktivitas CTA</div>
+              <div class="metric-value" style="font-size:1.3rem; color:#38bdf8;">100% Aktif</div>
+              <div class="metric-sub">Klik banner / CTA mengarah ke link</div>
+            </div>
           </div>
-          <div class="metric-card">
-            <div class="metric-label">Variasi Kategori</div>
-            <div class="metric-value" id="dashTotalCategories">0</div>
-            <div class="metric-sub">Hafalan, Terjemah, Tilawah, dll</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Harga Terendah</div>
-            <div class="metric-value" id="dashMinPrice">Rp 0</div>
-            <div class="metric-sub">Produk Buku Tajwid / Mushaf</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Harga Tertinggi</div>
-            <div class="metric-value" id="dashMaxPrice">Rp 0</div>
-            <div class="metric-sub">Mushaf Tafsir / Cover Jaket</div>
-          </div>
-        </div>
 
-        <!-- Analytics Preview Banner (Siap dikembangkan untuk Analisis Penjualan) -->
-        <div class="analytics-preview-card">
-          <div class="analytics-preview-info">
-            <h4>
-              <span>Ikhtisar Penjualan &amp; Tren Mushaf</span>
-              <span class="analytics-badge-new">Fitur Baru Mendatang</span>
-            </h4>
-            <p>
-              Modul grafik analisis penjualan bulanan, perputaran stok per variasi mushaf Al-Muttaqin, serta statistik asal provinsi pembeli terbanyak siap dikembangkan di halaman ini.
-            </p>
-          </div>
-          <div class="analytics-mini-bars" title="Grafik Penjualan Dummy">
-            <div class="mini-bar" style="height:30px;"></div>
-            <div class="mini-bar" style="height:45px;"></div>
-            <div class="mini-bar" style="height:35px;"></div>
-            <div class="mini-bar" style="height:55px;"></div>
-            <div class="mini-bar" style="height:40px;"></div>
-            <div class="mini-bar" style="height:60px;"></div>
-          </div>
-        </div>
-
-        <!-- Products Management Section Box -->
-        <div class="admin-section-box">
-          <div class="section-box-header">
-            <h3 class="section-title">Daftar Mushaf Al-Qur'an</h3>
-            <div class="section-header-controls">
-              <input type="text" id="adminProductSearch" class="admin-search-input" placeholder="Cari nama mushaf, kategori...">
-              <button class="btn-admin-reset" id="btnAdminResetDefault">Reset Default</button>
-              <button class="btn-admin-add" id="btnAdminAddNewProduct">
+          <!-- Banner Feature Info Card -->
+          <div class="analytics-preview-card" style="background:linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%); border-color:rgba(249, 115, 22, 0.3);">
+            <div class="analytics-preview-info">
+              <h4>
+                <span>Carousel Layar Penuh Dinamis</span>
+                <span class="analytics-badge-new" style="background:rgba(16,185,129,0.2); color:#10b981; border-color:rgba(16,185,129,0.4);">Fitur Live</span>
+              </h4>
+              <p>
+                Banner di landing page dapat di-scroll/geser ke samping dengan gesture sentuh (HP) maupun mouse drag (desktop). Setiap banner dapat diklik untuk mengarahkan pengunjung ke tautan tujuan (misal: bagian produk, contoh tajwid, WhatsApp, atau link promo lainnya).
+              </p>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button type="button" class="btn-admin-add" id="btnAdminAddBannerHero">
                 <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                <span>Tambah Produk</span>
+                <span>Tambah Banner Baru</span>
               </button>
             </div>
           </div>
 
-          <div class="table-responsive">
-            <table class="dash-table">
-              <thead>
-                <tr>
-                  <th style="width:65px;">Gambar</th>
-                  <th>Nama Produk Mushaf</th>
-                  <th style="width:120px;">Kategori</th>
-                  <th style="width:130px;">Harga Jual</th>
-                  <th style="width:110px;">Badge</th>
-                  <th style="width:90px;">Berat</th>
-                  <th style="width:130px; text-align:center;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="dashTableBody">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
+          <!-- Banners Management Table Section -->
+          <div class="admin-section-box">
+            <div class="section-box-header">
+              <h3 class="section-title">Daftar Banner Hero Landing Page</h3>
+              <div class="section-header-controls">
+                <input type="text" id="adminBannerSearch" class="admin-search-input" placeholder="Cari judul banner, tag, link...">
+                <button class="btn-admin-reset" id="btnAdminResetDefaultBanners">Reset Banner Default</button>
+                <button class="btn-admin-add" id="btnAdminAddBannerHeader">
+                  <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  <span>Tambah Banner</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th style="width:50px; text-align:center;">Urutan</th>
+                    <th style="width:110px;">Visual</th>
+                    <th>Judul &amp; Subtitle Banner</th>
+                    <th style="width:120px;">Tema</th>
+                    <th>Tombol CTA &amp; Link Tujuan</th>
+                    <th style="width:100px; text-align:center;">Status</th>
+                    <th style="width:160px; text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="dashBannerTableBody">
+                  <!-- Rendered dynamically via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================
+             VIEW TAB 2: KELOLA KATALOG PRODUK (MUSHAF)
+             ================================================================ -->
+        <div id="viewProductsTab" style="display:none;">
+          <!-- Metrics Row Products -->
+          <div class="dashboard-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Total Produk Aktif</div>
+              <div class="metric-value" id="dashTotalProducts">0</div>
+              <div class="metric-sub">✓ Tersedia di Landing Page</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Variasi Kategori</div>
+              <div class="metric-value" id="dashTotalCategories">0</div>
+              <div class="metric-sub">Hafalan, Terjemah, Tilawah, dll</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Harga Terendah</div>
+              <div class="metric-value" id="dashMinPrice">Rp 0</div>
+              <div class="metric-sub">Produk Buku Tajwid / Mushaf</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Harga Tertinggi</div>
+              <div class="metric-value" id="dashMaxPrice">Rp 0</div>
+              <div class="metric-sub">Mushaf Tafsir / Cover Jaket</div>
+            </div>
+          </div>
+
+          <!-- Analytics Preview Banner -->
+          <div class="analytics-preview-card">
+            <div class="analytics-preview-info">
+              <h4>
+                <span>Ikhtisar Penjualan &amp; Tren Mushaf</span>
+                <span class="analytics-badge-new">Fitur Baru Mendatang</span>
+              </h4>
+              <p>
+                Modul grafik analisis penjualan bulanan, perputaran stok per variasi mushaf Al-Muttaqin, serta statistik asal provinsi pembeli terbanyak siap dikembangkan di halaman ini.
+              </p>
+            </div>
+            <div class="analytics-mini-bars" title="Grafik Penjualan Dummy">
+              <div class="mini-bar" style="height:30px;"></div>
+              <div class="mini-bar" style="height:45px;"></div>
+              <div class="mini-bar" style="height:35px;"></div>
+              <div class="mini-bar" style="height:55px;"></div>
+              <div class="mini-bar" style="height:40px;"></div>
+              <div class="mini-bar" style="height:60px;"></div>
+            </div>
+          </div>
+
+          <!-- Products Management Section Box -->
+          <div class="admin-section-box">
+            <div class="section-box-header">
+              <h3 class="section-title">Daftar Mushaf Al-Qur'an</h3>
+              <div class="section-header-controls">
+                <input type="text" id="adminProductSearch" class="admin-search-input" placeholder="Cari nama mushaf, kategori...">
+                <button class="btn-admin-reset" id="btnAdminResetDefault">Reset Default</button>
+                <button class="btn-admin-add" id="btnAdminAddNewProduct">
+                  <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  <span>Tambah Produk</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th style="width:65px;">Gambar</th>
+                    <th>Nama Produk Mushaf</th>
+                    <th style="width:120px;">Kategori</th>
+                    <th style="width:130px;">Harga Jual</th>
+                    <th style="width:110px;">Badge</th>
+                    <th style="width:90px;">Berat</th>
+                    <th style="width:130px; text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="dashTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -995,6 +1226,136 @@
           <input type="password" id="confirmPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
         </div>
 
+  <!-- ==========================================================================
+       3.B MODAL FORM INPUT & EDIT BANNER HERO (DARK THEME)
+       ========================================================================== -->
+  <div class="admin-form-modal-dark" id="adminBannerFormModal">
+    <div class="form-dark-card" style="max-width:720px;">
+      <button class="admin-form-close" id="btnCloseBannerModal" style="background:#0f172a; color:#cbd5e1;">&times;</button>
+      <h3 id="bannerModalTitle" style="font-size:1.35rem; font-weight:800; margin-bottom:6px;">Tambah Banner Hero Baru</h3>
+      <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:20px;">Atur judul headline, subtitle promo, tombol CTA, link tujuan klik, gambar, dan tema warna visual banner.</p>
+
+      <form id="bannerFormEdit" onsubmit="return false;">
+        <input type="hidden" id="editBannerId">
+
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">Judul Banner (Headline Utama) *</label>
+          <input type="text" id="inputBannerTitle" class="modal-form-input" placeholder="Contoh: Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'" required>
+        </div>
+
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">Subtitle / Deskripsi Promo *</label>
+          <textarea id="inputBannerSubtitle" class="modal-form-input" rows="2" placeholder="Contoh: Membaca tartil tanpa rumus rumit dengan panduan huruf tajwid berwarna dan batas nafas..." required></textarea>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Badge / Tag Banner (Opsional)</label>
+            <input type="text" id="inputBannerTag" class="modal-form-input" placeholder="Contoh: CETAKAN RESMI AL-QOSBAH / PROMO SPESIAL">
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Tema Gradient Latar Belakang *</label>
+            <select id="inputBannerBgGradient" class="modal-form-select">
+              <option value="emerald">Emerald Deep (Hijau Zamrud Islami Mewah)</option>
+              <option value="navy">Quranic Night Sky (Biru Gelap Elegan & Cyan)</option>
+              <option value="amber">Royal Gold Amber (Emas Kejayaan & Coklat)</option>
+              <option value="ruby">Velvet Ruby Special (Merah Marun & Diskon)</option>
+              <option value="forest">Spruce Forest (Hijau Daun Segar)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Teks Tombol CTA Utama *</label>
+            <input type="text" id="inputBannerCtaText" class="modal-form-input" placeholder="Contoh: Pesan Sekarang / Lihat Contoh Tajwid" required>
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Link Tujuan CTA (Klik Banner / Tombol) *</label>
+            <input type="text" id="inputBannerCtaLink" class="modal-form-input" placeholder="Contoh: #sectionProduk, #sectionContohBacaan, https://wa.me/..." required>
+            <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">Gunakan anchor (#sectionProduk, #sectionContohBacaan) atau URL lengkap.</div>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Teks Tombol Sekunder (Opsional)</label>
+            <input type="text" id="inputBannerSecCtaText" class="modal-form-input" placeholder="Contoh: Pilih Mushaf / Tanya WhatsApp">
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" style="color:#cbd5e1;">Link Tombol Sekunder (Opsional)</label>
+            <input type="text" id="inputBannerSecCtaLink" class="modal-form-input" placeholder="Contoh: #sectionProduk atau link WhatsApp">
+          </div>
+        </div>
+
+        <!-- Banner Visual / Image Input -->
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">Visual / Gambar Banner *</label>
+          <div style="display:flex; gap:16px; align-items:center; margin-bottom:10px;">
+            <div class="table-banner-thumb" style="width:130px; height:75px; flex-shrink:0;">
+              <img id="bannerImgPreview" src="assets/banner-mushaf-utama.svg" alt="Preview Banner">
+            </div>
+            <div style="flex:1;">
+              <input type="text" id="inputBannerImgUrl" class="modal-form-input" placeholder="assets/banner-mushaf-utama.svg atau URL gambar..." style="margin-bottom:8px;">
+              <input type="file" id="bannerImgFileInput" accept="image/*" style="font-size:0.78rem; color:#94a3b8;">
+            </div>
+          </div>
+          <!-- Preset Buttons -->
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+            <span style="font-size:0.75rem; color:#94a3b8;">Preset Cepat:</span>
+            <button type="button" class="banner-preset-btn" onclick="setBannerPresetImg('assets/banner-mushaf-utama.svg')">Mushaf Al-Muttaqin</button>
+            <button type="button" class="banner-preset-btn" onclick="setBannerPresetImg('assets/banner-hafalan.svg')">Hafalan 5 Blok</button>
+            <button type="button" class="banner-preset-btn" onclick="setBannerPresetImg('assets/banner-promo.svg')">Promo Diskon 30%</button>
+            <button type="button" class="banner-preset-btn" onclick="setBannerPresetImg('assets/hero-kids-quran.svg')">Keluarga Quran</button>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top:14px;">
+          <div class="modal-form-group" style="display:flex; align-items:center; gap:10px;">
+            <input type="checkbox" id="inputBannerNewTab" style="width:18px; height:18px; accent-color:#10b981; cursor:pointer;">
+            <label for="inputBannerNewTab" style="font-size:0.84rem; color:#cbd5e1; cursor:pointer;">Buka tautan di Tab Baru (_blank)</label>
+          </div>
+
+          <div class="modal-form-group" style="display:flex; align-items:center; gap:10px;">
+            <input type="checkbox" id="inputBannerIsActive" checked style="width:18px; height:18px; accent-color:#10b981; cursor:pointer;">
+            <label for="inputBannerIsActive" style="font-size:0.84rem; color:#34d399; font-weight:700; cursor:pointer;">Aktifkan banner ini di Carousel Hero</label>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px; padding-top:18px; border-top:1px solid #334155;">
+          <button type="button" class="btn-admin-reset" id="btnCancelBannerModal">Batal</button>
+          <button type="submit" class="btn-admin-add" style="padding:0 24px;">Simpan Banner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       3.C MODAL UBAH PIN ADMIN
+       ========================================================================== -->
+  <div class="admin-form-modal-dark" id="changePinModal">
+    <div class="auth-box-card" style="position:relative;">
+      <button class="admin-modal-close" id="btnCloseChangePinModal" style="background:#0f172a; color:#cbd5e1;">&times;</button>
+      <h3 style="font-size:1.35rem; font-weight:800; color:#ffffff; margin-bottom:6px;">Ubah PIN Admin</h3>
+      <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:20px;">Tentukan 6 Digit PIN baru untuk menjaga keamanan akses dashboard Anda.</p>
+
+      <form id="formChangePinSubmit" onsubmit="return false;" style="text-align:left;">
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">PIN Lama (6 Digit):</label>
+          <input type="password" id="oldPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
+        </div>
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">PIN Baru (6 Digit):</label>
+          <input type="password" id="newPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
+        </div>
+        <div class="modal-form-group">
+          <label class="modal-form-label" style="color:#cbd5e1;">Konfirmasi PIN Baru:</label>
+          <input type="password" id="confirmPinVal" class="modal-form-input" maxlength="6" inputmode="numeric" placeholder="******" required>
+        </div>
+
         <div id="pinChangeAlertText" style="display:none; font-size:0.8rem; margin-bottom:12px; font-weight:700;"></div>
 
         <button type="submit" class="btn-auth-submit" style="margin-top:10px;">Simpan PIN Baru</button>
@@ -1010,6 +1371,65 @@
   <script>
     // SHARED STORE CONSTANTS
     const DEFAULT_ADMIN_PIN = '123456';
+    const DEFAULT_HERO_BANNERS = [
+      {
+        id: 'BANNER-1',
+        title: "Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'",
+        subtitle: "Membaca tartil tanpa rumus rumit. Dilengkapi huruf tajwid berwarna & panduan garis nafas henti-mulai cetakan resmi Penerbit Al-Qosbah.",
+        tag: "MUSHAF TILAWAH UTAMA",
+        bgGradient: "emerald",
+        image: "assets/banner-mushaf-utama.svg",
+        ctaText: "Lihat Contoh Tajwid & Waqaf",
+        ctaLink: "#sectionContohBacaan",
+        secondaryCtaText: "Pesan Sekarang",
+        secondaryCtaLink: "#sectionProduk",
+        openNewTab: false,
+        isActive: true
+      },
+      {
+        id: 'BANNER-2',
+        title: "Mushaf Hafalan Al-Muttaqin 5 Blok Warna",
+        subtitle: "Metode teruji 5 jam hafal 1 halaman. Dilengkapi pengingat kata kunci awal ayat, tema ayat, dan panduan motivasi tahfidz.",
+        tag: "BEST SELLER TAHFIDZ",
+        bgGradient: "navy",
+        image: "assets/banner-hafalan.svg",
+        ctaText: "Beli Mushaf Hafalan",
+        ctaLink: "#sectionProduk",
+        secondaryCtaText: "Lihat Spesifikasi",
+        secondaryCtaLink: "#sectionKeunggulan",
+        openNewTab: false,
+        isActive: true
+      },
+      {
+        id: 'BANNER-3',
+        title: "Promo Spesial Toko Resmi: Diskon s/d 30%",
+        subtitle: "Garansi 100% Produk Original Al-Qosbah. Siap kirim aman dengan bubble wrap ke seluruh wilayah Indonesia & pemesanan mancanegara.",
+        tag: "PROMO HARI INI",
+        bgGradient: "ruby",
+        image: "assets/banner-promo.svg",
+        ctaText: "Ambil Promo Diskon",
+        ctaLink: "#sectionProduk",
+        secondaryCtaText: "Tanya Admin WhatsApp",
+        secondaryCtaLink: "https://wa.me/6281234567890?text=Halo%20Admin%20Al-Ibriez%20Book,%20saya%20ingin%20tanya%20promo%20mushaf%20Al-Qur'an",
+        openNewTab: true,
+        isActive: true
+      },
+      {
+        id: 'BANNER-4',
+        title: "Inspiring People to Love & Live with Quran",
+        subtitle: "Menemani langkah setiap insan dan keluarga muslim untuk senantiasa dekat, membaca, dan mentadaburi Kalam Ilahi setiap hari.",
+        tag: "OFFICIAL STORE AL-IBRIEZ",
+        bgGradient: "amber",
+        image: "assets/hero-kids-quran.svg",
+        ctaText: "Jelajahi Semua Koleksi",
+        ctaLink: "#sectionProduk",
+        secondaryCtaText: "Tentang Kami",
+        secondaryCtaLink: "#sectionKeunggulan",
+        openNewTab: false,
+        isActive: true
+      }
+    ];
+
     const DEFAULT_PRODUCTS = [
       {
         id: 'QOS-HAFALAN',
@@ -1093,6 +1513,7 @@
       localStorage.setItem('alibriez_admin_pin', pin);
     }
 
+    // PRODUCT STORAGE
     function loadProducts() {
       try {
         const raw = localStorage.getItem('alibriez_catalog_products');
@@ -1110,12 +1531,313 @@
 
     let products = loadProducts();
 
+    // BANNER STORAGE
+    function loadBanners() {
+      try {
+        const raw = localStorage.getItem('alibriez_hero_banners');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+    }
+
+    function saveBanners(bList) {
+      localStorage.setItem('alibriez_hero_banners', JSON.stringify(bList));
+    }
+
+    let banners = loadBanners();
+
     function showToast(msg) {
       const t = document.getElementById('adminToast');
       t.textContent = msg;
       t.style.display = 'block';
       setTimeout(() => t.style.display = 'none', 3000);
     }
+
+    // ==========================================================================
+    // TAB SWITCHER (BANNERS VS PRODUCTS)
+    // ==========================================================================
+    let currentAdminTab = 'banners';
+
+    window.switchAdminTab = function(tabName) {
+      currentAdminTab = tabName;
+      const navBanners = document.getElementById('navItemBanners');
+      const navProducts = document.getElementById('navItemProducts');
+      const viewBanners = document.getElementById('viewBannersTab');
+      const viewProducts = document.getElementById('viewProductsTab');
+      const topTitle = document.getElementById('adminTopTitle');
+
+      if (tabName === 'banners') {
+        navBanners.classList.add('active');
+        navProducts.classList.remove('active');
+        viewBanners.style.display = 'block';
+        viewProducts.style.display = 'none';
+        topTitle.textContent = 'Kelola Banner Hero Layar Penuh';
+        renderBannerDashboard();
+      } else {
+        navBanners.classList.remove('active');
+        navProducts.classList.add('active');
+        viewBanners.style.display = 'none';
+        viewProducts.style.display = 'block';
+        topTitle.textContent = 'Katalog & Manajemen Mushaf';
+        renderDashboard();
+      }
+    };
+
+    // ==========================================================================
+    // BANNER DASHBOARD RENDER & LOGIC
+    // ==========================================================================
+    function renderBannerDashboard(query = '') {
+      banners = loadBanners();
+      updateBannerMetrics();
+      renderBannerTable(query);
+    }
+
+    function updateBannerMetrics() {
+      const activeCount = banners.filter(b => b.isActive !== false).length;
+      document.getElementById('dashTotalBannersActive').textContent = activeCount;
+      document.getElementById('dashTotalBannersAll').textContent = banners.length;
+      document.getElementById('badgeHeroBannerCount').textContent = activeCount;
+      document.getElementById('badgeProductCount').textContent = products.length;
+    }
+
+    function renderBannerTable(query = '') {
+      const tbody = document.getElementById('dashBannerTableBody');
+      const q = query.trim().toLowerCase();
+      const filtered = banners.filter(b => 
+        !q || 
+        b.title.toLowerCase().includes(q) || 
+        (b.subtitle && b.subtitle.toLowerCase().includes(q)) ||
+        (b.tag && b.tag.toLowerCase().includes(q)) ||
+        (b.ctaLink && b.ctaLink.toLowerCase().includes(q))
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:36px; color:#64748b;">Tidak ada banner yang sesuai pencarian.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((b, idx) => {
+        const imgSrc = b.image || 'assets/banner-mushaf-utama.svg';
+        const tagHtml = b.tag ? `<span style="font-size:0.7rem; font-weight:800; color:#fbbf24; background:rgba(245,158,11,0.15); padding:2px 8px; border-radius:4px; margin-bottom:4px; display:inline-block;">★ ${b.tag}</span>` : '';
+        const themeClass = 'theme-badge-' + (b.bgGradient || 'emerald');
+        const isActive = b.isActive !== false;
+        const statusHtml = isActive 
+          ? `<span class="banner-status-pill active" onclick="toggleBannerStatus('${b.id}')" title="Klik untuk Nonaktifkan">● Aktif</span>`
+          : `<span class="banner-status-pill inactive" onclick="toggleBannerStatus('${b.id}')" title="Klik untuk Aktifkan">○ Non-aktif</span>`;
+        
+        const isFirst = idx === 0;
+        const isLast = idx === filtered.length - 1;
+
+        return `
+          <tr>
+            <td style="text-align:center;">
+              <div style="display:flex; flex-direction:column; gap:3px; align-items:center;">
+                <button type="button" class="btn-tbl-move" onclick="moveBannerOrder('${b.id}', -1)" ${isFirst ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''} title="Geser ke Atas">
+                  <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                </button>
+                <span style="font-size:0.8rem; font-weight:800; color:#94a3b8;">${idx + 1}</span>
+                <button type="button" class="btn-tbl-move" onclick="moveBannerOrder('${b.id}', 1)" ${isLast ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''} title="Geser ke Bawah">
+                  <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="table-banner-thumb">
+                <img src="${imgSrc}" alt="${b.title}" onerror="this.src='assets/banner-mushaf-utama.svg'">
+              </div>
+            </td>
+            <td>
+              ${tagHtml}
+              <div style="font-weight:800; color:#ffffff; font-size:0.92rem; line-height:1.3; margin-bottom:4px;">${b.title}</div>
+              <div style="font-size:0.78rem; color:#94a3b8; line-height:1.4; max-width:320px;">${b.subtitle || ''}</div>
+              <span style="font-size:0.68rem; color:#64748b; font-family:monospace;">ID: ${b.id}</span>
+            </td>
+            <td>
+              <span class="banner-theme-badge ${themeClass}">${b.bgGradient || 'emerald'}</span>
+            </td>
+            <td>
+              <div style="font-size:0.84rem; font-weight:700; color:#f97316; margin-bottom:4px;">${b.ctaText || 'Pesan Sekarang'}</div>
+              <a href="${b.ctaLink || '#'}" target="_blank" class="banner-cta-link-pill" title="${b.ctaLink}">
+                <svg style="width:12px;height:12px;fill:currentColor;flex-shrink:0;" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                <span>${b.ctaLink || '-'}</span>
+              </a>
+              ${b.secondaryCtaText ? `<div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Sub: ${b.secondaryCtaText}</div>` : ''}
+            </td>
+            <td style="text-align:center;">${statusHtml}</td>
+            <td>
+              <div class="table-actions-row" style="justify-content:center;">
+                <button type="button" class="btn-tbl-edit" onclick="openEditBanner('${b.id}')">Edit</button>
+                <button type="button" class="btn-tbl-del" onclick="handleDeleteBanner('${b.id}')">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('adminBannerSearch').addEventListener('input', (e) => {
+      renderBannerTable(e.target.value);
+    });
+
+    // Reset default banners
+    document.getElementById('btnAdminResetDefaultBanners').addEventListener('click', () => {
+      if (confirm('Kembalikan semua banner hero ke setelan standar Al-Ibriez Book?')) {
+        banners = JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+        saveBanners(banners);
+        renderBannerDashboard();
+        showToast('Banner berhasil direset ke standar!');
+      }
+    });
+
+    // Toggle active status
+    window.toggleBannerStatus = function(id) {
+      const b = banners.find(item => item.id === id);
+      if (!b) return;
+      b.isActive = (b.isActive === false) ? true : false;
+      saveBanners(banners);
+      renderBannerDashboard(document.getElementById('adminBannerSearch').value);
+      showToast(b.isActive ? 'Banner diaktifkan di hero!' : 'Banner dinonaktifkan.');
+    };
+
+    // Reorder banners
+    window.moveBannerOrder = function(id, dir) {
+      const idx = banners.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      const targetIdx = idx + dir;
+      if (targetIdx < 0 || targetIdx >= banners.length) return;
+      const temp = banners[idx];
+      banners[idx] = banners[targetIdx];
+      banners[targetIdx] = temp;
+      saveBanners(banners);
+      renderBannerDashboard(document.getElementById('adminBannerSearch').value);
+      showToast('Urutan banner diperbarui!');
+    };
+
+    // Form Modal Banner
+    const bannerModal = document.getElementById('adminBannerFormModal');
+    const bannerForm = document.getElementById('bannerFormEdit');
+    const bannerTitleModal = document.getElementById('bannerModalTitle');
+    const bannerImgPreview = document.getElementById('bannerImgPreview');
+    const bannerImgUrl = document.getElementById('inputBannerImgUrl');
+    const bannerImgFile = document.getElementById('bannerImgFileInput');
+
+    function openAddBannerModal() {
+      bannerForm.reset();
+      document.getElementById('editBannerId').value = '';
+      bannerTitleModal.textContent = 'Tambah Banner Hero Baru';
+      bannerImgPreview.src = 'assets/banner-mushaf-utama.svg';
+      bannerImgUrl.value = 'assets/banner-mushaf-utama.svg';
+      document.getElementById('inputBannerBgGradient').value = 'emerald';
+      document.getElementById('inputBannerIsActive').checked = true;
+      document.getElementById('inputBannerCtaLink').value = '#sectionProduk';
+      document.getElementById('inputBannerCtaText').value = 'Pesan Sekarang';
+      bannerModal.classList.add('open');
+    }
+
+    document.getElementById('btnAdminAddBannerHero').addEventListener('click', openAddBannerModal);
+    document.getElementById('btnAdminAddBannerHeader').addEventListener('click', openAddBannerModal);
+    document.getElementById('btnCloseBannerModal').addEventListener('click', () => bannerModal.classList.remove('open'));
+    document.getElementById('btnCancelBannerModal').addEventListener('click', () => bannerModal.classList.remove('open'));
+
+    window.openEditBanner = function(id) {
+      const b = banners.find(item => item.id === id);
+      if (!b) return;
+      bannerTitleModal.textContent = 'Edit Banner: ' + b.title;
+      document.getElementById('editBannerId').value = b.id;
+      document.getElementById('inputBannerTitle').value = b.title;
+      document.getElementById('inputBannerSubtitle').value = b.subtitle || '';
+      document.getElementById('inputBannerTag').value = b.tag || '';
+      document.getElementById('inputBannerBgGradient').value = b.bgGradient || 'emerald';
+      document.getElementById('inputBannerCtaText').value = b.ctaText || '';
+      document.getElementById('inputBannerCtaLink').value = b.ctaLink || '';
+      document.getElementById('inputBannerSecCtaText').value = b.secondaryCtaText || '';
+      document.getElementById('inputBannerSecCtaLink').value = b.secondaryCtaLink || '';
+      document.getElementById('inputBannerNewTab').checked = !!b.openNewTab;
+      document.getElementById('inputBannerIsActive').checked = b.isActive !== false;
+      bannerImgUrl.value = b.image || 'assets/banner-mushaf-utama.svg';
+      bannerImgPreview.src = b.image || 'assets/banner-mushaf-utama.svg';
+      bannerModal.classList.add('open');
+    };
+
+    window.setBannerPresetImg = function(src) {
+      bannerImgPreview.src = src;
+      bannerImgUrl.value = src;
+    };
+
+    bannerImgFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          bannerImgPreview.src = evt.target.result;
+          bannerImgUrl.value = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    bannerImgUrl.addEventListener('input', () => {
+      if (bannerImgUrl.value.trim()) bannerImgPreview.src = bannerImgUrl.value.trim();
+    });
+
+    bannerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('editBannerId').value.trim();
+      const title = document.getElementById('inputBannerTitle').value.trim();
+      const subtitle = document.getElementById('inputBannerSubtitle').value.trim();
+      const tag = document.getElementById('inputBannerTag').value.trim();
+      const bgGradient = document.getElementById('inputBannerBgGradient').value;
+      const ctaText = document.getElementById('inputBannerCtaText').value.trim();
+      const ctaLink = document.getElementById('inputBannerCtaLink').value.trim();
+      const secondaryCtaText = document.getElementById('inputBannerSecCtaText').value.trim();
+      const secondaryCtaLink = document.getElementById('inputBannerSecCtaLink').value.trim();
+      const openNewTab = document.getElementById('inputBannerNewTab').checked;
+      const isActive = document.getElementById('inputBannerIsActive').checked;
+      const image = bannerImgUrl.value.trim() || 'assets/banner-mushaf-utama.svg';
+
+      if (!title || !subtitle || !ctaText || !ctaLink) {
+        alert('Mohon isi judul, subtitle, teks CTA, dan link tujuan banner.');
+        return;
+      }
+
+      if (id) {
+        const idx = banners.findIndex(item => item.id === id);
+        if (idx !== -1) {
+          banners[idx] = {
+            ...banners[idx],
+            title, subtitle, tag, bgGradient, ctaText, ctaLink,
+            secondaryCtaText, secondaryCtaLink, openNewTab, isActive, image
+          };
+          showToast('Banner berhasil diperbarui!');
+        }
+      } else {
+        const newBanner = {
+          id: 'BANNER-' + Date.now().toString(36).toUpperCase(),
+          title, subtitle, tag, bgGradient, ctaText, ctaLink,
+          secondaryCtaText, secondaryCtaLink, openNewTab, isActive, image
+        };
+        banners.unshift(newBanner);
+        showToast('Banner baru berhasil ditambahkan!');
+      }
+
+      saveBanners(banners);
+      bannerModal.classList.remove('open');
+      renderBannerDashboard(document.getElementById('adminBannerSearch').value);
+    });
+
+    window.handleDeleteBanner = function(id) {
+      const b = banners.find(item => item.id === id);
+      if (!b) return;
+      if (confirm(`Yakin ingin menghapus banner "${b.title}"?`)) {
+        banners = banners.filter(item => item.id !== id);
+        saveBanners(banners);
+        renderBannerDashboard(document.getElementById('adminBannerSearch').value);
+        showToast('Banner telah dihapus.');
+      }
+    };
 
     // AUTH WALL LOGIC
     const authWall = document.getElementById('adminAuthWall');
@@ -1128,12 +1850,46 @@
       if (sessionStorage.getItem('alibriez_admin_logged') === 'true') {
         authWall.style.display = 'none';
         adminLayout.style.display = 'flex';
+        renderBannerDashboard();
         renderDashboard();
       } else {
         authWall.style.display = 'flex';
         adminLayout.style.display = 'none';
         setTimeout(() => pinCells[0].focus(), 200);
       }
+    }
+
+    const authPinWrap = document.getElementById('authPinWrap');
+    const btnQuickLogin = document.getElementById('btnQuickLogin');
+
+    // Auto-paste handler for 6 digits PIN
+    if (authPinWrap) {
+      authPinWrap.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text').trim();
+        const digits = pasteData.replace(/\D/g, '').split('');
+        if (digits.length > 0) {
+          pinCells.forEach((c, i) => {
+            c.value = digits[i] || '';
+          });
+          if (digits.length >= 6) {
+            submitPinAuth();
+          } else {
+            const nextIdx = Math.min(digits.length, pinCells.length - 1);
+            pinCells[nextIdx].focus();
+          }
+        }
+      });
+    }
+
+    // 1-Click Quick Login with Default PIN
+    if (btnQuickLogin) {
+      btnQuickLogin.addEventListener('click', () => {
+        const pin = getAdminPin();
+        const digits = pin.split('');
+        pinCells.forEach((c, i) => c.value = digits[i] || '');
+        submitPinAuth();
+      });
     }
 
     pinCells.forEach((cell, idx) => {
@@ -1164,6 +1920,7 @@
         sessionStorage.setItem('alibriez_admin_logged', 'true');
         authWall.style.display = 'none';
         adminLayout.style.display = 'flex';
+        renderBannerDashboard();
         renderDashboard();
         showToast('Login Admin Berhasil!');
       } else {
@@ -1179,7 +1936,7 @@
       window.location.reload();
     });
 
-    // RENDER DASHBOARD & METRICS
+    // RENDER PRODUCTS DASHBOARD & METRICS
     function renderDashboard(query = '') {
       products = loadProducts();
       updateMetrics();

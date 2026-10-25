@@ -104,6 +104,91 @@ function saveStoredProducts(products) {
 
 let CATALOG_PRODUCTS = loadStoredProducts();
 
+// ============================================================================
+// 1.B HERO BANNER CONSTANTS & LOCALSTORAGE PERSISTENCE
+// ============================================================================
+const DEFAULT_HERO_BANNERS = [
+  {
+    id: 'BANNER-1',
+    title: "Al-Qur'an Al-Muttaqin Tajwid Multikode & Waqaf Ibtida'",
+    subtitle: "Membaca tartil tanpa rumus rumit. Dilengkapi huruf tajwid berwarna & panduan garis nafas henti-mulai cetakan resmi Penerbit Al-Qosbah.",
+    tag: "MUSHAF TILAWAH UTAMA",
+    bgGradient: "emerald",
+    image: "assets/banner-mushaf-utama.svg",
+    ctaText: "Lihat Contoh Tajwid & Waqaf",
+    ctaLink: "#sectionContohBacaan",
+    secondaryCtaText: "Pesan Sekarang",
+    secondaryCtaLink: "#sectionProduk",
+    openNewTab: false,
+    isActive: true
+  },
+  {
+    id: 'BANNER-2',
+    title: "Mushaf Hafalan Al-Muttaqin 5 Blok Warna",
+    subtitle: "Metode teruji 5 jam hafal 1 halaman. Dilengkapi pengingat kata kunci awal ayat, tema ayat, dan panduan motivasi tahfidz.",
+    tag: "BEST SELLER TAHFIDZ",
+    bgGradient: "navy",
+    image: "assets/banner-hafalan.svg",
+    ctaText: "Beli Mushaf Hafalan",
+    ctaLink: "#sectionProduk",
+    secondaryCtaText: "Lihat Spesifikasi",
+    secondaryCtaLink: "#sectionKeunggulan",
+    openNewTab: false,
+    isActive: true
+  },
+  {
+    id: 'BANNER-3',
+    title: "Promo Spesial Toko Resmi: Diskon s/d 30%",
+    subtitle: "Garansi 100% Produk Original Al-Qosbah. Siap kirim aman dengan bubble wrap ke seluruh wilayah Indonesia & pemesanan mancanegara.",
+    tag: "PROMO HARI INI",
+    bgGradient: "ruby",
+    image: "assets/banner-promo.svg",
+    ctaText: "Ambil Promo Diskon",
+    ctaLink: "#sectionProduk",
+    secondaryCtaText: "Tanya Admin WhatsApp",
+    secondaryCtaLink: "https://wa.me/6281234567890?text=Halo%20Admin%20Al-Ibriez%20Book,%20saya%20ingin%20tanya%20promo%20mushaf%20Al-Qur'an",
+    openNewTab: true,
+    isActive: true
+  },
+  {
+    id: 'BANNER-4',
+    title: "Inspiring People to Love & Live with Quran",
+    subtitle: "Menemani langkah setiap insan dan keluarga muslim untuk senantiasa dekat, membaca, dan mentadaburi Kalam Ilahi setiap hari.",
+    tag: "OFFICIAL STORE AL-IBRIEZ",
+    bgGradient: "amber",
+    image: "assets/hero-kids-quran.svg",
+    ctaText: "Jelajahi Semua Koleksi",
+    ctaLink: "#sectionProduk",
+    secondaryCtaText: "Tentang Kami",
+    secondaryCtaLink: "#sectionKeunggulan",
+    openNewTab: false,
+    isActive: true
+  }
+];
+
+function loadStoredBanners() {
+  try {
+    const raw = localStorage.getItem('alibriez_hero_banners');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.error('Error loading hero banners from localStorage:', e);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+}
+
+function saveStoredBanners(banners) {
+  try {
+    localStorage.setItem('alibriez_hero_banners', JSON.stringify(banners));
+  } catch (e) {
+    console.error('Error saving hero banners to localStorage:', e);
+  }
+}
+
+let HERO_BANNERS = loadStoredBanners();
+
 // Tajwid Explanations
 const TAJWID_RULES = {
   mad: {
@@ -133,6 +218,7 @@ const TAJWID_RULES = {
 };
 
 function initApp() {
+  initHeroBannerCarousel();
   initNavbarSearch();
   initTajwidDemo();
   initOrderModal();
@@ -148,6 +234,333 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
   initApp();
+}
+
+// ==========================================================================
+// HERO BANNER CAROUSEL LOGIC
+// Dynamic banner carousel with auto-slide, gesture swipe/drag,
+// animated progress indicator dots, and interactive CTA links.
+// ==========================================================================
+function initHeroBannerCarousel() {
+  const viewport = document.getElementById('heroBannerViewport');
+  const track = document.getElementById('heroBannerTrack');
+  const prevBtn = document.getElementById('btnHeroPrev');
+  const nextBtn = document.getElementById('btnHeroNext');
+  const dotsContainer = document.getElementById('heroPaginationDots');
+  const autoplayToggle = document.getElementById('btnHeroAutoplay');
+
+  if (!viewport || !track) return;
+
+  let banners = loadStoredBanners().filter(b => b.isActive !== false);
+  if (banners.length === 0) {
+    banners = JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+  }
+
+  let currentIndex = 0;
+  let autoSlideTimer = null;
+  let isAutoplayPaused = false;
+  const slideDuration = 5000; // 5 seconds per slide
+
+  // Render Slides
+  function renderSlides() {
+    track.innerHTML = banners.map((b, idx) => {
+      const targetAttr = b.openNewTab ? 'target="_blank" rel="noopener noreferrer"' : '';
+      const ctaUrl = b.ctaLink && b.ctaLink.trim() ? b.ctaLink.trim() : '#sectionProduk';
+      const secCtaBtn = b.secondaryCtaText && b.secondaryCtaText.trim() ? `
+        <span class="hero-slide-btn-sub" onclick="event.preventDefault(); event.stopPropagation(); window.location.href='${b.secondaryCtaLink || '#sectionProduk'}'">
+          ${b.secondaryCtaText}
+        </span>
+      ` : '';
+
+      return `
+        <div class="hero-slide-item theme-${b.bgGradient || 'emerald'} ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+          <a href="${ctaUrl}" class="hero-slide-link" ${targetAttr}>
+            <div class="hero-slide-bg-ambient"></div>
+            <div class="hero-slide-pattern"></div>
+            
+            <div class="container hero-slide-container">
+              <div class="hero-slide-content">
+                ${b.tag ? `
+                  <div class="hero-slide-badge">
+                    <span class="badge-sparkle">★</span>
+                    <span>${b.tag}</span>
+                  </div>
+                ` : ''}
+
+                <h1 class="hero-slide-title">${b.title}</h1>
+                <p class="hero-slide-subtitle">${b.subtitle}</p>
+
+                <div class="hero-slide-actions">
+                  <span class="hero-slide-btn-cta">
+                    <span>${b.ctaText || 'Pesan Sekarang'}</span>
+                    <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                  </span>
+                  ${secCtaBtn}
+                </div>
+              </div>
+
+              <div class="hero-slide-media">
+                <div class="hero-media-wrapper">
+                  <img src="${b.image}" alt="${b.title}" class="hero-media-img" onerror="this.src='assets/banner-mushaf-utama.svg'">
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      `;
+    }).join('');
+
+    renderDots();
+    goToSlide(0, false);
+  }
+
+  // Render Pagination Dots
+  function renderDots() {
+    if (!dotsContainer) return;
+    if (banners.length <= 1) {
+      dotsContainer.style.display = 'none';
+      if (prevBtn) prevBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (autoplayToggle) autoplayToggle.style.display = 'none';
+      return;
+    }
+
+    dotsContainer.style.display = 'flex';
+    if (prevBtn) prevBtn.style.display = 'flex';
+    if (nextBtn) nextBtn.style.display = 'flex';
+    if (autoplayToggle) autoplayToggle.style.display = 'flex';
+
+    dotsContainer.innerHTML = banners.map((_, idx) => `
+      <button class="hero-dot ${idx === 0 ? 'active' : ''}" data-goto="${idx}" aria-label="Lompat ke Slide ${idx + 1}" title="Slide ${idx + 1}">
+        <span class="hero-dot-progress"></span>
+      </button>
+    `).join('');
+
+    dotsContainer.querySelectorAll('.hero-dot').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetIdx = parseInt(btn.getAttribute('data-goto'), 10);
+        goToSlide(targetIdx);
+      });
+    });
+  }
+
+  // Move to Slide
+  function goToSlide(idx, animate = true) {
+    if (banners.length === 0) return;
+    currentIndex = (idx + banners.length) % banners.length;
+
+    track.style.transition = animate ? 'transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    // Toggle active class on slide items
+    const slideItems = track.querySelectorAll('.hero-slide-item');
+    slideItems.forEach((item, i) => {
+      item.classList.toggle('active', i === currentIndex);
+    });
+
+    // Update Dots
+    if (dotsContainer) {
+      const dots = dotsContainer.querySelectorAll('.hero-dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+        const bar = dot.querySelector('.hero-dot-progress');
+        if (bar) {
+          bar.style.transition = 'none';
+          bar.style.width = '0%';
+          if (i === currentIndex && !isAutoplayPaused) {
+            // Trigger reflow to restart css animation
+            void bar.offsetWidth;
+            bar.style.transition = `width ${slideDuration}ms linear`;
+            bar.style.width = '100%';
+          }
+        }
+      });
+    }
+
+    restartAutoSlide();
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  // Autoplay Logic
+  function startAutoSlide() {
+    stopAutoSlide();
+    if (banners.length <= 1 || isAutoplayPaused) return;
+
+    // Reset progress bar on active dot
+    if (dotsContainer) {
+      const activeDot = dotsContainer.querySelector('.hero-dot.active .hero-dot-progress');
+      if (activeDot) {
+        activeDot.style.transition = 'none';
+        activeDot.style.width = '0%';
+        void activeDot.offsetWidth;
+        activeDot.style.transition = `width ${slideDuration}ms linear`;
+        activeDot.style.width = '100%';
+      }
+    }
+
+    autoSlideTimer = setTimeout(() => {
+      nextSlide();
+    }, slideDuration);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideTimer) {
+      clearTimeout(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  function restartAutoSlide() {
+    stopAutoSlide();
+    startAutoSlide();
+  }
+
+  // Arrow Buttons
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextSlide();
+    });
+  }
+
+  // Autoplay Toggle Button
+  if (autoplayToggle) {
+    const iconPause = autoplayToggle.querySelector('.icon-pause');
+    const iconPlay = autoplayToggle.querySelector('.icon-play');
+
+    autoplayToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isAutoplayPaused = !isAutoplayPaused;
+      if (isAutoplayPaused) {
+        stopAutoSlide();
+        if (iconPause) iconPause.style.display = 'none';
+        if (iconPlay) iconPlay.style.display = 'block';
+        autoplayToggle.setAttribute('title', 'Lanjutkan Auto Slide');
+      } else {
+        if (iconPause) iconPause.style.display = 'block';
+        if (iconPlay) iconPlay.style.display = 'none';
+        autoplayToggle.setAttribute('title', 'Jeda Auto Slide');
+        startAutoSlide();
+      }
+    });
+  }
+
+  // Pause on Mouse Hover
+  viewport.addEventListener('mouseenter', () => {
+    if (!isAutoplayPaused) stopAutoSlide();
+  });
+
+  viewport.addEventListener('mouseleave', () => {
+    if (!isAutoplayPaused) startAutoSlide();
+  });
+
+  // Touch Swipe & Mouse Drag Handling
+  let startX = 0;
+  let currentTranslateX = 0;
+  let isDragging = false;
+  let dragDistance = 0;
+
+  function onTouchStart(e) {
+    if (banners.length <= 1) return;
+    startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    isDragging = true;
+    dragDistance = 0;
+    stopAutoSlide();
+    track.style.transition = 'none';
+  }
+
+  function onTouchMove(e) {
+    if (!isDragging) return;
+    const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    const diffX = currentX - startX;
+    dragDistance = Math.abs(diffX);
+
+    // Prevent scrolling page if swiping banner
+    if (dragDistance > 10 && e.cancelable && !e.type.includes('mouse')) {
+      e.preventDefault();
+    }
+
+    const offset = -(currentIndex * 100) + (diffX / viewport.offsetWidth) * 100;
+    track.style.transform = `translateX(${offset}%)`;
+  }
+
+  function onTouchEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+
+    const endX = e.type.includes('mouse') ? e.pageX : (e.changedTouches ? e.changedTouches[0].clientX : startX);
+    const diffX = endX - startX;
+
+    if (diffX < -45) {
+      nextSlide();
+    } else if (diffX > 45) {
+      prevSlide();
+    } else {
+      goToSlide(currentIndex);
+    }
+
+    if (!isAutoplayPaused) startAutoSlide();
+  }
+
+  // Prevent accidental link opening while dragging
+  viewport.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (dragDistance > 10) {
+        e.preventDefault();
+      }
+    });
+  });
+
+  // Attach touch events
+  viewport.addEventListener('touchstart', onTouchStart, { passive: true });
+  viewport.addEventListener('touchmove', onTouchMove, { passive: false });
+  viewport.addEventListener('touchend', onTouchEnd, { passive: true });
+
+  // Attach mouse drag events
+  viewport.addEventListener('mousedown', onTouchStart);
+  window.addEventListener('mousemove', onTouchMove);
+  window.addEventListener('mouseup', onTouchEnd);
+
+  // Keyboard Arrow Navigation
+  viewport.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
+
+  // Re-render when storage updates in another tab
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'alibriez_hero_banners') {
+      banners = loadStoredBanners().filter(b => b.isActive !== false);
+      if (banners.length === 0) banners = JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+      renderSlides();
+    }
+  });
+
+  // Expose global reload function
+  window.reloadHeroBanners = function() {
+    banners = loadStoredBanners().filter(b => b.isActive !== false);
+    if (banners.length === 0) banners = JSON.parse(JSON.stringify(DEFAULT_HERO_BANNERS));
+    renderSlides();
+  };
+
+  // Initial render
+  renderSlides();
 }
 
 // ==========================================================================

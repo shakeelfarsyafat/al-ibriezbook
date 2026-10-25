@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#042017" />
+      <stop offset="50%" stop-color="#083a2d" />
+      <stop offset="100%" stop-color="#05281e" />
+    </linearGradient>
+    <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.35" />
+      <stop offset="70%" stop-color="#d97706" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#b45309" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="50%" stop-color="#022c22" />
+      <stop offset="100%" stop-color="#011611" />
+    </linearGradient>
+    <linearGradient id="pageGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="50%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#fef3c7" />
+    </linearGradient>
+    <filter id="shadowBox" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="15" stdDeviation="25" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="800" height="500" rx="28" fill="url(#bgGrad)" />
+
+  <!-- Subtle Islamic Geometric Pattern Overlay -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1.5" fill="none">
+    <circle cx="400" cy="250" r="220" />
+    <circle cx="400" cy="250" r="170" />
+    <circle cx="400" cy="250" r="120" />
+    <polygon points="400,30 450,160 580,200 470,290 500,420 400,350 300,420 330,290 220,200 350,160" />
+    <polygon points="400,80 435,170 530,200 450,265 470,360 400,310 330,360 350,265 270,200 365,170" />
+    <!-- Arabesque corners -->
+    <path d="M 0,0 Q 150,50 150,200 Q 50,150 0,0 Z" />
+    <path d="M 800,0 Q 650,50 650,200 Q 750,150 800,0 Z" />
+    <path d="M 0,500 Q 150,450 150,300 Q 50,350 0,500 Z" />
+    <path d="M 800,500 Q 650,450 650,300 Q 750,350 800,500 Z" />
+  </g>
+
+  <!-- Golden Radial Glow in Center -->
+  <circle cx="400" cy="240" r="260" fill="url(#goldGlow)" />
+
+  <!-- Quran Stand (Rehal) Base -->
+  <g transform="translate(400, 390)" opacity="0.95">
+    <!-- Rehal Wood Legs -->
+    <path d="M -160,50 L 0,-20 L 160,50 L 130,65 L 0,10 L -130,65 Z" fill="#78350f" filter="url(#shadowBox)" />
+    <path d="M -140,55 L 0,-15 L 140,55 L 120,68 L 0,15 L -120,68 Z" fill="#92400e" />
+    <!-- Rehal Inlay Golden Carving -->
+    <path d="M -80,20 L 0,-10 L 80,20" stroke="url(#goldPlate)" stroke-width="3" stroke-linecap="round" fill="none" />
+  </g>
+
+  <!-- Open Mushaf Al-Muttaqin Illustration (3D angled) -->
+  <g transform="translate(400, 230)" filter="url(#shadowBox)">
+    <!-- Quran Outer Book Cover Trim (Deep Emerald Leather) -->
+    <path d="M -220,-115 Q -110,-130 0,-105 Q 110,-130 220,-115 L 230,120 Q 110,105 0,130 Q -110,105 -220,120 Z" fill="url(#coverGrad)" stroke="url(#goldPlate)" stroke-width="4" />
+
+    <!-- Open Pages (Left & Right Wings) -->
+    <!-- Left Page -->
+    <path d="M -210,-105 Q -105,-120 -5,-95 L -5,115 Q -105,95 -210,108 Z" fill="url(#pageGlow)" />
+    <!-- Right Page -->
+    <path d="M 5,-95 Q 105,-120 210,-105 L 210,108 Q 105,95 5,115 Z" fill="url(#pageGlow)" />
+    <!-- Page Crease & Spine Shadow -->
+    <path d="M -6,-96 L 6,-96 L 6,116 L -6,116 Z" fill="#d97706" opacity="0.35" />
+
+    <!-- Left Page Islamic Border & Tajwid Lines -->
+    <g transform="translate(-108, 6)">
+      <rect x="-85" y="-95" width="170" height="190" rx="6" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7" />
+      <rect x="-80" y="-90" width="160" height="180" rx="4" fill="none" stroke="#b45309" stroke-width="1" opacity="0.4" />
+      
+      <!-- Surah Header Banner -->
+      <rect x="-70" y="-82" width="140" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" />
+      <circle cx="-50" cy="-72" r="3" fill="#10b981" />
+      <circle cx="50" cy="-72" r="3" fill="#10b981" />
+      <path d="M -30,-72 L 30,-72" stroke="#d97706" stroke-width="2" stroke-linecap="round" />
+
+      <!-- Ayat Simulation with Multicode Colors -->
+      <line x1="-70" y1="-45" x2="70" y2="-45" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Red (Mad) highlight -->
+      <line x1="-40" y1="-45" x2="-20" y2="-45" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+      <!-- Green (Ikhfa) highlight -->
+      <line x1="20" y1="-45" x2="45" y2="-45" stroke="#10b981" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="-25" x2="70" y2="-25" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Blue (Qalqalah) highlight -->
+      <line x1="-60" y1="-25" x2="-45" y2="-25" stroke="#0284c7" stroke-width="4" stroke-linecap="round" />
+      <!-- Waqaf Red Underline -->
+      <line x1="-10" y1="-20" x2="25" y2="-20" stroke="#dc2626" stroke-width="2" />
+
+      <line x1="-70" y1="-5" x2="70" y2="-5" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Purple (Ghunnah) highlight -->
+      <line x1="10" y1="-5" x2="35" y2="-5" stroke="#9333ea" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="15" x2="70" y2="15" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Ibtida Green Underline -->
+      <line x1="-50" y1="20" x2="-15" y2="20" stroke="#16a34a" stroke-width="2" />
+
+      <line x1="-70" y1="35" x2="70" y2="35" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <line x1="-50" y1="55" x2="50" y2="55" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      
+      <!-- Ayat Ayah Marker -->
+      <circle cx="0" cy="75" r="9" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+      <circle cx="0" cy="75" r="4" fill="#d97706" />
+    </g>
+
+    <!-- Right Page Islamic Border & Tajwid Lines -->
+    <g transform="translate(108, 6)">
+      <rect x="-85" y="-95" width="170" height="190" rx="6" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7" />
+      <rect x="-80" y="-90" width="160" height="180" rx="4" fill="none" stroke="#b45309" stroke-width="1" opacity="0.4" />
+      
+      <line x1="-70" y1="-75" x2="70" y2="-75" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Red (Mad) highlight -->
+      <line x1="10" y1="-75" x2="35" y2="-75" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="-55" x2="70" y2="-55" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Green (Ikhfa) highlight -->
+      <line x1="-50" y1="-55" x2="-25" y2="-55" stroke="#10b981" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="-35" x2="70" y2="-35" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Blue (Qalqalah) -->
+      <line x1="20" y1="-35" x2="45" y2="-35" stroke="#0284c7" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="-15" x2="70" y2="-15" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Purple (Ghunnah) -->
+      <line x1="-40" y1="-15" x2="-15" y2="-15" stroke="#9333ea" stroke-width="4" stroke-linecap="round" />
+
+      <line x1="-70" y1="5" x2="70" y2="5" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <!-- Waqaf Red Underline -->
+      <line x1="15" y1="10" x2="55" y2="10" stroke="#dc2626" stroke-width="2" />
+
+      <line x1="-70" y1="25" x2="70" y2="25" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+      <line x1="-70" y1="45" x2="70" y2="45" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Ayat Ayah Marker -->
+      <circle cx="0" cy="75" r="9" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+      <circle cx="0" cy="75" r="4" fill="#d97706" />
+    </g>
+
+    <!-- Golden Silk Bookmark Ribbon (Pita Pembatas) -->
+    <path d="M 0,-100 Q 15,30 30,160 L 15,185 L 0,165 L -15,185 L 0,150 Z" fill="url(#goldPlate)" filter="url(#shadowBox)" />
+  </g>
+
+  <!-- Floating Quality & Publisher Badges -->
+  <!-- Left Badge: Al-Qosbah Official -->
+  <g transform="translate(130, 100)" filter="url(#shadowBox)">
+    <rect x="-65" y="-22" width="130" height="44" rx="22" fill="#064e3b" stroke="#34d399" stroke-width="1.8" />
+    <circle cx="-42" cy="0" r="12" fill="#10b981" />
+    <path d="M -47,-1 L -43,3 L -37,-3" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <text x="5" y="-3" fill="#ffffff" font-size="11" font-weight="800" font-family="'Inter', sans-serif" text-anchor="middle">CETAKAN RESMI</text>
+    <text x="5" y="11" fill="#6ee7b7" font-size="9" font-weight="700" font-family="'Inter', sans-serif" text-anchor="middle">AL-QOSBAH</text>
+  </g>
+
+  <!-- Right Badge: Tajwid Multikode & Waqaf -->
+  <g transform="translate(670, 100)" filter="url(#shadowBox)">
+    <rect x="-70" y="-22" width="140" height="44" rx="22" fill="#78350f" stroke="#fbbf24" stroke-width="1.8" />
+    <circle cx="-46" cy="0" r="12" fill="#f59e0b" />
+    <polygon points="-46,-7 -44,-2 -39,-2 -43,2 -41,7 -46,4 -51,7 -49,2 -53,-2 -48,-2" fill="#ffffff" />
+    <text x="8" y="-3" fill="#ffffff" font-size="11" font-weight="800" font-family="'Inter', sans-serif" text-anchor="middle">TAJWID WARNA</text>
+    <text x="8" y="11" fill="#fde68a" font-size="9" font-weight="700" font-family="'Inter', sans-serif" text-anchor="middle">&amp; WAQAF IBTIDA'</text>
+  </g>
+
+  <!-- Glowing Particles / Sparkles -->
+  <g fill="#fef08a" opacity="0.85">
+    <circle cx="180" cy="220" r="3" />
+    <circle cx="210" cy="310" r="2" />
+    <circle cx="620" cy="210" r="3.5" />
+    <circle cx="590" cy="330" r="2.5" />
+    <polygon points="190,170 193,178 201,181 193,184 190,192 187,184 179,181 187,178" fill="#fde047" />
+    <polygon points="610,160 612,166 618,168 612,170 610,176 608,170 602,168 608,166" fill="#fde047" />
+  </g>
+</svg>

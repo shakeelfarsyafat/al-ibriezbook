@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Al-Ibriez Book • Toko Resmi Al-Qur'an Al-Muttaqin (Cetakan Al-Qosbah)</title>
   <meta name="description" content="Toko Resmi Al-Ibriez Book - Menyediakan Al-Qur'an Al-Muttaqin cetakan Penerbit Al-Qosbah. Dilengkapi Tajwid Multikode Full Color, Panduan Garis Waqaf & Ibtida', serta pilihan mushaf hafalan, terjemah, dan tafsir.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -57,42 +59,34 @@
   </header>
 
   <!-- ==========================================================================
-       2. HERO SECTION
-       Left: Illustration of children smiling with Quran inside arch
-       Right: "Inspiring People to Love and Live with Quran"
+       2. HERO SECTION (FULL BANNER CAROUSEL DENGAN KONTROL ADMIN)
+       Fitur: Full-width responsive banner, auto-slide, gesture swipe/drag,
+       animasi transisi ciamik, link CTA dinamis, & sinkronisasi admin dashboard.
        ========================================================================== -->
-  <section class="hero-section" id="hero">
-    <div class="container hero-grid">
-      <!-- Left Visual: Arch with Children holding Quran -->
-      <div class="hero-visual-col">
-        <div class="hero-art-wrapper">
-          <img src="assets/hero-kids-quran.svg" alt="Inspiring People to Love and Live with Quran - Al-Ibriez Book">
-        </div>
+  <section class="hero-banner-section" id="hero" aria-label="Banner Utama Promo dan Mushaf">
+    <div class="hero-banner-viewport" id="heroBannerViewport">
+      <!-- Carousel Track Container -->
+      <div class="hero-banner-track" id="heroBannerTrack">
+        <!-- Banner slides populated dynamically from localStorage via JavaScript -->
       </div>
 
-      <!-- Right Typography & Copy -->
-      <div class="hero-text-col">
-        <h1 class="hero-title-main">
-          Inspiring<br>
-          People to<br>
-          Love and Live<br>
-          <span class="highlight-orange">with Quran</span>
-        </h1>
-        <p class="hero-desc-main">
-          Menginspirasi umat untuk mencintai dan hidup bersama Al-Qur'an setiap hari.
-        </p>
+      <!-- Navigation Arrows (Glassmorphic) -->
+      <button class="hero-nav-arrow hero-nav-prev" id="btnHeroPrev" aria-label="Banner Sebelumnya" title="Sebelumnya">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <button class="hero-nav-arrow hero-nav-next" id="btnHeroNext" aria-label="Banner Selanjutnya" title="Selanjutnya">
+        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
 
-        <div class="hero-action-row">
-          <a href="#sectionContohBacaan" class="btn-hero-primary">
-            <span>Lihat Contoh Bacaan</span>
-            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
-              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-            </svg>
-          </a>
-          <a href="#sectionProduk" class="btn-hero-secondary">
-            <span>Pilih Mushaf</span>
-          </a>
+      <!-- Carousel Pagination Indicators & Progress -->
+      <div class="hero-carousel-controls">
+        <div class="hero-pagination-dots" id="heroPaginationDots">
+          <!-- Dynamically generated indicators -->
         </div>
+        <button class="hero-autoplay-toggle" id="btnHeroAutoplay" aria-label="Jeda Auto Slide" title="Jeda / Lanjutkan Auto Slide">
+          <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          <svg class="icon-play" viewBox="0 0 24 24" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+        </button>
       </div>
     </div>
   </section>
