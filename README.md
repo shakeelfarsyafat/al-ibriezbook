@@ -46,20 +46,54 @@
 
 ## 🛠️ Teknologi yang Digunakan
 
-* **HTML5**: Semantik & SEO-friendly
-* **Vanilla CSS3**: Desain kustom, modern typography, glassmorphism, responsif mobile-first tanpa dependensi berat
-* **Vanilla JavaScript (ES6+)**: Logika interaktif tajwid, modal, pencarian, EMSIFA API Wilayah Indonesia, dan kalkulator ongkir dinamis
-* **Integrasi API**: [EMSIFA API Wilayah Indonesia](https://emsifa.github.io/api-wilayah-indonesia/)
+* **Frontend**: HTML5 Semantik, Vanilla CSS3 (Dark Mode, Glassmorphism, Responsive Mobile-First), Vanilla JavaScript (ES6+)
+* **Backend**: Node.js, Express.js
+* **Database**: **Neon Serverless PostgreSQL** (`pg` connection pool)
+* **Integrasi Wilayah**: [EMSIFA API Wilayah Indonesia](https://emsifa.github.io/api-wilayah-indonesia/)
 
 ---
 
-## 🚀 Menjalankan Secara Lokal
+## 🗄️ Integrasi Database Neon PostgreSQL
+
+Database di-hosting secara cloud serverless di **Neon PostgreSQL** (AWS Singapore `ap-southeast-1`):
+
+### Konfigurasi `.env`
+```env
+DATABASE_URL=postgresql://neondb_owner:npg_s0Mwy1AHJgFn@ep-old-firefly-b3vvo99i-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+PORT=3000
+```
+
+### Tabel yang Dikelola di Neon DB:
+1. `catalog_products` - Katalog produk mushaf Al-Qur'an (nama, harga, kategori, gambar, berat, status).
+2. `hero_banners` - Banner slider carousel landing page (judul, subtitle, tag, gradient, cta link, status).
+3. `testimonials` - Ulasan pembeli mushaf & rating bintang.
+4. `orders` - Rekam transaksi pemesanan masuk (Order ID, nama, WA, alamat, produk, qty, ongkir, grand total, status).
+5. `store_settings` - Pengaturan toko & PIN keamanan Admin Dashboard.
+6. `products` & `product_variants` - Relational catalog tables.
+7. `shipping_zones`, `shipping_countries` & `order_status_logs` - Riwayat log status & zona pengiriman.
+
+### Perintah Database:
+```bash
+# Inisialisasi & verifikasi tabel database Neon
+npm run init-db
+
+# Tes koneksi dan hitung baris tabel
+npm run test-db
+```
+
+---
+
+## 🚀 Menjalankan Aplikasi
 
 ```bash
-# Menggunakan npm dev server yang sudah disiapkan
-npm run dev
+# Menjalankan server fullstack (Web + Neon PostgreSQL API)
+npm start
 
-# Atau menggunakan npx serve
-npx serve -l 3000
+# Atau mode development
+npm run dev
 ```
-Buka browser di alamat `http://localhost:3000`.
+
+- **Website Toko**: `http://localhost:3000`
+- **Admin Dashboard**: `http://localhost:3000/admin.html`
+- **Health Check API**: `http://localhost:3000/api/health`
+- **PIN Akses Admin Default**: `192837`

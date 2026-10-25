@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Toko Resmi Al-Qur'an Al-Muttaqin (Cetakan Al-Qosbah)",
   "scripts": {
-    "dev": "npx --yes serve -l 3000",
-    "start": "npx --yes serve -l 3000"
+    "dev": "node server.js",
+    "start": "node server.js",
+    "init-db": "node init-db.js",
+    "test-db": "node test-db.js"
   },
   "keywords": [
     "quran",
@@ -13,5 +15,11 @@
     "al-ibriez"
   ],
   "author": "Al-Ibriez Book",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
+  }
 }

@@ -730,6 +730,76 @@ app.patch('/api/orders/:code/status', async (req, res) => {
   }
 });
 
+// ============================================================================
+// WILAYAH INDONESIA PROXY & CACHE API
+// Menyediakan data Provinsi, Kabupaten, Kecamatan, Kelurahan anti-CORS & super cepat
+// ============================================================================
+const wilayahMemoryCache = new Map();
+
+async function fetchWilayahProxy(subPath) {
+  if (wilayahMemoryCache.has(subPath)) {
+    return wilayahMemoryCache.get(subPath);
+  }
+  const upstreams = [
+    `https://emsifa.github.io/api-wilayah-indonesia/api/${subPath}`,
+    `https://www.emsifa.com/api-wilayah-indonesia/api/${subPath}`
+  ];
+
+  let lastError = null;
+  for (const url of upstreams) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        wilayahMemoryCache.set(subPath, data);
+        return data;
+      }
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error(`Gagal memuat data wilayah: ${subPath}`);
+}
+
+app.get('/api/wilayah/provinces', async (req, res) => {
+  try {
+    const data = await fetchWilayahProxy('provinces.json');
+    res.json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Gagal mengambil data provinsi', details: err.message });
+  }
+});
+
+app.get('/api/wilayah/regencies/:provinceId', async (req, res) => {
+  try {
+    const { provinceId } = req.params;
+    const data = await fetchWilayahProxy(`regencies/${provinceId}.json`);
+    res.json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Gagal mengambil data kabupaten/kota', details: err.message });
+  }
+});
+
+app.get('/api/wilayah/districts/:regencyId', async (req, res) => {
+  try {
+    const { regencyId } = req.params;
+    const data = await fetchWilayahProxy(`districts/${regencyId}.json`);
+    res.json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Gagal mengambil data kecamatan', details: err.message });
+  }
+});
+
+app.get('/api/wilayah/villages/:districtId', async (req, res) => {
+  try {
+    const { districtId } = req.params;
+    const data = await fetchWilayahProxy(`villages/${districtId}.json`);
+    res.json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Gagal mengambil data desa/kelurahan', details: err.message });
+  }
+});
+
 // Serve Static Frontend Files
 app.use(express.static(path.join(__dirname)));
 

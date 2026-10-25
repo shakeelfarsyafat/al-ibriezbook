@@ -1522,6 +1522,11 @@
           <span>Kelola Testimoni</span>
           <span class="badge-tab-count" id="badgeTestimonialCount" style="margin-left:auto; background:rgba(234,179,8,0.2); color:#eab308; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">0</span>
         </div>
+        <div class="sidebar-nav-item" id="navItemDatabase" onclick="switchAdminTab('database')">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.42 0 8 1.34 8 2s-3.58 2-8 2-8-1.34-8-2 3.58-2 8-2zm-8 4.28C5.23 8.78 8.35 9.5 12 9.5s6.77-.72 8-1.22V10c0 .66-3.58 2-8 2s-8-1.34-8-2V8.28zm0 4C5.23 12.78 8.35 13.5 12 13.5s6.77-.72 8-1.22V14c0 .66-3.58 2-8 2s-8-1.34-8-2v-1.72zm0 4c5.23.5 8.35 1.22 12 1.22s6.77-.72 8-1.22V18c0 .66-3.58 2-8 2s-8-1.34-8-2v-1.72z"/></svg>
+          <span>Database Neon</span>
+          <span class="badge-tab-count" id="badgeDbStatus" style="margin-left:auto; background:rgba(16,185,129,0.2); color:#10b981; padding:2px 7px; border-radius:10px; font-size:0.7rem; font-weight:800;">Online</span>
+        </div>
       </nav>
 
       <div class="sidebar-footer">
@@ -1549,6 +1554,13 @@
           <h1 class="top-nav-title" id="adminTopTitle">Kelola Banner Hero Layar Penuh</h1>
         </div>
         <div class="top-nav-actions">
+          <!-- Neon Database Live Status Badge -->
+          <div id="neonDbBadgeTop" onclick="switchAdminTab('database')" style="cursor:pointer; display:inline-flex; align-items:center; gap:7px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); padding:6px 12px; border-radius:8px; font-size:0.76rem; color:#10b981; font-weight:700;" title="Klik untuk membuka Pengaturan & Diagnostik Neon DB">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+            <span>Neon DB</span>
+            <span id="neonDbLatencyBadge" style="color:#94a3b8; font-weight:400; font-family:monospace; font-size:0.72rem;">(Online)</span>
+          </div>
+
           <button class="btn-top-action btn-change-pin" id="btnChangePin">
             <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
             <span class="top-action-text">Ubah PIN</span>
@@ -1573,13 +1585,17 @@
         </button>
         <button type="button" class="mobile-subnav-btn" id="mobSubnavProducts" onclick="switchAdminTab('products')">
           <svg viewBox="0 0 24 24"><path d="M4 11h6V4H4v7zm0 9h6v-7H4v7zm10 0h6v-7h-6v7zm0-16v7h6V4h-6z"/></svg>
-          <span>Katalog Produk</span>
+          <span>Produk</span>
           <span class="mob-badge-cnt" id="mobBadgeProd">0</span>
         </button>
         <button type="button" class="mobile-subnav-btn" id="mobSubnavTestimonials" onclick="switchAdminTab('testimonials')">
           <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-          <span>Testimoni</span>
+          <span>Ulasan</span>
           <span class="mob-badge-cnt" id="mobBadgeTesti">0</span>
+        </button>
+        <button type="button" class="mobile-subnav-btn" id="mobSubnavDb" onclick="switchAdminTab('database')">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.42 0 8 1.34 8 2s-3.58 2-8 2-8-1.34-8-2 3.58-2 8-2z"/></svg>
+          <span>Neon</span>
         </button>
       </nav>
 
@@ -1801,6 +1817,180 @@
                   <!-- Rendered dynamically via JavaScript -->
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================
+             VIEW TAB 4: KELOLA PESANAN PELANGGAN (NEON POSTGRESQL LIVE)
+             ================================================================ -->
+        <div id="viewOrdersTab" style="display:none;">
+          <!-- Metrics Row Orders -->
+          <div class="dashboard-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Total Pesanan Masuk</div>
+              <div class="metric-value" id="dashTotalOrdersAll" style="color:#38bdf8;">0</div>
+              <div class="metric-sub">Tersimpan di Neon PostgreSQL</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Menunggu Pembayaran</div>
+              <div class="metric-value" id="dashOrdersPending" style="color:#f97316;">0</div>
+              <div class="metric-sub">Status pending / checkout baru</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Terverifikasi &amp; Dikirim</div>
+              <div class="metric-value" id="dashOrdersShipped" style="color:#10b981;">0</div>
+              <div class="metric-sub">Pesanan lunas &amp; proses kirim</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Total Nilai Pesanan</div>
+              <div class="metric-value" id="dashTotalRevenue" style="font-size:1.35rem; color:#facc15;">Rp 0</div>
+              <div class="metric-sub">Akumulasi grand total transaksi</div>
+            </div>
+          </div>
+
+          <!-- Orders Section Box -->
+          <div class="admin-section-box">
+            <div class="section-box-header">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <h3 class="section-title">Daftar Pesanan Masuk Pelanggan</h3>
+                <span style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:12px; font-size:0.72rem; font-weight:700;">Live Neon DB</span>
+              </div>
+              <div class="section-header-controls">
+                <select id="adminOrderFilterStatus" class="admin-search-input" style="width:160px; padding:0 8px;">
+                  <option value="">Semua Status</option>
+                  <option value="pending">Pending (Menunggu)</option>
+                  <option value="paid">Terverifikasi / Lunas</option>
+                  <option value="shipped">Sedang Dikirim</option>
+                  <option value="completed">Selesai / Diterima</option>
+                  <option value="cancelled">Dibatalkan</option>
+                </select>
+                <input type="text" id="adminOrderSearch" class="admin-search-input" placeholder="Cari Order ID, Nama, No. WA...">
+                <button class="btn-admin-add" id="btnRefreshOrders" onclick="renderOrdersDashboard()">
+                  <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                  <span>Muat Ulang</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-mobile-scroll-hint">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+              <span>Geser tabel ke samping untuk melihat rincian pemesan &amp; aksi status</span>
+            </div>
+            <div class="table-responsive">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th style="width:120px;">Order Code</th>
+                    <th style="min-width:160px;">Pelanggan &amp; WhatsApp</th>
+                    <th style="min-width:180px;">Produk &amp; Jumlah</th>
+                    <th style="min-width:160px;">Tujuan &amp; Kurir</th>
+                    <th style="width:120px;">Total (Rp)</th>
+                    <th style="width:120px; text-align:center;">Status</th>
+                    <th style="width:130px; text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="dashOrdersTableBody">
+                  <!-- Rendered dynamically via JavaScript from Neon DB -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================
+             VIEW TAB 5: STATUS & DIAGNOSTIK DATABASE NEON POSTGRESQL
+             ================================================================ -->
+        <div id="viewDatabaseTab" style="display:none;">
+          <div class="admin-section-box">
+            <div class="section-box-header">
+              <h3 class="section-title">Koneksi Database Neon PostgreSQL</h3>
+              <button class="btn-admin-add" onclick="testNeonDbHealth()">
+                <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                <span>Tes Ping Latensi</span>
+              </button>
+            </div>
+
+            <div style="padding:10px 0;">
+              <!-- Connection Overview Card -->
+              <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:20px; margin-bottom:20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                  <div>
+                    <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:4px;">STATUS SISTEM CLOUD</div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#10b981; box-shadow:0 0 12px #10b981;"></span>
+                      <strong style="font-size:1.2rem; color:#ffffff;">Neon Serverless PostgreSQL (Online)</strong>
+                    </div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:4px;">LATENSI JARINGAN</div>
+                    <div id="neonDbLatencyDetail" style="font-size:1.2rem; color:#10b981; font-weight:800; font-family:monospace;">~22 ms</div>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06);">
+                  <div>
+                    <div style="font-size:0.75rem; color:#94a3b8;">Database Name</div>
+                    <div style="font-weight:700; color:#ffffff; font-family:monospace;" id="neonDbName">neondb</div>
+                  </div>
+                  <div>
+                    <div style="font-size:0.75rem; color:#94a3b8;">User Role</div>
+                    <div style="font-weight:700; color:#ffffff; font-family:monospace;" id="neonDbUser">neondb_owner</div>
+                  </div>
+                  <div>
+                    <div style="font-size:0.75rem; color:#94a3b8;">Region Server</div>
+                    <div style="font-weight:700; color:#ffffff;">ap-southeast-1 (Singapore / AWS)</div>
+                  </div>
+                  <div>
+                    <div style="font-size:0.75rem; color:#94a3b8;">SSL Security Mode</div>
+                    <div style="font-weight:700; color:#10b981;">require (TLS Encrypted)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Database Table Stats -->
+              <h4 style="color:#ffffff; font-size:0.95rem; font-weight:800; margin-bottom:12px;">Data Tersimpan di Database</h4>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:24px;">
+                <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px;">
+                  <div style="font-size:0.72rem; color:#94a3b8;">Tabel: catalog_products</div>
+                  <div id="statTableProducts" style="font-size:1.4rem; font-weight:800; color:#10b981;">-</div>
+                  <div style="font-size:0.72rem; color:#64748b;">Produk katalog mushaf</div>
+                </div>
+                <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px;">
+                  <div style="font-size:0.72rem; color:#94a3b8;">Tabel: hero_banners</div>
+                  <div id="statTableBanners" style="font-size:1.4rem; font-weight:800; color:#f97316;">-</div>
+                  <div style="font-size:0.72rem; color:#64748b;">Banner carousel landing</div>
+                </div>
+                <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px;">
+                  <div style="font-size:0.72rem; color:#94a3b8;">Tabel: testimonials</div>
+                  <div id="statTableTestimonials" style="font-size:1.4rem; font-weight:800; color:#eab308;">-</div>
+                  <div style="font-size:0.72rem; color:#64748b;">Ulasan pembeli terverifikasi</div>
+                </div>
+                <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px;">
+                  <div style="font-size:0.72rem; color:#94a3b8;">Tabel: orders</div>
+                  <div id="statTableOrders" style="font-size:1.4rem; font-weight:800; color:#38bdf8;">-</div>
+                  <div style="font-size:0.72rem; color:#64748b;">Pesanan masuk dari pelanggan</div>
+                </div>
+              </div>
+
+              <!-- Database Quick Actions -->
+              <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.25); border-radius:12px; padding:20px;">
+                <h4 style="color:#10b981; font-size:0.95rem; font-weight:800; margin-bottom:8px;">Aksi Sinkronisasi</h4>
+                <p style="font-size:0.82rem; color:#94a3b8; line-height:1.5; margin-bottom:16px;">
+                  Semua perubahan pada Banner, Produk, Testimoni, dan Pesanan otomatis tersimpan langsung ke database Neon PostgreSQL di cloud. Anda juga dapat memaksa sinkronisasi manual kapan saja.
+                </p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <button type="button" class="btn-admin-add" onclick="syncAllToNeon()">
+                    <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                    <span>Upload &amp; Sync Semua ke Neon DB</span>
+                  </button>
+                  <button type="button" class="btn-admin-reset" onclick="pullAllFromNeon()">
+                    <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                    <span>Tarik Data Terbaru dari Neon DB</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -2109,9 +2299,47 @@
     Berhasil!
   </div>
 
+  <!-- ==========================================================================
+       3.E MODAL RINCIAN PESANAN PELANGGAN (NEON DB)
+       ========================================================================== -->
+  <div class="admin-form-modal-dark" id="adminOrderDetailModal" style="display:none;">
+    <div class="form-dark-card" style="max-width:700px;">
+      <button class="admin-form-close" id="btnCloseOrderModal" onclick="closeOrderDetailModal()" style="background:#0f172a; color:#cbd5e1;">&times;</button>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <h3 id="modalOrderTitle" style="font-size:1.35rem; font-weight:800; margin:0; color:#ffffff;">Rincian Pesanan</h3>
+        <span id="modalOrderStatusBadge" class="banner-status-pill active">Pending</span>
+      </div>
+      <p id="modalOrderTimestamp" style="font-size:0.8rem; color:#94a3b8; margin-bottom:18px;">Waktu pemesanan: -</p>
+
+      <div id="modalOrderContent" style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:18px; margin-bottom:20px; font-size:0.85rem; line-height:1.6;">
+        <!-- Filled dynamically -->
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-top:1px solid #334155; padding-top:16px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.82rem; color:#cbd5e1; font-weight:700;">Ubah Status:</label>
+          <select id="selectUpdateOrderStatus" class="modal-form-select" style="width:auto; height:36px; padding:0 12px; font-size:0.82rem;">
+            <option value="pending">Pending (Menunggu)</option>
+            <option value="paid">Terverifikasi / Lunas</option>
+            <option value="shipped">Sedang Dikirim</option>
+            <option value="completed">Selesai / Diterima</option>
+            <option value="cancelled">Dibatalkan</option>
+          </select>
+          <button type="button" class="btn-admin-add" onclick="handleSaveOrderStatus()" style="height:36px; padding:0 14px;">Simpan Status</button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <a id="btnChatCustomerWa" href="#" target="_blank" class="btn-admin-add" style="background:#25d366; color:#ffffff; height:36px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <span>Chat WhatsApp</span>
+          </a>
+          <button type="button" class="btn-admin-reset" onclick="closeOrderDetailModal()" style="height:36px;">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // SHARED STORE CONSTANTS
-    const DEFAULT_ADMIN_PIN = '123456';
+    const DEFAULT_ADMIN_PIN = '192837';
     const DEFAULT_HERO_BANNERS = [
       {
         id: 'BANNER-1',
@@ -2285,15 +2513,23 @@
       }
     ];
 
+    let orders = [];
+    let currentOrderViewing = null;
+
     function getAdminPin() {
       return localStorage.getItem('alibriez_admin_pin') || DEFAULT_ADMIN_PIN;
     }
 
     function setAdminPin(pin) {
       localStorage.setItem('alibriez_admin_pin', pin);
+      fetch('/api/settings/pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin })
+      }).catch(e => console.warn('Sync PIN to Neon:', e));
     }
 
-    // PRODUCT STORAGE
+    // PRODUCT STORAGE WITH NEON DB SYNC
     function loadProducts() {
       try {
         const raw = localStorage.getItem('alibriez_catalog_products');
@@ -2312,11 +2548,18 @@
 
     function saveProducts(prods) {
       localStorage.setItem('alibriez_catalog_products', JSON.stringify(prods));
+      fetch('/api/products/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: prods })
+      }).then(r => r.json()).then(res => {
+        if (res.success) showToast('Data produk tersinkronisasi ke Neon DB!');
+      }).catch(e => console.warn('Product sync to Neon:', e));
     }
 
     let products = loadProducts();
 
-    // BANNER STORAGE
+    // BANNER STORAGE WITH NEON DB SYNC
     function loadBanners() {
       try {
         const raw = localStorage.getItem('alibriez_hero_banners');
@@ -2335,11 +2578,18 @@
 
     function saveBanners(bList) {
       localStorage.setItem('alibriez_hero_banners', JSON.stringify(bList));
+      fetch('/api/banners/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ banners: bList })
+      }).then(r => r.json()).then(res => {
+        if (res.success) showToast('Data banner tersinkronisasi ke Neon DB!');
+      }).catch(e => console.warn('Banner sync to Neon:', e));
     }
 
     let banners = loadBanners();
 
-    // TESTIMONIAL STORAGE
+    // TESTIMONIAL STORAGE WITH NEON DB SYNC
     function loadTestimonials() {
       try {
         const raw = localStorage.getItem('alibriez_testimonials');
@@ -2358,6 +2608,13 @@
 
     function saveTestimonials(tList) {
       localStorage.setItem('alibriez_testimonials', JSON.stringify(tList));
+      fetch('/api/testimonials/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ testimonials: tList })
+      }).then(r => r.json()).then(res => {
+        if (res.success) showToast('Data testimoni tersinkronisasi ke Neon DB!');
+      }).catch(e => console.warn('Testimonial sync to Neon:', e));
     }
 
     let testimonials = loadTestimonials();
@@ -2395,7 +2652,7 @@
     };
 
     // ==========================================================================
-    // TAB SWITCHER (BANNERS VS PRODUCTS VS TESTIMONIALS)
+    // TAB SWITCHER (BANNERS, PRODUCTS, TESTIMONIALS, ORDERS, DATABASE)
     // ==========================================================================
     let currentAdminTab = 'banners';
 
@@ -2406,24 +2663,25 @@
       const navBanners = document.getElementById('navItemBanners');
       const navProducts = document.getElementById('navItemProducts');
       const navTestimonials = document.getElementById('navItemTestimonials');
+      const navOrders = document.getElementById('navItemOrders');
+      const navDb = document.getElementById('navItemDatabase');
+
       const mobBanners = document.getElementById('mobSubnavBanners');
       const mobProducts = document.getElementById('mobSubnavProducts');
       const mobTestimonials = document.getElementById('mobSubnavTestimonials');
+      const mobOrders = document.getElementById('mobSubnavOrders');
+      const mobDb = document.getElementById('mobSubnavDb');
+
       const viewBanners = document.getElementById('viewBannersTab');
       const viewProducts = document.getElementById('viewProductsTab');
       const viewTestimonials = document.getElementById('viewTestimonialsTab');
+      const viewOrders = document.getElementById('viewOrdersTab');
+      const viewDb = document.getElementById('viewDatabaseTab');
       const topTitle = document.getElementById('adminTopTitle');
 
-      if (navBanners) navBanners.classList.remove('active');
-      if (navProducts) navProducts.classList.remove('active');
-      if (navTestimonials) navTestimonials.classList.remove('active');
-      if (mobBanners) mobBanners.classList.remove('active');
-      if (mobProducts) mobProducts.classList.remove('active');
-      if (mobTestimonials) mobTestimonials.classList.remove('active');
-
-      if (viewBanners) viewBanners.style.display = 'none';
-      if (viewProducts) viewProducts.style.display = 'none';
-      if (viewTestimonials) viewTestimonials.style.display = 'none';
+      [navBanners, navProducts, navTestimonials, navOrders, navDb].forEach(el => el && el.classList.remove('active'));
+      [mobBanners, mobProducts, mobTestimonials, mobOrders, mobDb].forEach(el => el && el.classList.remove('active'));
+      [viewBanners, viewProducts, viewTestimonials, viewOrders, viewDb].forEach(el => el && (el.style.display = 'none'));
 
       if (tabName === 'banners') {
         if (navBanners) navBanners.classList.add('active');
@@ -2443,6 +2701,18 @@
         if (viewTestimonials) viewTestimonials.style.display = 'block';
         if (topTitle) topTitle.textContent = 'Manajemen Ulasan & Testimoni Pelanggan';
         renderTestimonialDashboard();
+      } else if (tabName === 'orders') {
+        if (navOrders) navOrders.classList.add('active');
+        if (mobOrders) mobOrders.classList.add('active');
+        if (viewOrders) viewOrders.style.display = 'block';
+        if (topTitle) topTitle.textContent = 'Daftar Pesanan Masuk (Neon DB)';
+        renderOrdersDashboard();
+      } else if (tabName === 'database') {
+        if (navDb) navDb.classList.add('active');
+        if (mobDb) mobDb.classList.add('active');
+        if (viewDb) viewDb.style.display = 'block';
+        if (topTitle) topTitle.textContent = 'Diagnostik & Sinkronisasi Neon DB';
+        testNeonDbHealth();
       }
     };
 
@@ -3244,6 +3514,348 @@
         showToast('PIN Admin berhasil diperbarui!');
       }, 1000);
     });
+
+    // ==========================================================================
+    // NEON POSTGRESQL DATABASE DIAGNOSTICS & SYNC ENGINE
+    // ==========================================================================
+    async function testNeonDbHealth() {
+      try {
+        const start = Date.now();
+        const res = await fetch('/api/health');
+        const data = await res.json();
+        const latency = data.latencyMs !== undefined ? data.latencyMs : (Date.now() - start);
+
+        if (data.success) {
+          const badgeTop = document.getElementById('neonDbLatencyBadge');
+          if (badgeTop) badgeTop.textContent = `(${latency}ms)`;
+          const detailLatency = document.getElementById('neonDbLatencyDetail');
+          if (detailLatency) detailLatency.textContent = `${latency} ms`;
+          const dbName = document.getElementById('neonDbName');
+          if (dbName && data.database) dbName.textContent = data.database;
+          const dbUser = document.getElementById('neonDbUser');
+          if (dbUser && data.user) dbUser.textContent = data.user;
+
+          if (data.counts) {
+            if (document.getElementById('statTableProducts')) document.getElementById('statTableProducts').textContent = data.counts.products || 0;
+            if (document.getElementById('statTableBanners')) document.getElementById('statTableBanners').textContent = data.counts.banners || 0;
+            if (document.getElementById('statTableTestimonials')) document.getElementById('statTableTestimonials').textContent = data.counts.testimonials || 0;
+            if (document.getElementById('statTableOrders')) document.getElementById('statTableOrders').textContent = data.counts.orders || 0;
+            const badgeOrder = document.getElementById('badgeOrderCount');
+            if (badgeOrder) badgeOrder.textContent = data.counts.orders || 0;
+            const mobOrder = document.getElementById('mobBadgeOrders');
+            if (mobOrder) mobOrder.textContent = data.counts.orders || 0;
+          }
+
+          showToast(`Koneksi Neon PostgreSQL Normal (${latency}ms)`);
+        }
+      } catch (err) {
+        console.warn('Neon DB Health check error:', err);
+        const badgeTop = document.getElementById('neonDbLatencyBadge');
+        if (badgeTop) badgeTop.textContent = '(Offline)';
+      }
+    }
+
+    async function syncAllToNeon() {
+      try {
+        showToast('Mengunggah data ke Neon DB...');
+        await Promise.all([
+          fetch('/api/products/bulk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ products })
+          }),
+          fetch('/api/banners/bulk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ banners })
+          }),
+          fetch('/api/testimonials/bulk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ testimonials })
+          })
+        ]);
+        showToast('Semua data berhasil disinkronisasi ke Neon DB!');
+        testNeonDbHealth();
+      } catch (err) {
+        alert('Gagal mengunggah ke Neon DB: ' + err.message);
+      }
+    }
+
+    async function pullAllFromNeon() {
+      try {
+        showToast('Mengambil data terbaru dari Neon DB...');
+        await syncAdminWithNeonDB(true);
+        showToast('Data berhasil diperbarui dari Neon DB!');
+      } catch (err) {
+        alert('Gagal mengambil data dari Neon DB: ' + err.message);
+      }
+    }
+
+    async function syncAdminWithNeonDB(forceRerender = false) {
+      try {
+        testNeonDbHealth();
+        const [prodRes, bannerRes, testiRes, orderRes] = await Promise.all([
+          fetch('/api/products?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/api/banners?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/api/testimonials?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/api/orders').then(r => r.ok ? r.json() : null).catch(() => null)
+        ]);
+
+        if (prodRes && prodRes.success && Array.isArray(prodRes.data) && prodRes.data.length > 0) {
+          products = prodRes.data;
+          localStorage.setItem('alibriez_catalog_products', JSON.stringify(products));
+        }
+
+        if (bannerRes && bannerRes.success && Array.isArray(bannerRes.data) && bannerRes.data.length > 0) {
+          banners = bannerRes.data;
+          localStorage.setItem('alibriez_hero_banners', JSON.stringify(banners));
+        }
+
+        if (testiRes && testiRes.success && Array.isArray(testiRes.data) && testiRes.data.length > 0) {
+          testimonials = testiRes.data;
+          localStorage.setItem('alibriez_testimonials', JSON.stringify(testimonials));
+        }
+
+        if (orderRes && orderRes.success && Array.isArray(orderRes.data)) {
+          orders = orderRes.data;
+          const badgeOrder = document.getElementById('badgeOrderCount');
+          if (badgeOrder) badgeOrder.textContent = orders.length;
+          const mobOrder = document.getElementById('mobBadgeOrders');
+          if (mobOrder) mobOrder.textContent = orders.length;
+        }
+
+        if (forceRerender || currentAdminTab === 'banners') renderBannerDashboard();
+        if (forceRerender || currentAdminTab === 'products') renderDashboard();
+        if (forceRerender || currentAdminTab === 'testimonials') renderTestimonialDashboard();
+        if (forceRerender || currentAdminTab === 'orders') renderOrdersDashboard();
+      } catch (err) {
+        console.warn('Sync admin with Neon notice:', err);
+      }
+    }
+
+    // ==========================================================================
+    // ORDERS DASHBOARD & STATUS MANAGEMENT
+    // ==========================================================================
+    async function renderOrdersDashboard() {
+      try {
+        const res = await fetch('/api/orders');
+        const data = await res.json();
+        if (data && data.success && Array.isArray(data.data)) {
+          orders = data.data;
+        }
+      } catch (e) {
+        console.warn('Failed loading orders from Neon:', e);
+      }
+
+      // Calculate Metrics
+      const totalOrders = orders.length;
+      const pendingOrders = orders.filter(o => o.order_status === 'pending').length;
+      const shippedOrders = orders.filter(o => ['shipped', 'completed', 'paid'].includes(o.order_status)).length;
+      const totalRevenue = orders.reduce((sum, o) => sum + (parseFloat(o.grand_total_idr) || 0), 0);
+
+      document.getElementById('dashTotalOrdersAll').textContent = totalOrders;
+      document.getElementById('dashOrdersPending').textContent = pendingOrders;
+      document.getElementById('dashOrdersShipped').textContent = shippedOrders;
+      document.getElementById('dashTotalRevenue').textContent = 'Rp ' + Math.round(totalRevenue).toLocaleString('id-ID');
+      const badgeOrder = document.getElementById('badgeOrderCount');
+      if (badgeOrder) badgeOrder.textContent = totalOrders;
+      const mobOrder = document.getElementById('mobBadgeOrders');
+      if (mobOrder) mobOrder.textContent = totalOrders;
+
+      renderOrdersTable();
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('dashOrdersTableBody');
+      if (!tbody) return;
+
+      const q = (document.getElementById('adminOrderSearch')?.value || '').trim().toLowerCase();
+      const statusFilter = (document.getElementById('adminOrderFilterStatus')?.value || '').trim();
+
+      const filtered = orders.filter(o => {
+        const matchStatus = !statusFilter || o.order_status === statusFilter;
+        const matchQuery = !q ||
+          (o.order_code && o.order_code.toLowerCase().includes(q)) ||
+          (o.customer_name && o.customer_name.toLowerCase().includes(q)) ||
+          (o.customer_wa && o.customer_wa.includes(q)) ||
+          (o.product_name && o.product_name.toLowerCase().includes(q)) ||
+          (o.province && o.province.toLowerCase().includes(q));
+        return matchStatus && matchQuery;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:36px; color:#64748b;">Belum ada pesanan yang sesuai filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(o => {
+        const orderDate = o.created_at ? new Date(o.created_at).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '-';
+        const cleanWa = (o.customer_wa || '').replace(/[^0-9]/g, '');
+        const waLink = cleanWa.startsWith('0') ? '62' + cleanWa.slice(1) : cleanWa;
+
+        let statusBadge = '<span class="banner-status-pill active" style="background:rgba(249,115,22,0.15); color:#f97316; border-color:rgba(249,115,22,0.3);">Pending</span>';
+        if (o.order_status === 'paid') {
+          statusBadge = '<span class="banner-status-pill active" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">Lunas</span>';
+        } else if (o.order_status === 'shipped') {
+          statusBadge = '<span class="banner-status-pill active" style="background:rgba(59,130,246,0.15); color:#38bdf8; border-color:rgba(59,130,246,0.3);">Dikirim</span>';
+        } else if (o.order_status === 'completed') {
+          statusBadge = '<span class="banner-status-pill active" style="background:rgba(16,185,129,0.25); color:#34d399; border-color:#10b981;">Selesai</span>';
+        } else if (o.order_status === 'cancelled') {
+          statusBadge = '<span class="banner-status-pill inactive" style="background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);">Batal</span>';
+        }
+
+        const totalNum = parseFloat(o.grand_total_idr) || 0;
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:800; color:#38bdf8; font-family:monospace; font-size:0.86rem;">${o.order_code}</div>
+              <div style="font-size:0.7rem; color:#94a3b8;">${orderDate}</div>
+            </td>
+            <td>
+              <div style="font-weight:700; color:#ffffff;">${o.customer_name}</div>
+              <a href="https://wa.me/${waLink}" target="_blank" style="font-size:0.74rem; color:#10b981; text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-family:monospace;">
+                <span>WhatsApp: ${o.customer_wa}</span>
+              </a>
+            </td>
+            <td>
+              <div style="font-weight:700; color:#cbd5e1; font-size:0.84rem;">${o.product_name}</div>
+              <div style="font-size:0.72rem; color:#94a3b8;">Cover: ${o.cover_color || 'Standar'} • <strong>${o.quantity || 1} Mushaf</strong> (${o.weight_kg || 0.65} kg)</div>
+            </td>
+            <td>
+              <div style="font-size:0.8rem; color:#ffffff;">${o.zone_name || o.province || 'Domestik'}</div>
+              <div style="font-size:0.72rem; color:#94a3b8;">${o.courier_label || o.courier_code || 'J&T Express'}</div>
+            </td>
+            <td>
+              <strong style="color:#facc15; font-size:0.88rem;">Rp ${Math.round(totalNum).toLocaleString('id-ID')}</strong>
+            </td>
+            <td style="text-align:center;">
+              ${statusBadge}
+            </td>
+            <td style="text-align:center;">
+              <button type="button" class="btn-tbl-edit" onclick="openOrderDetail('${o.order_code}')" style="padding:4px 10px; font-size:0.74rem;">Lihat</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Event listeners for order search and filter
+    document.getElementById('adminOrderSearch')?.addEventListener('input', renderOrdersTable);
+    document.getElementById('adminOrderFilterStatus')?.addEventListener('change', renderOrdersTable);
+
+    window.openOrderDetail = function(code) {
+      const o = orders.find(item => item.order_code === code);
+      if (!o) return;
+
+      currentOrderViewing = o;
+      const modal = document.getElementById('adminOrderDetailModal');
+      document.getElementById('modalOrderTitle').textContent = `Pesanan #${o.order_code}`;
+      document.getElementById('modalOrderStatusBadge').textContent = o.order_status.toUpperCase();
+      document.getElementById('modalOrderTimestamp').textContent = `Waktu masuk: ${o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-'}`;
+      document.getElementById('selectUpdateOrderStatus').value = o.order_status || 'pending';
+
+      const cleanWa = (o.customer_wa || '').replace(/[^0-9]/g, '');
+      const waLink = cleanWa.startsWith('0') ? '62' + cleanWa.slice(1) : cleanWa;
+      const chatBtn = document.getElementById('btnChatCustomerWa');
+      if (chatBtn) {
+        chatBtn.href = `https://wa.me/${waLink}?text=Halo%20Kak%20${encodeURIComponent(o.customer_name)},%20kami%20dari%20Admin%20Toko%20Al-Ibriez%20Book%20mengenai%20pesanan%20${o.order_code}`;
+      }
+
+      const totalVal = Math.round(parseFloat(o.grand_total_idr) || 0).toLocaleString('id-ID');
+      const subtotalVal = Math.round(parseFloat(o.subtotal_idr) || 0).toLocaleString('id-ID');
+      const shipVal = Math.round(parseFloat(o.shipping_cost_idr) || 0).toLocaleString('id-ID');
+
+      document.getElementById('modalOrderContent').innerHTML = `
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:14px;">
+          <div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Nama Pemesan</div>
+            <strong style="color:#ffffff; font-size:0.95rem;">${o.customer_name}</strong>
+          </div>
+          <div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Nomor WhatsApp</div>
+            <strong style="color:#10b981; font-size:0.95rem;">${o.customer_wa}</strong>
+          </div>
+          <div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Tujuan / Scope</div>
+            <span style="color:#cbd5e1;">${o.dest_scope === 'international' ? 'Mancanegara' : 'Domestik Indonesia'} (${o.country_name || 'ID'})</span>
+          </div>
+          <div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Ekspedisi Kurir</div>
+            <strong style="color:#ffffff;">${o.courier_label || o.courier_code}</strong>
+          </div>
+        </div>
+
+        <div style="background:#1e293b; border-radius:8px; padding:12px 14px; margin-bottom:14px;">
+          <div style="font-size:0.74rem; color:#94a3b8; margin-bottom:4px;">Detail Alamat Lengkap Pengiriman:</div>
+          <div style="color:#f8fafc; font-size:0.84rem; white-space:pre-line;">${o.address_summary || (o.street_address + ', ' + (o.village || '') + ', ' + (o.district || '') + ', ' + (o.regency || '') + ', ' + (o.province || ''))}</div>
+        </div>
+
+        <div style="background:#1e293b; border-radius:8px; padding:12px 14px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span>Produk: <strong>${o.product_name}</strong> (x${o.quantity})</span>
+            <span>Rp ${subtotalVal}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#94a3b8; font-size:0.78rem;">
+            <span>Pilihan Cover: ${o.cover_color || 'Standar'} • Total Berat: ${o.weight_kg || 0.65} kg</span>
+            <span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#94a3b8; font-size:0.8rem;">
+            <span>Ongkos Kirim (${o.zone_name || 'Standar'})</span>
+            <span>Rp ${shipVal}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#94a3b8; font-size:0.8rem;">
+            <span>Biaya Packing &amp; Asuransi</span>
+            <span>Rp 2.000</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px solid rgba(255,255,255,0.1); font-weight:800; font-size:0.95rem; color:#facc15;">
+            <span>Total Pembayaran</span>
+            <span>Rp ${totalVal}</span>
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+      modal.classList.add('open');
+    };
+
+    window.closeOrderDetailModal = function() {
+      const modal = document.getElementById('adminOrderDetailModal');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('open');
+      }
+    };
+
+    window.handleSaveOrderStatus = async function() {
+      if (!currentOrderViewing) return;
+
+      const newStatus = document.getElementById('selectUpdateOrderStatus').value;
+      try {
+        const res = await fetch(`/api/orders/${currentOrderViewing.order_code}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus, adminName: 'Admin Al-Ibriez' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Status pesanan ${currentOrderViewing.order_code} berhasil diubah!`);
+          currentOrderViewing.order_status = newStatus;
+          document.getElementById('modalOrderStatusBadge').textContent = newStatus.toUpperCase();
+          renderOrdersDashboard();
+        } else {
+          alert('Gagal memperbarui status: ' + data.message);
+        }
+      } catch (e) {
+        alert('Error koneksi ke database: ' + e.message);
+      }
+    };
+
+    // Auto-sync with Neon DB on start
+    setTimeout(() => {
+      syncAdminWithNeonDB();
+    }, 100);
 
     // INITIALIZE WITH AUTH CHECK
     checkAuth();

@@ -1023,38 +1023,67 @@ async function fetchWithTimeout(url, timeoutMs = 6000) {
   }
 }
 
+// Helper fetch wilayah dengan multi-source:
+// 1. Proxy server express lokal (/api/wilayah/...) - bebas CORS, ultra cepat dengan in-memory cache
+// 2. Direct Emsifa GitHub Pages
+// 3. Direct Emsifa.com
+async function fetchWilayahData(proxyPath, emsifaPath) {
+  const sources = [
+    `/api/wilayah/${proxyPath}`,
+    `https://emsifa.github.io/api-wilayah-indonesia/api/${emsifaPath}`,
+    `https://www.emsifa.com/api-wilayah-indonesia/api/${emsifaPath}`
+  ];
+
+  let lastError = null;
+  for (const url of sources) {
+    try {
+      const res = await fetchWithTimeout(url, 8000);
+      if (res && res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          return data;
+        }
+      }
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error(`Gagal memuat data wilayah: ${proxyPath}`);
+}
+
 async function loadProvinces() {
   const provSelect = document.getElementById('modalProvince');
   const spinner = document.getElementById('spinnerProvince');
   if (!provSelect) return;
 
-  // If already populated with options > 5, no need to overwrite
-  if (provSelect.options.length > 5) {
+  if (provSelect.dataset.loaded === 'true') {
     return;
   }
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Prioritas: Fetch langsung dari API Emsifa (data lengkap & terbaru)
     let data = regionCache.provinces;
     if (!data) {
-      const res = await fetchWithTimeout(`${API_BASE}/provinces.json`);
-      if (!res.ok) throw new Error('API Wilayah tidak merespons');
-      data = await res.json();
+      data = await fetchWilayahData('provinces', 'provinces.json');
       regionCache.provinces = data;
     }
-    populateSelect(provSelect, data, '-- Pilih Provinsi --');
+    populateSelect(provSelect, data, '-- Pilih Provinsi --', '32');
+    provSelect.dataset.loaded = 'true';
+
+    // Otomatis load kabupaten untuk provinsi default (Jawa Barat) jika belum termuat
+    if (provSelect.value) {
+      loadRegencies(provSelect.value);
+    }
   } catch (err) {
-    console.warn('API provinces gagal, pakai data bundled:', err);
-    // 2. Fallback: bundled regions-data.js (jika ada)
-    if (window.INDONESIA_PROVINCES && Array.isArray(window.INDONESIA_PROVINCES)) {
-      populateSelect(provSelect, window.INDONESIA_PROVINCES, '-- Pilih Provinsi --');
-    } else {
-      // 3. Fallback terakhir: data minimal hardcoded
-      populateSelect(provSelect, FALLBACK_PROVINCES, '-- Pilih Provinsi --');
+    console.warn('Gagal memuat provinsi dari API, gunakan fallback:', err);
+    populateSelect(provSelect, FALLBACK_PROVINCES, '-- Pilih Provinsi --', '32');
+    provSelect.dataset.loaded = 'true';
+    if (provSelect.value) {
+      loadRegencies(provSelect.value);
     }
   } finally {
     if (spinner) spinner.style.display = 'none';
+    calculateModalTotal();
   }
 }
 
@@ -1065,7 +1094,7 @@ async function loadRegencies(provinceId) {
   const spinner = document.getElementById('spinnerRegency');
 
   if (!regSelect) return;
-  resetSelect(regSelect, '-- Memuat Kabupaten / Kota... --', true);
+  resetSelect(regSelect, '⏳ Memuat Kabupaten / Kota...', true);
   resetSelect(distSelect, '-- Pilih Kabupaten/Kota Dahulu --', true);
   resetSelect(villSelect, '-- Pilih Kecamatan Dahulu --', true);
 
@@ -1077,30 +1106,20 @@ async function loadRegencies(provinceId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Prioritas: Fetch dari API Emsifa (data lengkap semua provinsi)
     let data = regionCache.regencies[provinceId];
     if (!data) {
-      const res = await fetchWithTimeout(`${API_BASE}/regencies/${provinceId}.json`);
-      if (!res.ok) throw new Error('Gagal memuat kabupaten');
-      data = await res.json();
+      data = await fetchWilayahData(`regencies/${provinceId}`, `regencies/${provinceId}.json`);
       regionCache.regencies[provinceId] = data;
     }
     populateSelect(regSelect, data, '-- Pilih Kabupaten / Kota --');
     regSelect.disabled = false;
   } catch (err) {
     console.error('Error load regencies:', err);
-    // 2. Fallback: data bundled (jika ada untuk provinsi ini)
-    if (window.INDONESIA_REGENCIES && window.INDONESIA_REGENCIES[provinceId]) {
-      populateSelect(regSelect, window.INDONESIA_REGENCIES[provinceId], '-- Pilih Kabupaten / Kota --');
-      regSelect.disabled = false;
-    } else {
-      // 3. Fallback terakhir: opsi manual
-      regSelect.innerHTML = `
-        <option value="">-- Kabupaten/Kota tidak tersedia (offline) --</option>
-        <option value="manual_kota" data-name="KOTA UMUM">Ketik kota di kolom alamat detail</option>
-      `;
-      regSelect.disabled = false;
-    }
+    regSelect.innerHTML = `
+      <option value="">-- Gagal memuat online, pilih opsi di bawah --</option>
+      <option value="manual_kota" data-name="KOTA UMUM">Tulis Nama Kota / Kabupaten di Alamat Lengkap</option>
+    `;
+    regSelect.disabled = false;
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -1113,7 +1132,7 @@ async function loadDistricts(regencyId) {
   const spinner = document.getElementById('spinnerDistrict');
 
   if (!distSelect) return;
-  resetSelect(distSelect, '-- Memuat Kecamatan... --', true);
+  resetSelect(distSelect, '⏳ Memuat Kecamatan...', true);
   resetSelect(villSelect, '-- Pilih Kecamatan Dahulu --', true);
 
   if (!regencyId) {
@@ -1124,30 +1143,20 @@ async function loadDistricts(regencyId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Prioritas: Fetch dari API Emsifa (kecamatan lengkap seluruh Indonesia)
     let data = regionCache.districts[regencyId];
     if (!data) {
-      const res = await fetchWithTimeout(`${API_BASE}/districts/${regencyId}.json`);
-      if (!res.ok) throw new Error('Gagal memuat kecamatan');
-      data = await res.json();
+      data = await fetchWilayahData(`districts/${regencyId}`, `districts/${regencyId}.json`);
       regionCache.districts[regencyId] = data;
     }
     populateSelect(distSelect, data, '-- Pilih Kecamatan --');
     distSelect.disabled = false;
   } catch (err) {
     console.error('Error load districts:', err);
-    // 2. Fallback: data bundled offline (Jawa Barat)
-    if (window.INDONESIA_DISTRICTS_OFFLINE && window.INDONESIA_DISTRICTS_OFFLINE[regencyId]) {
-      populateSelect(distSelect, window.INDONESIA_DISTRICTS_OFFLINE[regencyId], '-- Pilih Kecamatan --');
-      distSelect.disabled = false;
-    } else {
-      // 3. Fallback terakhir: opsi manual
-      distSelect.innerHTML = `
-        <option value="">-- Kecamatan tidak tersedia (offline) --</option>
-        <option value="manual_kecamatan" data-name="KECAMATAN UMUM">Tulis kecamatan di kolom alamat</option>
-      `;
-      distSelect.disabled = false;
-    }
+    distSelect.innerHTML = `
+      <option value="">-- Gagal memuat online, pilih opsi di bawah --</option>
+      <option value="manual_kecamatan" data-name="KECAMATAN UMUM">Tulis Nama Kecamatan di Alamat Lengkap</option>
+    `;
+    distSelect.disabled = false;
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -1159,7 +1168,7 @@ async function loadVillages(districtId) {
   const spinner = document.getElementById('spinnerVillage');
 
   if (!villSelect) return;
-  resetSelect(villSelect, '-- Memuat Desa / Kelurahan... --', true);
+  resetSelect(villSelect, '⏳ Memuat Desa / Kelurahan...', true);
 
   if (!districtId) {
     resetSelect(villSelect, '-- Pilih Kecamatan Dahulu --', true);
@@ -1171,18 +1180,16 @@ async function loadVillages(districtId) {
   try {
     let data = regionCache.villages[districtId];
     if (!data) {
-      const res = await fetchWithTimeout(`${API_BASE}/villages/${districtId}.json`, 3500);
-      if (!res.ok) throw new Error('Gagal memuat kelurahan');
-      data = await res.json();
+      data = await fetchWilayahData(`villages/${districtId}`, `villages/${districtId}.json`);
       regionCache.villages[districtId] = data;
     }
     populateSelect(villSelect, data, '-- Pilih Desa / Kelurahan --');
     villSelect.disabled = false;
   } catch (err) {
-    console.warn('API desa tidak merespons, mengaktifkan opsi manual:', err);
+    console.warn('API desa tidak merespons, opsi manual:', err);
     villSelect.innerHTML = `
       <option value="">-- Pilih Desa / Kelurahan --</option>
-      <option value="manual_desa" data-name="DESA">Tulis Desa/Kelurahan di Alamat</option>
+      <option value="manual_desa" data-name="DESA">Tulis Nama Desa/Kelurahan di Alamat Lengkap</option>
     `;
     villSelect.disabled = false;
   } finally {
@@ -1197,11 +1204,12 @@ function resetSelect(selectEl, placeholder, disabled) {
   selectEl.disabled = !!disabled;
 }
 
-function populateSelect(selectEl, items, defaultLabel) {
+function populateSelect(selectEl, items, defaultLabel, selectedValue) {
   let html = `<option value="">${defaultLabel}</option>`;
   items.forEach(item => {
     const formattedName = formatTitleCase(item.name);
-    html += `<option value="${item.id}" data-name="${item.name}">${formattedName}</option>`;
+    const isSelected = selectedValue && String(item.id) === String(selectedValue) ? 'selected' : '';
+    html += `<option value="${item.id}" data-name="${item.name}" ${isSelected}>${formattedName}</option>`;
   });
   selectEl.innerHTML = html;
 }
