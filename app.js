@@ -363,6 +363,39 @@ function initApp() {
   initNavLoginButton();
   if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
     initAdminDashboard();
+  syncFromNeonDB();
+}
+
+async function syncFromNeonDB() {
+  try {
+    const [prodRes, bannerRes, testiRes] = await Promise.all([
+      fetch('/api/products').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/api/banners').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/api/testimonials').then(r => r.ok ? r.json() : null).catch(() => null)
+    ]);
+
+    if (prodRes && prodRes.success && Array.isArray(prodRes.data) && prodRes.data.length > 0) {
+      CATALOG_PRODUCTS = prodRes.data;
+      saveStoredProducts(CATALOG_PRODUCTS);
+      renderProductsGrid();
+      updateOrderModalOptions();
+      if (document.getElementById('catalogModalBackdrop')?.classList.contains('open')) {
+        renderCatalogItems();
+      }
+    }
+
+    if (bannerRes && bannerRes.success && Array.isArray(bannerRes.data) && bannerRes.data.length > 0) {
+      HERO_BANNERS = bannerRes.data;
+      saveStoredBanners(HERO_BANNERS);
+      initHeroBannerCarousel();
+    }
+
+    if (testiRes && testiRes.success && Array.isArray(testiRes.data) && testiRes.data.length > 0) {
+      saveStoredTestimonials(testiRes.data);
+      renderLandingTestimonials();
+    }
+  } catch (err) {
+    console.warn('Neon DB sync notice, using local cache:', err);
   }
 }
 
@@ -976,7 +1009,7 @@ function formatTitleCase(str) {
 }
 
 // Fetch with timeout helper so browser never hangs indefinitely
-async function fetchWithTimeout(url, timeoutMs = 4000) {
+async function fetchWithTimeout(url, timeoutMs = 6000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -994,19 +1027,14 @@ async function loadProvinces() {
   const spinner = document.getElementById('spinnerProvince');
   if (!provSelect) return;
 
-  // If already populated with options > 1, no need to overwrite
+  // If already populated with options > 5, no need to overwrite
   if (provSelect.options.length > 5) {
     return;
   }
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Check window.INDONESIA_PROVINCES (bundled)
-    if (window.INDONESIA_PROVINCES && Array.isArray(window.INDONESIA_PROVINCES)) {
-      populateSelect(provSelect, window.INDONESIA_PROVINCES, '-- Pilih Provinsi --');
-      return;
-    }
-
+    // 1. Prioritas: Fetch langsung dari API Emsifa (data lengkap & terbaru)
     let data = regionCache.provinces;
     if (!data) {
       const res = await fetchWithTimeout(`${API_BASE}/provinces.json`);
@@ -1016,8 +1044,14 @@ async function loadProvinces() {
     }
     populateSelect(provSelect, data, '-- Pilih Provinsi --');
   } catch (err) {
-    console.warn('Menggunakan fallback data provinsi:', err);
-    populateSelect(provSelect, FALLBACK_PROVINCES, '-- Pilih Provinsi --');
+    console.warn('API provinces gagal, pakai data bundled:', err);
+    // 2. Fallback: bundled regions-data.js (jika ada)
+    if (window.INDONESIA_PROVINCES && Array.isArray(window.INDONESIA_PROVINCES)) {
+      populateSelect(provSelect, window.INDONESIA_PROVINCES, '-- Pilih Provinsi --');
+    } else {
+      // 3. Fallback terakhir: data minimal hardcoded
+      populateSelect(provSelect, FALLBACK_PROVINCES, '-- Pilih Provinsi --');
+    }
   } finally {
     if (spinner) spinner.style.display = 'none';
   }
@@ -1042,14 +1076,7 @@ async function loadRegencies(provinceId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Check bundled INDONESIA_REGENCIES (Instant 0ms offline)
-    if (window.INDONESIA_REGENCIES && window.INDONESIA_REGENCIES[provinceId]) {
-      const data = window.INDONESIA_REGENCIES[provinceId];
-      populateSelect(regSelect, data, '-- Pilih Kabupaten / Kota --');
-      regSelect.disabled = false;
-      return;
-    }
-
+    // 1. Prioritas: Fetch dari API Emsifa (data lengkap semua provinsi)
     let data = regionCache.regencies[provinceId];
     if (!data) {
       const res = await fetchWithTimeout(`${API_BASE}/regencies/${provinceId}.json`);
@@ -1061,12 +1088,18 @@ async function loadRegencies(provinceId) {
     regSelect.disabled = false;
   } catch (err) {
     console.error('Error load regencies:', err);
-    // Graceful fallback: allow manual entry or inform user
-    regSelect.innerHTML = `
-      <option value="">-- Pilih Kabupaten / Kota --</option>
-      <option value="manual_kota" data-name="KOTA UMUM">Ketik Kota di Detail Alamat</option>
-    `;
-    regSelect.disabled = false;
+    // 2. Fallback: data bundled (jika ada untuk provinsi ini)
+    if (window.INDONESIA_REGENCIES && window.INDONESIA_REGENCIES[provinceId]) {
+      populateSelect(regSelect, window.INDONESIA_REGENCIES[provinceId], '-- Pilih Kabupaten / Kota --');
+      regSelect.disabled = false;
+    } else {
+      // 3. Fallback terakhir: opsi manual
+      regSelect.innerHTML = `
+        <option value="">-- Kabupaten/Kota tidak tersedia (offline) --</option>
+        <option value="manual_kota" data-name="KOTA UMUM">Ketik kota di kolom alamat detail</option>
+      `;
+      regSelect.disabled = false;
+    }
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
@@ -1090,14 +1123,7 @@ async function loadDistricts(regencyId) {
 
   if (spinner) spinner.style.display = 'inline-block';
   try {
-    // 1. Check bundled offline districts (Jawa Barat & Ciayumajakuning)
-    if (window.INDONESIA_DISTRICTS_OFFLINE && window.INDONESIA_DISTRICTS_OFFLINE[regencyId]) {
-      const data = window.INDONESIA_DISTRICTS_OFFLINE[regencyId];
-      populateSelect(distSelect, data, '-- Pilih Kecamatan --');
-      distSelect.disabled = false;
-      return;
-    }
-
+    // 1. Prioritas: Fetch dari API Emsifa (kecamatan lengkap seluruh Indonesia)
     let data = regionCache.districts[regencyId];
     if (!data) {
       const res = await fetchWithTimeout(`${API_BASE}/districts/${regencyId}.json`);
@@ -1109,11 +1135,18 @@ async function loadDistricts(regencyId) {
     distSelect.disabled = false;
   } catch (err) {
     console.error('Error load districts:', err);
-    distSelect.innerHTML = `
-      <option value="">-- Pilih Kecamatan --</option>
-      <option value="manual_kecamatan" data-name="KECAMATAN UMUM">Tulis Kecamatan di Alamat</option>
-    `;
-    distSelect.disabled = false;
+    // 2. Fallback: data bundled offline (Jawa Barat)
+    if (window.INDONESIA_DISTRICTS_OFFLINE && window.INDONESIA_DISTRICTS_OFFLINE[regencyId]) {
+      populateSelect(distSelect, window.INDONESIA_DISTRICTS_OFFLINE[regencyId], '-- Pilih Kecamatan --');
+      distSelect.disabled = false;
+    } else {
+      // 3. Fallback terakhir: opsi manual
+      distSelect.innerHTML = `
+        <option value="">-- Kecamatan tidak tersedia (offline) --</option>
+        <option value="manual_kecamatan" data-name="KECAMATAN UMUM">Tulis kecamatan di kolom alamat</option>
+      `;
+      distSelect.disabled = false;
+    }
   } finally {
     if (spinner) spinner.style.display = 'none';
     calculateModalTotal();
