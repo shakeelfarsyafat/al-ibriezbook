@@ -363,6 +363,7 @@ function initApp() {
   initNavLoginButton();
   if (typeof initAdminDashboard === 'function' && document.getElementById('adminDashboardBackdrop')) {
     initAdminDashboard();
+  }
   syncFromNeonDB();
 }
 
