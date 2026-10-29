@@ -2571,14 +2571,25 @@
     }
 
     function saveProducts(prods) {
-      localStorage.setItem('alibriez_catalog_products', JSON.stringify(prods));
+      try {
+        localStorage.setItem('alibriez_catalog_products', JSON.stringify(prods));
+      } catch (e) {
+        console.warn('LocalStorage limit notice:', e);
+      }
       fetch('/api/products/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ products: prods })
       }).then(r => r.json()).then(res => {
-        if (res.success) showToast('Data produk tersinkronisasi ke Neon DB!');
-      }).catch(e => console.warn('Product sync to Neon:', e));
+        if (res.success) {
+          showToast('Data produk tersinkronisasi ke Neon DB!');
+        } else {
+          alert('Gagal simpan ke Neon DB: ' + (res.message || 'Error'));
+        }
+      }).catch(e => {
+        console.warn('Product sync to Neon:', e);
+        alert('Koneksi sync database gagal: ' + e.message);
+      });
     }
 
     let products = loadProducts();
@@ -2601,14 +2612,25 @@
     }
 
     function saveBanners(bList) {
-      localStorage.setItem('alibriez_hero_banners', JSON.stringify(bList));
+      try {
+        localStorage.setItem('alibriez_hero_banners', JSON.stringify(bList));
+      } catch (e) {
+        console.warn('LocalStorage limit notice:', e);
+      }
       fetch('/api/banners/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ banners: bList })
       }).then(r => r.json()).then(res => {
-        if (res.success) showToast('Data banner tersinkronisasi ke Neon DB!');
-      }).catch(e => console.warn('Banner sync to Neon:', e));
+        if (res.success) {
+          showToast('Data banner tersinkronisasi ke Neon DB!');
+        } else {
+          alert('Gagal simpan ke Neon DB: ' + (res.message || 'Error'));
+        }
+      }).catch(e => {
+        console.warn('Banner sync to Neon:', e);
+        alert('Koneksi sync database gagal: ' + e.message);
+      });
     }
 
     let banners = loadBanners();
@@ -2925,15 +2947,51 @@
       bannerImgUrl.value = src;
     };
 
-    bannerImgFile.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
+    function compressImageFile(file, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
+      return new Promise((resolve) => {
+        if (!file || file.type === 'image/svg+xml') {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(file);
+          return;
+        }
         const reader = new FileReader();
-        reader.onload = (evt) => {
-          bannerImgPreview.src = evt.target.result;
-          bannerImgUrl.value = evt.target.result;
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth || h > maxHeight) {
+              if (w > h) {
+                h = Math.round((h * maxWidth) / w);
+                w = maxWidth;
+              } else {
+                w = Math.round((w * maxHeight) / h);
+                h = maxHeight;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = () => resolve(e.target.result);
+          img.src = e.target.result;
         };
         reader.readAsDataURL(file);
+      });
+    }
+
+    bannerImgFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        showToast('Memproses ukuran gambar...');
+        const res = await compressImageFile(file);
+        bannerImgPreview.src = res;
+        bannerImgUrl.value = res;
+        showToast('Gambar siap disimpan!');
       }
     });
 
@@ -3229,15 +3287,14 @@
       imgUrl.value = src;
     };
 
-    imgFile.addEventListener('change', (e) => {
+    imgFile.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          imgPreview.src = evt.target.result;
-          imgUrl.value = evt.target.result;
-        };
-        reader.readAsDataURL(file);
+        showToast('Memproses ukuran gambar...');
+        const res = await compressImageFile(file);
+        imgPreview.src = res;
+        imgUrl.value = res;
+        showToast('Gambar siap disimpan!');
       }
     });
 

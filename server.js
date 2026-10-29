@@ -14,9 +14,12 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database Connection Pool
+// Database Connection Pool with Neon Fallback
+const NEON_DEFAULT_URL = 'postgresql://neondb_owner:npg_s0Mwy1AHJgFn@ep-old-firefly-b3vvo99i-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+const dbConnectionString = process.env.DATABASE_URL || NEON_DEFAULT_URL;
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: dbConnectionString,
   ssl: {
     rejectUnauthorized: false
   }
