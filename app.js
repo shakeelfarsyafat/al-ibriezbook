@@ -1597,9 +1597,8 @@ Saya ingin mengonfirmasi pemesanan Al-Qur'an dengan rincian berikut:
 📱 *No. WhatsApp:* ${wa}
 ${addressSummary}
 
-🏦 *Pilihan Rekening Toko Al-Ibriez Book:*
-- BSI: 7188 2993 01 (a.n Toko Al-Ibriez Book)
-- BCA: 8930 4928 11 (a.n Toko Al-Ibriez Book)
+🏦 *Rekening Pembayaran Toko Al-Ibriez Book:*
+- Bank BRI: 0389 0104 8132 502 (a.n Ahmad Munawar)
 
 Mohon konfirmasi ketersediaan stok & panduan nomor resi pengiriman dari Kantor Cirebon / Bandung. Terima kasih!`;
 

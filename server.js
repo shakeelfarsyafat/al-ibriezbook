@@ -812,11 +812,15 @@ app.use((req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(` Al-Ibriez Book Server running on http://localhost:${PORT}`);
-  console.log(` Neon PostgreSQL Database Connected: neondb`);
-  console.log(` Admin Dashboard: http://localhost:${PORT}/admin.html`);
-  console.log(` API Health Check: http://localhost:${PORT}/api/health`);
-  console.log(`====================================================`);
-});
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(` Al-Ibriez Book Server running on http://localhost:${PORT}`);
+    console.log(` Neon PostgreSQL Database Connected: neondb`);
+    console.log(` Admin Dashboard: http://localhost:${PORT}/admin.html`);
+    console.log(` API Health Check: http://localhost:${PORT}/api/health`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = app;

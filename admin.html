@@ -2520,13 +2520,37 @@
       return localStorage.getItem('alibriez_admin_pin') || DEFAULT_ADMIN_PIN;
     }
 
-    function setAdminPin(pin) {
+    async function fetchAdminPinFromServer() {
+      try {
+        const r = await fetch('/api/settings/pin');
+        if (r.ok) {
+          const data = await r.json();
+          if (data && data.success && data.pin) {
+            localStorage.setItem('alibriez_admin_pin', data.pin);
+            return data.pin;
+          }
+        }
+      } catch (e) {
+        console.warn('Sync PIN dari server warning:', e);
+      }
+      return getAdminPin();
+    }
+
+    async function setAdminPin(pin) {
       localStorage.setItem('alibriez_admin_pin', pin);
-      fetch('/api/settings/pin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin })
-      }).catch(e => console.warn('Sync PIN to Neon:', e));
+      try {
+        const res = await fetch('/api/settings/pin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('PIN berhasil disinkronkan ke database Neon!');
+        }
+      } catch (e) {
+        console.warn('Sync PIN to Neon:', e);
+      }
     }
 
     // PRODUCT STORAGE WITH NEON DB SYNC
@@ -2962,12 +2986,13 @@
       renderBannerDashboard(document.getElementById('adminBannerSearch').value);
     });
 
-    window.handleDeleteBanner = function(id) {
+    window.handleDeleteBanner = async function(id) {
       const b = banners.find(item => item.id === id);
       if (!b) return;
       if (confirm(`Yakin ingin menghapus banner "${b.title}"?`)) {
         banners = banners.filter(item => item.id !== id);
         saveBanners(banners);
+        fetch('/api/banners/' + encodeURIComponent(id), { method: 'DELETE' }).catch(e => console.warn('Delete banner from Neon:', e));
         renderBannerDashboard(document.getElementById('adminBannerSearch').value);
         showToast('Banner telah dihapus.');
       }
@@ -3000,11 +3025,16 @@
       }
     }
 
-    window.submitPinAuth = function() {
+    window.submitPinAuth = async function() {
       const pinInput = document.getElementById('adminPinInput');
       const errMsg = document.getElementById('authErrorMsg');
       const enteredPin = pinInput ? pinInput.value.trim() : '';
-      const correctPin = getAdminPin();
+      let correctPin = getAdminPin();
+
+      if (enteredPin !== correctPin) {
+        // Coba sinkronkan PIN terbaru dari database Neon (misal diubah dari device lain)
+        correctPin = await fetchAdminPinFromServer();
+      }
 
       if (enteredPin === correctPin) {
         sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
@@ -3253,12 +3283,13 @@
       renderDashboard();
     });
 
-    window.handleDeleteProduct = function(id) {
+    window.handleDeleteProduct = async function(id) {
       const prod = products.find(p => p.id === id);
       if (!prod) return;
       if (confirm(`Yakin ingin menghapus mushaf "${prod.name}"?`)) {
         products = products.filter(p => p.id !== id);
         saveProducts(products);
+        fetch('/api/products/' + encodeURIComponent(id), { method: 'DELETE' }).catch(e => console.warn('Delete product from Neon:', e));
         renderDashboard();
         showToast('Produk telah dihapus.');
       }
@@ -3455,12 +3486,13 @@
       });
     }
 
-    window.handleDeleteTestimonial = function(id) {
+    window.handleDeleteTestimonial = async function(id) {
       const t = testimonials.find(item => item.id === id);
       if (!t) return;
       if (confirm(`Yakin ingin menghapus ulasan testimoni dari "${t.name}"?`)) {
         testimonials = testimonials.filter(item => item.id !== id);
         saveTestimonials(testimonials);
+        fetch('/api/testimonials/' + encodeURIComponent(id), { method: 'DELETE' }).catch(e => console.warn('Delete testimonial from Neon:', e));
         const searchVal = document.getElementById('adminTestimonialSearch') ? document.getElementById('adminTestimonialSearch').value : '';
         renderTestimonialDashboard(searchVal);
         showToast('Testimoni telah dihapus.');
@@ -3477,14 +3509,19 @@
 
     document.getElementById('btnCloseChangePinModal').addEventListener('click', () => changePinModal.classList.remove('open'));
 
-    document.getElementById('formChangePinSubmit').addEventListener('submit', (e) => {
+    document.getElementById('formChangePinSubmit').addEventListener('submit', async (e) => {
       e.preventDefault();
       const oldP = document.getElementById('oldPinVal').value.trim();
       const newP = document.getElementById('newPinVal').value.trim();
       const confP = document.getElementById('confirmPinVal').value.trim();
       const alertBox = document.getElementById('pinChangeAlertText');
 
-      if (oldP !== getAdminPin()) {
+      let currentPin = getAdminPin();
+      if (oldP !== currentPin) {
+        currentPin = await fetchAdminPinFromServer();
+      }
+
+      if (oldP !== currentPin) {
         alertBox.style.display = 'block';
         alertBox.style.color = '#f87171';
         alertBox.textContent = 'PIN Lama salah!';
@@ -3595,12 +3632,17 @@
     async function syncAdminWithNeonDB(forceRerender = false) {
       try {
         testNeonDbHealth();
-        const [prodRes, bannerRes, testiRes, orderRes] = await Promise.all([
+        const [prodRes, bannerRes, testiRes, orderRes, pinRes] = await Promise.all([
           fetch('/api/products?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
           fetch('/api/banners?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
           fetch('/api/testimonials?all=true').then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch('/api/orders').then(r => r.ok ? r.json() : null).catch(() => null)
+          fetch('/api/orders').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/api/settings/pin').then(r => r.ok ? r.json() : null).catch(() => null)
         ]);
+
+        if (pinRes && pinRes.success && pinRes.pin) {
+          localStorage.setItem('alibriez_admin_pin', pinRes.pin);
+        }
 
         if (prodRes && prodRes.success && Array.isArray(prodRes.data) && prodRes.data.length > 0) {
           products = prodRes.data;
@@ -3854,7 +3896,8 @@
 
     // Auto-sync with Neon DB on start
     setTimeout(() => {
-      syncAdminWithNeonDB();
+      fetchAdminPinFromServer();
+      syncAdminWithNeonDB(true);
     }, 100);
 
     // INITIALIZE WITH AUTH CHECK
