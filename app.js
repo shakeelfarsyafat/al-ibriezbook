@@ -1575,6 +1575,63 @@ function submitWhatsAppOrder() {
 
   const orderId = 'ALB-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
 
+  // Otomatis sinkronkan pesanan masuk ke database Neon DB
+  try {
+    const provSelectEl = document.getElementById('modalProvince');
+    const regSelectEl = document.getElementById('modalRegency');
+    const distSelectEl = document.getElementById('modalDistrict');
+    const villSelectEl = document.getElementById('modalVillage');
+    const postalCodeEl = document.getElementById('modalPostalCode');
+    const streetAddressEl = document.getElementById('modalStreetAddress');
+
+    const provNameVal = provSelectEl && provSelectEl.selectedIndex > 0 ? provSelectEl.options[provSelectEl.selectedIndex].text : '';
+    const regNameVal = regSelectEl && regSelectEl.selectedIndex > 0 ? regSelectEl.options[regSelectEl.selectedIndex].text : '';
+    const distNameVal = distSelectEl && distSelectEl.selectedIndex > 0 ? distSelectEl.options[distSelectEl.selectedIndex].text : '';
+    const villNameVal = villSelectEl && villSelectEl.selectedIndex > 0 ? villSelectEl.options[villSelectEl.selectedIndex].text : '';
+
+    const countrySelectEl = document.getElementById('modalCountry');
+    const isDomestic = currentDestScope === 'domestic';
+    const cCode = isDomestic ? 'ID' : (countrySelectEl?.value || 'MY');
+    const cName = isDomestic ? 'Indonesia' : (countrySelectEl?.options[countrySelectEl.selectedIndex]?.text || 'Mancanegara');
+
+    const orderPayload = {
+      orderCode: orderId,
+      customerName: name,
+      customerWa: wa,
+      destScope: currentDestScope,
+      addressSummary: addressSummary,
+      province: isDomestic ? provNameVal : (document.getElementById('modalIntlState')?.value.trim() || ''),
+      regency: isDomestic ? regNameVal : (document.getElementById('modalIntlCity')?.value.trim() || ''),
+      district: isDomestic ? distNameVal : '',
+      village: isDomestic ? villNameVal : '',
+      postalCode: isDomestic ? (postalCodeEl?.value.trim() || '') : (document.getElementById('modalIntlZip')?.value.trim() || ''),
+      streetAddress: isDomestic ? (streetAddressEl?.value.trim() || '') : (document.getElementById('modalIntlStreet')?.value.trim() || ''),
+      countryCode: cCode,
+      countryName: cName,
+      productName: data.productName,
+      coverColor: color,
+      quantity: data.qty,
+      weightKg: data.totalActualWeight,
+      unitPriceIdr: data.unitPrice,
+      subtotalIdr: data.subtotal,
+      shippingCostIdr: data.shippingCost,
+      packagingFeeIdr: data.packagingFee,
+      grandTotalIdr: data.total,
+      courierLabel: data.courierLabel,
+      zoneName: data.zoneName,
+      orderStatus: 'pending',
+      paymentStatus: 'unpaid'
+    };
+
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload)
+    }).catch(e => console.warn('Sync order to Neon DB notice:', e));
+  } catch (err) {
+    console.warn('Gagal menyiapkan payload pesanan:', err);
+  }
+
   const message = 
 `*ASSALAMU'ALAIKUM ADMIN TOKO AL-IBRIEZ BOOK*
 Saya ingin mengonfirmasi pemesanan Al-Qur'an dengan rincian berikut:
@@ -1812,7 +1869,7 @@ window.selectFromCatalog = function(id, name, price) {
 // ==========================================================================
 // 9. ADMIN AUTH (LOGIN PIN) & DASHBOARD CONTROLLER
 // ==========================================================================
-const DEFAULT_ADMIN_PIN = '123456';
+const DEFAULT_ADMIN_PIN = '192837';
 
 function getAdminPin() {
   return localStorage.getItem('alibriez_admin_pin') || DEFAULT_ADMIN_PIN;

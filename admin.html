@@ -3737,13 +3737,13 @@
         const waLink = cleanWa.startsWith('0') ? '62' + cleanWa.slice(1) : cleanWa;
 
         let statusBadge = '<span class="banner-status-pill active" style="background:rgba(249,115,22,0.15); color:#f97316; border-color:rgba(249,115,22,0.3);">Pending</span>';
-        if (o.order_status === 'paid') {
+        if (o.order_status === 'paid' || o.order_status === 'lunas') {
           statusBadge = '<span class="banner-status-pill active" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">Lunas</span>';
-        } else if (o.order_status === 'shipped') {
+        } else if (o.order_status === 'shipped' || o.order_status === 'dikirim') {
           statusBadge = '<span class="banner-status-pill active" style="background:rgba(59,130,246,0.15); color:#38bdf8; border-color:rgba(59,130,246,0.3);">Dikirim</span>';
-        } else if (o.order_status === 'completed') {
+        } else if (o.order_status === 'completed' || o.order_status === 'selesai') {
           statusBadge = '<span class="banner-status-pill active" style="background:rgba(16,185,129,0.25); color:#34d399; border-color:#10b981;">Selesai</span>';
-        } else if (o.order_status === 'cancelled') {
+        } else if (o.order_status === 'cancelled' || o.order_status === 'batal') {
           statusBadge = '<span class="banner-status-pill inactive" style="background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);">Batal</span>';
         }
 
@@ -3878,7 +3878,7 @@
         const res = await fetch(`/api/orders/${currentOrderViewing.order_code}/status`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: newStatus, adminName: 'Admin Al-Ibriez' })
+          body: JSON.stringify({ orderStatus: newStatus, status: newStatus, adminName: 'Admin Al-Ibriez' })
         });
         const data = await res.json();
         if (data.success) {

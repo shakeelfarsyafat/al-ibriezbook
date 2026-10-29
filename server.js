@@ -672,12 +672,13 @@ app.post('/api/orders', async (req, res) => {
 });
 
 // PATCH /api/orders/:code/status — Update status pesanan
-const VALID_ORDER_STATUSES = ['pending', 'lunas', 'dikirim', 'selesai', 'batal'];
+const VALID_ORDER_STATUSES = ['pending', 'paid', 'lunas', 'shipped', 'dikirim', 'completed', 'selesai', 'cancelled', 'batal'];
 
 app.patch('/api/orders/:code/status', async (req, res) => {
   try {
     const { code } = req.params;
-    const { orderStatus, paymentStatus } = req.body;
+    const orderStatus = req.body.orderStatus || req.body.status;
+    const paymentStatus = req.body.paymentStatus;
 
     if (!orderStatus && !paymentStatus) {
       return res.status(400).json({
@@ -686,7 +687,7 @@ app.patch('/api/orders/:code/status', async (req, res) => {
       });
     }
 
-    if (orderStatus && !VALID_ORDER_STATUSES.includes(orderStatus)) {
+    if (orderStatus && !VALID_ORDER_STATUSES.includes(orderStatus.toLowerCase())) {
       return res.status(400).json({
         success: false,
         message: `orderStatus tidak valid. Gunakan salah satu: ${VALID_ORDER_STATUSES.join(', ')}`
