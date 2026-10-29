@@ -1514,7 +1514,6 @@ function submitWhatsAppOrder() {
 
   const name = document.getElementById('modalCustomerName').value.trim();
   const wa = document.getElementById('modalCustomerWa').value.trim();
-  const color = document.getElementById('modalCoverColor').value;
 
   if (!name || !wa) {
     alert('Mohon isi Nama Lengkap dan Nomor WhatsApp terlebih dahulu.');
@@ -1609,7 +1608,7 @@ function submitWhatsAppOrder() {
       countryCode: cCode,
       countryName: cName,
       productName: data.productName,
-      coverColor: color,
+      coverColor: null,
       quantity: data.qty,
       weightKg: data.totalActualWeight,
       unitPriceIdr: data.unitPrice,
@@ -1639,7 +1638,6 @@ Saya ingin mengonfirmasi pemesanan Al-Qur'an dengan rincian berikut:
 📋 *Order ID:* ${orderId}
 📖 *Produk:* ${data.productName}
 🏷️ *Harga Satuan:* Rp ${data.unitPrice.toLocaleString('id-ID')}
-🎨 *Pilihan Cover:* ${color}
 🔢 *Jumlah (Qty):* ${data.qty} mushaf
 ⚖️ *Berat Paket:* ${data.totalActualWeight.toFixed(2)} kg (dihitung ${data.chargeableWeight} kg)
 💵 *Subtotal Produk:* Rp ${data.subtotal.toLocaleString('id-ID')} (${data.qty} x Rp ${data.unitPrice.toLocaleString('id-ID')})
